@@ -1,0 +1,178 @@
+/* line 1, /Users/minseokbang/Desktop/manspouch/app/assets/stylesheets/users.scss */
+.users-logback {
+  width: 110%;
+  height: 110%;
+  position: fixed;
+  z-index: -1;
+  margin: -120px;
+  background: url(/assets/login-b10e22ce772b5e5a1c748d7fa9c2c4882d939f08d6c35dfb016a3022c5941951.jpg) no-repeat;
+  background-size: cover;
+  -webkit-filter: blur(20px);
+          filter: blur(20px);
+}
+
+/* line 11, /Users/minseokbang/Desktop/manspouch/app/assets/stylesheets/users.scss */
+.chatbox {
+  margin: 0 auto;
+  width: 300px;
+  height: 240px;
+  overflow: hidden;
+  padding: 20px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* line 20, /Users/minseokbang/Desktop/manspouch/app/assets/stylesheets/users.scss */
+.users-signin {
+  margin: 0 auto;
+  width: 400px;
+  height: 100%;
+  overflow: hidden;
+  padding: 40px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  margin-bottom: 50px;
+}
+
+/* line 31, /Users/minseokbang/Desktop/manspouch/app/assets/stylesheets/users.scss */
+.enter_name {
+  font-size: 0em;
+  letter-spacing: -2px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+/* line 37, /Users/minseokbang/Desktop/manspouch/app/assets/stylesheets/users.scss */
+.enter_message {
+  font-size: 2em;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+  line-height: 80px;
+  font-weight: 100;
+}
+
+/* line 44, /Users/minseokbang/Desktop/manspouch/app/assets/stylesheets/users.scss */
+.form-control {
+  transition: .5s;
+  width: 250px;
+  height: 40px;
+  border: 0;
+  /*border-bottom: 1px solid #ddd;*/
+  background: rgba(0, 0, 0, 0);
+  font-size: 20px;
+  /*line-height: 50px;*/
+}
+
+/* line 55, /Users/minseokbang/Desktop/manspouch/app/assets/stylesheets/users.scss */
+.form-control:hover {
+  transition: .5s;
+  border-bottom: 1px solid #95c5fc;
+}
+
+/* line 59, /Users/minseokbang/Desktop/manspouch/app/assets/stylesheets/users.scss */
+.form-control:focus {
+  outline: none;
+  transition: .5s;
+  border-bottom: 1px solid #8958d8;
+}
+
+/* line 64, /Users/minseokbang/Desktop/manspouch/app/assets/stylesheets/users.scss */
+.regi-submit-btn {
+  font-family: 'Noto Sans KR', sans-serif;
+  line-height: 23px;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  background: #bb9bee;
+  margin: 0;
+  margin-left: 20px;
+  padding: 0;
+  width: 100px;
+  height: 20px;
+  color: block;
+  border: 0;
+  border-radius: 50px;
+  float: left;
+}
+
+/* line 81, /Users/minseokbang/Desktop/manspouch/app/assets/stylesheets/users.scss */
+.users-join-btn {
+  text-align: center;
+  line-height: 50px;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  margin-left: 20px;
+  width: 180px;
+  height: 50px;
+  color: #333;
+  border: 0;
+  float: left;
+}
+
+/* line 97, /Users/minseokbang/Desktop/manspouch/app/assets/stylesheets/users.scss */
+.form-signinput .form-group .form-control {
+  height: 25px;
+  width: 200px;
+}
+/* line 102, /Users/minseokbang/Desktop/manspouch/app/assets/stylesheets/users.scss */
+.form-signinput .form-group .form-control-label {
+  display: block;
+  margin-top: 0px;
+}
+/* line 107, /Users/minseokbang/Desktop/manspouch/app/assets/stylesheets/users.scss */
+.form-signinput .form-group .invalid-feedback {
+  color: block;
+}
+/* line 111, /Users/minseokbang/Desktop/manspouch/app/assets/stylesheets/users.scss */
+.form-signinput .regi-submit-btn {
+  width: 400px;
+  margin-left: 0;
+  margin-top: 50px;
+}
+
+/* line 118, /Users/minseokbang/Desktop/manspouch/app/assets/stylesheets/users.scss */
+.field > .string {
+  display: block;
+  margin-top: 20px;
+}
+
+.chat-card{
+  background: lightblue;
+  font-size: 0.7em;
+  padding: 5px 10px;
+  color: black;
+  border-radius: 5px;
+  padding: 8px;
+  margin: 4px;
+  font-weight: 200;
+}
+
+#overlay {
+  float:right;
+  left:-50px;
+/*  right: 0px*/
+  /*top: 10px; */
+/*  color: #FFF; */
+/*  text-align: center;*/
+  font-size: 20px;
+  /*background-color: rgba(221, 221, 221, 0.3);*/
+  width: 400px;
+/*  padding: 10px 0;*/
+  z-index: 2147483647;
+  position: absolute;
+
+}
+#my_video_1 {
+  z-index: 1;
+}
+
+.video-js .customOverlay {
+  color: yellow;
+  background-color:;
+}
+
+.pre-scrollable1 {
+    max-height: 180px;
+    overflow-y: scroll;
+}

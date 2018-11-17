@@ -1,0 +1,273 @@
+<html>
+<head>
+	<title>IO chat</title>
+
+	<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
+	<link rel="stylesheet" href="/chat.css" crossorigin="anonymous">
+	<script type="text/javascript" src = "http://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript" src = "/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="/video.js"></script>
+	<script type="text/javascript" src="/videojs-http-streaming.js"></script>
+	<!-- <script src="videojs-brand.js"></script> -->
+	<link href="/video-js.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="/videojs-brand.js"></script>
+	<!-- <script type="text/javascript" src="/videojs-brand2.js"></script> -->
+	<!--  -->
+  	<!-- video.js must be in the <head> for older IEs to work. -->
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+	<style>
+		body{
+			margin-top :30px;
+		}
+		#messageArea{
+			display:none;
+		}
+
+	</style>
+</head>
+<body>
+<div class="media">
+  <img class="align-self-center mr-3" src="konkuk_logo.png" alt="Generic placeholder image">
+  <div class="media-body">
+    <h2 class = "main_title mt-5 mb-2" style =" text-align:center; color:black;">HLS 프로토콜 기반의 설문 및 채팅 기능을 내포한  <br> IC(Interaction Centered) 실시간 스트리밍 플레이어 개발</h2>
+  </div>
+</div>
+
+
+
+		<hr><hr>
+
+		<br><br>
+
+
+	<div class="container">
+	  <div class="row">
+	    <div class="col">
+
+		</div>
+
+	    <div class="col-6">
+		    	<video id="my_video_1" class="video-js vjs-default-skin" controls preload="auto" width="640" height="268" data-setup='{}'>
+	    		<source src="http://stream.itsp.kr:1935/itspcamera2/myStream/playlist.m3u8" type="application/x-mpegURL">
+	    		</video>
+	    </div>
+
+	    <div class="col">
+	    </div>
+	  </div>
+	</div>
+
+
+	    <div class="col111111" id = "overlay" >
+	    	<div class ="chatbox">
+				<div class="enter_name" id = "userFormArea" class ="row">
+					<div class="col-md-121111">
+						<form id="userForm">
+							<div class="user_wrap">
+								<input class="form-control" autocomplete="off" autofocus="autofocus" placeholder="이름" type="name" value="" name="username" id="username">
+								<br/>
+								<input type="submit" class ="regi-submit-btn" value ="Login"/>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="row11111">
+<!-- 						<div class="col-md-4">
+						<div class="well">
+							<h3>Online Users</h3>
+							<ul class="list-group" id="users"></ul>
+						</div>
+					</div> -->
+					<div class="col-md-121111">
+						<div class="pre-scrollable1" id ="scroll">
+							<div class="chat" id="chat"></div>
+						</div>
+						<form class="enter_message" id="messageForm">
+							<div class="form-group">
+								<input class="form-control" autocomplete="off" autofocus="autofocus" placeholder="Message" type="name" value="" name="message" id="message">
+								<input type="submit" class ="regi-submit-btn" value ="Send Message"/>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	  	</div>
+	  	<br><br>
+			<div class="introduction">
+				<h2>
+					RTMP 가 아닌 HLS 방식을 사용합니다.
+				</h2>
+				<hr>
+				<p>
+					- APPLE 에서 사용하는 표준 HTTP 기반 스트리밍 프로토콜<br>
+					- RTMP 와는 다르게 모바일, PC를 막론하고 다양한 브라우저에서 지원<br>
+					- HTTP 를 통한 스트리밍만으로 간단하게 이용 가능<br>
+					- CDN에서도 HTTP를 통한 스트리밍 적극 권장<br>
+					- 표준화 작업을 통해 사용성이 확대되어 Streaming 의 표준으로 자리매김<br>
+
+				</p>
+			</div>	  
+
+			<div class="card bg-dark text-white">
+			  <img class="card-img" src="hls.png" alt="Card image">
+			</div>
+			<br><br>
+
+			<div class="introduction">
+				<h2>
+					플레시(RTMP) 없이 최대화 상태에서도 채팅이 가능합니다!
+				</h2>
+				<hr>
+				<p>
+					- 활성화 버튼을 통한 채팅창 활성화<br>
+					- Node js 를 통한 실시간 메시지 전송 가능<br>
+					- 플레이어 최대화 상태<br>
+					- 채팅 기능 유지 가능(HLS 기반 플레이어 최초)<br>
+
+
+				</p>
+			</div>
+
+			<div class="card bg-dark text-white">
+			  <img class="card-img" src="chat.png" alt="Card image">
+			</div>
+
+			<br><br>
+
+			<div class="introduction">
+				<h2>
+					스트리밍을 통한 설문조사 지금 바로 실행해보세요.
+				</h2>
+				<hr>
+				<p>
+					- 활성화 버튼을 통한 설문창 활성화<br>
+					- Pop-up 창을 통한 설문 기능 구현<br>
+
+
+				</p>
+			</div>
+
+			<div class="card bg-dark text-white">
+			  <img class="card-img" src="survey_image.png" alt="Card image">
+			</div>
+			<br><br>
+		<div class="card-deck">			
+			<br><br>
+		    <div class="card">
+			    <img class="card-img-top" src="back.png" alt="Card image cap">
+			    <div class="card-body">
+			      <h5 class="card-title">개발자 백만일</h5>
+			      <p class="card-text">
+					동물자원학과 / 컴퓨터공학과<br>
+					Kokkuk University<br>
+					Seoul, KOREA<br>
+					e-mail : aksdlf0311@naver.com<br>
+					주 업무 : HLS 플레이어 기반 Survey 시스템 개발
+
+			      </p>
+			    </div>	    	
+		    </div>
+		    <div class="card">
+			    <img class="card-img-top" src="bang.jpg" alt="Card image cap">
+			    <div class="card-body">
+			      <h5 class="card-title">개발자 방민석</h5>
+			      <p class="card-text">
+			      	경영학과 / 컴퓨터공학과<br>
+					Konkuk University<br>
+					Seoul, KOREA<br>
+					e-mail : seokk1209@gmail.com<br>
+					주 업무 : HLS 플레이어 기반 Chatting 시스템 개발
+				  </p>
+			    </div>	    	
+		    </div>		     	
+		</div>
+
+
+
+  	<script src="//players.brightcove.net/videojs-overlay/2/videojs-overlay.min.js"></script>
+	<script>
+
+		function doDisplay(){//채팅창을 보여주는 함수
+		    var con = document.getElementById("overlay");
+		    if(con.style.display=='none'){
+		        con.style.display = 'block';
+		    }else{
+		        con.style.display = 'none';
+		    }
+		}
+   		function showSurvey(){//서베이를 보여주는 함수
+   			window.open("survey.html","a","width=400,height=300,left=100,top=50");
+   		}
+
+		$(function(){
+			var socket = io.connect();
+			var $messageForm = $('#messageForm');
+			var $message = $('#message');
+			var $chat = $('#chat');
+			var $messageArea = $('#messageForm');
+			var $userFormArea = $('#userFormArea');
+			var $userForm = $('#userForm');
+			var $users = $('#users');
+			var $username = $('#username');
+
+			$messageForm.submit(function(e){
+				e.preventDefault();
+				socket.emit('send message', $message.val());
+				$message.val('');
+				document.getElementById('message').focus();
+			});
+
+			socket.on('new message', function(data){
+				$chat.append('<div class = "chat-card" style="max-width: 17rem;">'+data.user+'</string>: ' +data.msg+'</div>')
+				var scroll=document.getElementById("scroll");
+				scroll.scrollTop = scroll.scrollHeight;
+
+			})
+
+			$userForm.submit(function(e){
+				e.preventDefault();
+				socket.emit('new user', $username.val(), function(data){
+					if(data){
+						$userFormArea.hide();
+						$messageArea.show();
+					}
+				});
+				$username.val('');
+			});
+
+			socket.on('get users', function(data){
+				var html = '';
+				for(i=0 ; i<data.length; i++){
+					html += '<li class = "list-group-item">' + data[i] + '</li>';
+				}
+				$users.html(html);
+			});
+		});
+		var player = videojs('my_video_1');
+		  player.brand({
+		    image: "chat_button.png",
+		    title : "chat",
+		    id: "chat",
+				image2: "survey.png",
+				title2: "survey",
+		  });
+
+			var myPlayer = videojs("my_video_1");
+			var con = document.getElementById("overlay");
+			myPlayer.overlay({
+			  class: 'overlay',
+			  overlays: [{
+			    align: "right",
+			    content: con,
+			    start: 'play',
+			    end: 'pause'
+			  }]
+			});
+
+
+	</script>
+
+</body>
+</html>
