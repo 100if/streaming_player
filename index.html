@@ -6,14 +6,14 @@
 	<link rel="stylesheet" href="/chat.css" crossorigin="anonymous">
 	<script type="text/javascript" src = "http://code.jquery.com/jquery-latest.min.js"></script>
 	<script type="text/javascript" src = "/socket.io/socket.io.js"></script>
-	<script type="text/javascript" src="/video.js"></script>
-	<script type="text/javascript" src="/videojs-http-streaming.js"></script>
-	<!-- <script src="videojs-brand.js"></script> -->
-	<link href="/video-js.css" rel="stylesheet" type="text/css">
-	<script type="text/javascript" src="/videojs-brand.js"></script>
-	<!-- <script type="text/javascript" src="/videojs-brand2.js"></script> -->
+	<script type="text/javascript" src="/icp.js"></script>
+	<script type="text/javascript" src="/icplayer-http-streaming.js"></script>
+	<!-- <script src="icplayer-brand.js"></script> -->
+	<link href="/ic-player.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="/icplayer-brand.js"></script>
+	<!-- <script type="text/javascript" src="/icplayer-brand2.js"></script> -->
 	<!--  -->
-  	<!-- video.js must be in the <head> for older IEs to work. -->
+  	<!-- icp.js must be in the <head> for older IEs to work. -->
 	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 
@@ -49,7 +49,7 @@
 		</div>
 
 	    <div class="col-6">
-		    	<video id="my_video_1" class="video-js vjs-default-skin" controls preload="auto" width="640" height="268" data-setup='{}'>
+		    	<video id="my_video_1" class="ic-player icp-default-skin" controls preload="auto" width="640" height="268" data-setup='{}'>
 	    		<source src="http://stream.itsp.kr:1935/itspcamera2/myStream/playlist.m3u8" type="application/x-mpegURL">
 	    		</video>
 	    </div>
@@ -186,7 +186,7 @@
 
 
 
-  	<script src="//players.brightcove.net/videojs-overlay/2/videojs-overlay.min.js"></script>
+  	<script src="icplayer-overlay.min.js"></script>
 	<script>
 
 		function doDisplay(){//채팅창을 보여주는 함수
@@ -245,7 +245,7 @@
 				$users.html(html);
 			});
 		});
-		var player = videojs('my_video_1');
+		var player = icplayer('my_video_1');
 		  player.brand({
 		    image: "chat_button.png",
 		    title : "chat",
@@ -254,7 +254,7 @@
 				title2: "survey",
 		  });
 
-			var myPlayer = videojs("my_video_1");
+			var myPlayer = icplayer("my_video_1");
 			var con = document.getElementById("overlay");
 			myPlayer.overlay({
 			  class: 'overlay',
