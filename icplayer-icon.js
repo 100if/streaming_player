@@ -1,10 +1,10 @@
 /**
- * icplayer-brand
+ * icplayer-icon
  * @version 0.0.4
  * @copyright 2016 Emmanuel Alves <manel.pb@gmail.com>
  * @license MIT
  */
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.icplayerBrand = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.icplayerIcon = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -40,10 +40,10 @@ var defaults = {
  */
 var onPlayerReady = function onPlayerReady(player, options) {
   var containerElement = document.createElement("div");
-  containerElement.className = "icp-brand-container";
+  containerElement.className = "icp-icon-container";
 
   var linkElement = document.createElement("a");
-  linkElement.className = "icp-brand-container-link";
+  linkElement.className = "icp-icon-container-link";
   // linkElement.setAttribute("href", options.destination || defaults.destination);
   linkElement.setAttribute("title", options.title || defaults.title);
     // linkElement.setAttribute("href", options.destination || defaults.destination);
@@ -60,10 +60,10 @@ var onPlayerReady = function onPlayerReady(player, options) {
   containerElement.appendChild(linkElement);
 /*--------------------- end of chatbox Button -----------------------*/
    var containerElement2 = document.createElement("div");
-   containerElement2.className = "icp-brand-container2";
+   containerElement2.className = "icp-icon-container2";
 
    var linkElement2 = document.createElement("a");
-   linkElement2.className = "icp-brand-container-link2";
+   linkElement2.className = "icp-icon-container-link2";
    //linkElement.setAttribute("href", options.destination || defaults.destination);
    linkElement2.setAttribute("title2", options.title2 || defaults.title2);
    //linkElement.setAttribute("target", options.destinationTarget || defaults.destinationTarget);
@@ -78,7 +78,7 @@ var onPlayerReady = function onPlayerReady(player, options) {
 
   player.controlBar.el().insertBefore(containerElement, player.controlBar.fullscreenToggle.el());
   player.controlBar.el().insertBefore(containerElement2, containerElement);
-  player.addClass('icp-brand');
+  player.addClass('icp-icon');
 };
 
 /**
@@ -89,11 +89,11 @@ var onPlayerReady = function onPlayerReady(player, options) {
  * depending on how the plugin is invoked. This may or may not be important
  * to you; if not, remove the wait for "ready"!
  *
- * @function brand
+ * @function icon
  * @param    {Object} [options={}]
  *           An object of options left to the plugin author to define.
  */
-var brand = function brand(options) {
+var icon = function icon(options) {
   var _this = this;
 
   this.ready(function () {
@@ -102,12 +102,12 @@ var brand = function brand(options) {
 };
 
 // Register the plugin with icp.js.
-_icplayer2["default"].plugin('brand', brand);
+_icplayer2["default"].plugin('icon', icon);
 
 // Include the version number.
-brand.VERSION = '0.0.4';
+icon.VERSION = '0.0.4';
 
-exports["default"] = brand;
+exports["default"] = icon;
 module.exports = exports["default"];
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}]},{},[1])(1)

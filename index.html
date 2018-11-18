@@ -8,12 +8,9 @@
 	<script type="text/javascript" src = "/socket.io/socket.io.js"></script>
 	<script type="text/javascript" src="/icp.js"></script>
 	<script type="text/javascript" src="/icplayer-http-streaming.js"></script>
-	<!-- <script src="icplayer-brand.js"></script> -->
 	<link href="/ic-player.css" rel="stylesheet" type="text/css">
-	<script type="text/javascript" src="/icplayer-brand.js"></script>
-	<!-- <script type="text/javascript" src="/icplayer-brand2.js"></script> -->
-	<!--  -->
-  	<!-- icp.js must be in the <head> for older IEs to work. -->
+	<script type="text/javascript" src="/icplayer-icon.js"></script>
+
 	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 
@@ -246,7 +243,7 @@
 			});
 		});
 		var player = icplayer('my_video_1');
-		  player.brand({
+		  player.icon({
 		    image: "chat_button.png",
 		    title : "chat",
 		    id: "chat",
