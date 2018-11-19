@@ -1,7 +1,6 @@
 /**
  * @icplayer/http-streaming
  * @version 1.2.5
- * @copyright 2018 Brightcove, Inc
  * @license Apache-2.0
  */
 (function (global, factory) {
@@ -2646,9 +2645,6 @@
 
 	/*
 	 * pkcs7.pad
-	 * https://github.com/brightcove/pkcs7
-	 *
-	 * Copyright (c) 2014 Brightcove
 	 * Licensed under the apache2 license.
 	 */
 
@@ -3824,8 +3820,6 @@
 	    /**
 	     * mux.js
 	     *
-	     * Copyright (c) 2015 Brightcove
-	     * All rights reserved.
 	     *
 	     * Functions that generate fragmented MP4s suitable for use with Media
 	     * Source Extensions.
@@ -4620,8 +4614,6 @@
 	    /**
 	     * mux.js
 	     *
-	     * Copyright (c) 2014 Brightcove
-	     * All rights reserved.
 	     *
 	     * A lightweight readable stream implemention that handles event dispatching.
 	     * Objects that inherit from streams should call init in their constructors.
@@ -5095,8 +5087,6 @@
 	    /**
 	     * mux.js
 	     *
-	     * Copyright (c) 2015 Brightcove
-	     * All rights reserved.
 	     *
 	     * Reads in-band caption information from a video elementary
 	     * stream. Captions must follow the CEA-708 standard for injection
@@ -11861,7 +11851,6 @@
 	/**
 	 * mpd-parser
 	 * @version 0.6.1
-	 * @copyright 2018 Brightcove, Inc
 	 * @license Apache-2.0
 	 */
 
@@ -12125,8 +12114,6 @@
 	/**
 	 * Converts a URLType node (5.3.9.2.3 Table 13) to a segment object
 	 * that conforms to how m3u8-parser is structured
-	 *
-	 * @see https://github.com/icplayer/m3u8-parser
 	 *
 	 * @param {string} baseUrl - baseUrl provided by <BaseUrl> nodes
 	 * @param {string} source - source url for segment
@@ -15365,9 +15352,6 @@
 	/**
 	 * mux.js
 	 *
-	 * Copyright (c) 2015 Brightcove
-	 * All rights reserved.
-	 *
 	 * Functions that generate fragmented MP4s suitable for use with Media
 	 * Source Extensions.
 	 */
@@ -15947,9 +15931,6 @@
 	/**
 	 * mux.js
 	 *
-	 * Copyright (c) 2014 Brightcove
-	 * All rights reserved.
-	 *
 	 * A lightweight readable stream implemention that handles event dispatching.
 	 * Objects that inherit from streams should call init in their constructors.
 	 */
@@ -16421,9 +16402,6 @@
 
 	/**
 	 * mux.js
-	 *
-	 * Copyright (c) 2015 Brightcove
-	 * All rights reserved.
 	 *
 	 * Reads in-band caption information from a video elementary
 	 * stream. Captions must follow the CEA-708 standard for injection
@@ -23633,9 +23611,6 @@
 	/**
 	 * mux.js
 	 *
-	 * Copyright (c) 2016 Brightcove
-	 * All rights reserved.
-	 *
 	 * Utilities to detect basic properties and metadata about Aac data.
 	 */
 
@@ -24866,9 +24841,6 @@
 
 	    /*
 	     * pkcs7.pad
-	     * https://github.com/brightcove/pkcs7
-	     *
-	     * Copyright (c) 2014 Brightcove
 	     * Licensed under the apache2 license.
 	     */
 
@@ -28211,8 +28183,6 @@
 	/**
 	 * @file icplayer-http-streaming.js
 	 *
-	 * The main file for the HLS project.
-	 * License: https://github.com/icplayer/icplayer-http-streaming/blob/master/LICENSE
 	 */
 
 	var Hls$1 = {

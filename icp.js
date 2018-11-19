@@ -1,11 +1,9 @@
 /**
  * @license
- * Icp.js 7.1.0 <http://icplayer.com/>
- * Copyright Brightcove, Inc. <https://www.brightcove.com/>
+ * Icp.js 7.1.0
  * Available under Apache License Version 2.0
- * <https://github.com/icplayer/icp.js/blob/master/LICENSE>
  *
- * Includes vtt.js <https://github.com/mozilla/vtt.js>
+ * Includes vtt.js
  * Available under Apache License Version 2.0
  * <https://github.com/mozilla/vtt.js/blob/master/LICENSE>
  */
@@ -514,7 +512,7 @@
     return '';
   }
 
-  var _templateObject = taggedTemplateLiteralLoose(['Setting attributes in the second argument of createEl()\n                has been deprecated. Use the third argument instead.\n                createEl(type, properties, attributes). Attempting to set ', ' to ', '.'], ['Setting attributes in the second argument of createEl()\n                has been deprecated. Use the third argument instead.\n                createEl(type, properties, attributes). Attempting to set ', ' to ', '.']);
+  var _templateObject = taggedTemplateLiteralLoose([''], ['']);
 
   /**
    * Detect if a value is a string with any non-whitespace characters.
@@ -3582,7 +3580,7 @@
         }).filter(function (child) {
           // we have to make sure that child.name isn't in the techOrder since
           // techs are registerd as Components but can't aren't compatible
-          // See https://github.com/icplayer/icp.js/issues/2772
+
           var c = Component.getComponent(child.opts.componentClass || toTitleCase(child.name));
 
           return c && !Tech.isTech(c);
@@ -10328,7 +10326,7 @@
         // passed in
         var script = document_1.createElement('script');
 
-        script.src = this.options_['vtt.js'] || 'https://icp.zencdn.net/vttjs/0.14.1/vtt.min.js';
+        script.src = this.options_['vtt.js'];
         script.onload = function () {
           /**
            * Fired when vtt.js is loaded.
@@ -19432,7 +19430,7 @@
     };
   };
 
-  var _templateObject$1 = taggedTemplateLiteralLoose(['Text Tracks are being loaded from another origin but the crossorigin attribute isn\'t used.\n            This may prevent text tracks from loading.'], ['Text Tracks are being loaded from another origin but the crossorigin attribute isn\'t used.\n            This may prevent text tracks from loading.']);
+  var _templateObject$1 = taggedTemplateLiteralLoose([''], ['']);
 
   /**
    * HTML5 Media Controller - Wrapper for HTML5 Media API
@@ -20464,7 +20462,7 @@
    */
   Html5.canControlPlaybackRate = function () {
     // Playback rate API is implemented in Android Chrome, but doesn't do anything
-    // https://github.com/icplayer/icp.js/issues/3180
+
     if (IS_ANDROID && IS_CHROME && CHROME_VERSION < 58) {
       return false;
     }
@@ -21387,7 +21385,7 @@
 
   Tech.registerTech('Html5', Html5);
 
-  var _templateObject$2 = taggedTemplateLiteralLoose(['\n        Using the tech directly can be dangerous. I hope you know what you\'re doing.\n        See https://github.com/icplayer/icp.js/issues/2617 for more info.\n      '], ['\n        Using the tech directly can be dangerous. I hope you know what you\'re doing.\n        See https://github.com/icplayer/icp.js/issues/2617 for more info.\n      ']);
+  var _templateObject$2 = taggedTemplateLiteralLoose([''], ['']);
 
   // The following tech events are simply re-triggered
   // on the player when they happen
@@ -28110,8 +28108,6 @@
 
   /**
    * mpd-parser
-   * @version 0.6.1
-   * @copyright 2018 Brightcove, Inc
    * @license Apache-2.0
    */
 
@@ -28376,7 +28372,6 @@
    * Converts a URLType node (5.3.9.2.3 Table 13) to a segment object
    * that conforms to how m3u8-parser is structured
    *
-   * @see https://github.com/icplayer/m3u8-parser
    *
    * @param {string} baseUrl - baseUrl provided by <BaseUrl> nodes
    * @param {string} source - source url for segment
@@ -29966,9 +29961,6 @@
   /**
    * mux.js
    *
-   * Copyright (c) 2014 Brightcove
-   * All rights reserved.
-   *
    * A lightweight readable stream implemention that handles event dispatching.
    * Objects that inherit from streams should call init in their constructors.
    */
@@ -30454,9 +30446,6 @@
 
   /**
    * mux.js
-   *
-   * Copyright (c) 2016 Brightcove
-   * All rights reserved.
    *
    * Utilities to detect basic properties and metadata about Aac data.
    */
@@ -31108,10 +31097,7 @@
   };
 
   /*
-   * pkcs7.pad
-   * https://github.com/brightcove/pkcs7
-   *
-   * Copyright (c) 2014 Brightcove
+
    * Licensed under the apache2 license.
    */
 
@@ -31723,7 +31709,6 @@
   /**
    * @icplayer/http-streaming
    * @version 1.1.0
-   * @copyright 2018 Brightcove, Inc
    * @license Apache-2.0
    */
 
@@ -33656,8 +33641,6 @@
       /**
        * mux.js
        *
-       * Copyright (c) 2015 Brightcove
-       * All rights reserved.
        *
        * Functions that generate fragmented MP4s suitable for use with Media
        * Source Extensions.
@@ -34238,8 +34221,6 @@
       /**
        * mux.js
        *
-       * Copyright (c) 2014 Brightcove
-       * All rights reserved.
        *
        * A lightweight readable stream implemention that handles event dispatching.
        * Objects that inherit from streams should call init in their constructors.
@@ -44094,10 +44075,6 @@
       var window_1$$1 = win;
 
       /*
-       * pkcs7.pad
-       * https://github.com/brightcove/pkcs7
-       *
-       * Copyright (c) 2014 Brightcove
        * Licensed under the apache2 license.
        */
 
@@ -47349,8 +47326,6 @@
   /**
    * @file icplayer-http-streaming.js
    *
-   * The main file for the HLS project.
-   * License: https://github.com/icplayer/icplayer-http-streaming/blob/master/LICENSE
    */
 
   var Hls$1 = {

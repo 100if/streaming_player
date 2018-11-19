@@ -1,8 +1,5 @@
 /**
  * icplayer-icon
- * @version 0.0.4
- * @copyright 2016 Emmanuel Alves <manel.pb@gmail.com>
- * @license MIT
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.icplayerIcon = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
@@ -75,7 +72,7 @@ var onPlayerReady = function onPlayerReady(player, options) {
 
    linkElement2.appendChild(imageElement2);
    containerElement2.appendChild(linkElement2);
-
+/*--------------------- end of survey Button -----------------------*/
   player.controlBar.el().insertBefore(containerElement, player.controlBar.fullscreenToggle.el());
   player.controlBar.el().insertBefore(containerElement2, containerElement);
   player.addClass('icp-icon');
