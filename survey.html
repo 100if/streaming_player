@@ -5,6 +5,7 @@
   <title>Survey Popup</title>
 </head>
 <body onload="window.resizeTo(430,600)">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script type="text/javascript" src = "http://code.jquery.com/jquery-latest.min.js"></script>
 
   <form>
@@ -17,7 +18,6 @@
       <td>
         <table width="100%" bgcolor="#0000000" cellpadding="5" cellspacing="1" border="0">
         <tr>
-          <br>
             <td bgcolor="#ffffff" style="filter:alpha(opacity=0)"><h5>select age</h5>
             <h6><input type="radio" name="age" value="10's">teen
             <input type="radio" name="age" value="20's">twenty
@@ -25,21 +25,22 @@
             <input type="radio" name="age" value="40's">forty
             <input type="radio" name="age" value="50's">fifty
             <input type="radio" name="age" value="etc">etc</h6></td>
-          </tr><!-- end of table -->
-        </td>
+        </tr><!-- end of question1 -->
+
         <tr>
           <td bgcolor="#ffffff" style="filter:alpha(opacity=0)"><h5>select gender</h5>
-            <h6><input type="radio" name="gender" value="man"/>man
-            <input type="radio" name="gender" value="woman"/>woman</h6></td>
-        </tr><!-- end of table -->
+          <h6><input type="radio" name="gender" value="man"/>man
+          <input type="radio" name="gender" value="woman"/>woman</h6></td>
+        </tr><!-- end of question2 -->
+
         <tr>
           <td bgcolor="#ffffff" style="filter:alpha(opacity=0)">
-            <h5>assessment
-            <h6><input type="radio" name="assess" value="good">good
-            <input type="radio" name="assess" value="normal">normal
-            <input type="radio" name="assess" value="bad">bad</h6>
-          </tr><!-- end of table -->
-          </table>
+          <h5>assessment
+          <h6><input type="radio" name="assess" value="good">good
+          <input type="radio" name="assess" value="normal">normal
+          <input type="radio" name="assess" value="bad">bad</h6>
+        </tr><!-- end of question3 -->
+        </table>
       <tr>
       <td align="center">
         <br/><button type="submit">submit</button>
@@ -48,7 +49,7 @@
     <p id="output"></p>
     </td>
   </tr>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
   <script>
           // Attach an event for when the user submits the form
           $('form').on('submit', function(event){
