@@ -2,16 +2,27 @@
 <head>
 	<title>IO chat</title>
 
-	<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
-	<link rel="stylesheet" href="/chat.css" crossorigin="anonymous">
-	<script type="text/javascript" src = "http://code.jquery.com/jquery-latest.min.js"></script>
-	<script type="text/javascript" src = "/socket.io/socket.io.js"></script>
+	<!-- 플레이어 사용을 위해 아래의 스크립트 파일이 필요합니다. -->
 	<script type="text/javascript" src="/icp.js"></script>
 	<script type="text/javascript" src="/icplayer-http-streaming.js"></script>
-	<link href="/ic-player.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript" src="/icplayer-icon.js"></script>
+	<link rel="stylesheet" href="/ic-player.css" type="text/css">
+	<!-- 플레이어 사용을 위해 위의 스크립트 파일이 필요합니다. -->	
 
-	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<!-- 채팅 어플리케이션 실행을 위해 아래의 파일들에 대한 스크립트파일이 필요합니다.-->
+	<script type="text/javascript" src = "/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src = "/jquery-latest.min.js"></script>
+	<link rel="stylesheet" href="/chat.css" crossorigin="anonymous">
+	<script src="icplayer-overlay.min.js"></script>
+	<!-- 채팅 어플리케이션 실행을 위해 위의 파일들에 대한 스크립트파일이 필요합니다.-->
+
+
+
+
+	<!-- 페이지 화면 구성을 위한 부트스트랩입니다. 플레이어에는 영향을 미치지 않습니다.-->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<!-- 페이지 화면 구성을 위한 부트스트랩입니다. 플레이어에는 영향을 미치지 않습니다.-->
 
 
 	<style>
@@ -24,31 +35,31 @@
 
 	</style>
 </head>
+
+
 <body>
-<div class="media">
-  <img class="align-self-center mr-3" src="konkuk_logo.png" alt="Generic placeholder image">
-  <div class="media-body">
-    <h2 class = "main_title mt-5 mb-2" style =" text-align:center; color:black;">HLS 프로토콜 기반의 설문 및 채팅 기능을 내포한  <br> IC(Interaction Centered) 실시간 스트리밍 플레이어 개발</h2>
-  </div>
-</div>
-
-
-
-		<hr><hr>
-
-		<br><br>
+	<div class="media">
+	  <img class="align-self-center mr-3" src="konkuk_logo.png" alt="Generic placeholder image">
+	  <div class="media-body">
+	    <h2 class = "main_title mt-5 mb-2" style =" text-align:center; color:black;">HLS 프로토콜 기반의 설문 및 채팅 기능을 내포한  <br> IC(Interaction Centered) 실시간 스트리밍 플레이어 개발</h2>
+	  </div>
+	</div>
+	<hr><hr>
+	<br><br>
 
 
 	<div class="container">
 	  <div class="row">
 	    <div class="col">
-
 		</div>
 
 	    <div class="col-6">
+	    	<!-- 플레이어 삽입을 위한 소스코드 입니다.-->
 		    	<video id="my_video_1" class="ic-player icp-default-skin" controls preload="auto" width="640" height="268" data-setup='{}'>
+		    <!-- 영상 실행시 HLS 방식을 사용하기 위한 소스 주소 입니다.-->
 	    		<source src="http://stream.itsp.kr:1935/itspcamera2/myStream/playlist.m3u8" type="application/x-mpegURL">
 	    		</video>
+
 	    </div>
 
 	    <div class="col">
@@ -57,6 +68,7 @@
 	</div>
 
 
+<!-- 플레이어 위에 올라갈 채팅 어플리케이션을 구현합니다.-->
 	    <div class="col111111" id = "overlay" >
 	    	<div class ="chatbox">
 				<div class="enter_name" id = "userFormArea" class ="row">
@@ -71,12 +83,6 @@
 					</div>
 				</div>
 				<div class="row11111">
-<!-- 						<div class="col-md-4">
-						<div class="well">
-							<h3>Online Users</h3>
-							<ul class="list-group" id="users"></ul>
-						</div>
-					</div> -->
 					<div class="col-md-121111">
 						<div class="pre-scrollable1" id ="scroll">
 							<div class="chat" id="chat"></div>
@@ -91,6 +97,8 @@
 				</div>
 			</div>
 	  	</div>
+<!-- 플레이어 위에 올라갈 채팅 어플리케이션 끝입니다.-->
+
 	  	<br><br>
 			<div class="introduction">
 				<h2>
@@ -183,85 +191,95 @@
 
 
 
-  	<script src="icplayer-overlay.min.js"></script>
+
 	<script>
 
-		function doDisplay(){//채팅창을 보여주는 함수
-		    var con = document.getElementById("overlay");
-		    if(con.style.display=='none'){
-		        con.style.display = 'block';
-		    }else{
-		        con.style.display = 'none';
-		    }
-		}
+
    		function showSurvey(){//서베이를 보여주는 함수
    			window.open("survey.html","a","width=400,height=300,left=100,top=50");
    		}
 
+
+
+		//서버와의 통신을 위한 채팅 구현입니다.
 		$(function(){
-			var socket = io.connect();
-			var $messageForm = $('#messageForm');
-			var $message = $('#message');
-			var $chat = $('#chat');
-			var $messageArea = $('#messageForm');
-			var $userFormArea = $('#userFormArea');
-			var $userForm = $('#userForm');
-			var $users = $('#users');
-			var $username = $('#username');
+		var socket = io.connect();
+		var $messageForm = $('#messageForm');
+		var $message = $('#message');
+		var $chat = $('#chat');
+		var $messageArea = $('#messageForm');
+		var $userFormArea = $('#userFormArea');
+		var $userForm = $('#userForm');
+		var $users = $('#users');
+		var $username = $('#username');
 
-			$messageForm.submit(function(e){
-				e.preventDefault();
-				socket.emit('send message', $message.val());
-				$message.val('');
-				document.getElementById('message').focus();
-			});
-
-			socket.on('new message', function(data){
-				$chat.append('<div class = "chat-card" style="max-width: 17rem;">'+data.user+'</string>: ' +data.msg+'</div>')
-				var scroll=document.getElementById("scroll");
-				scroll.scrollTop = scroll.scrollHeight;
-
-			})
-
-			$userForm.submit(function(e){
-				e.preventDefault();
-				socket.emit('new user', $username.val(), function(data){
-					if(data){
-						$userFormArea.hide();
-						$messageArea.show();
-					}
-				});
-				$username.val('');
-			});
-
-			socket.on('get users', function(data){
-				var html = '';
-				for(i=0 ; i<data.length; i++){
-					html += '<li class = "list-group-item">' + data[i] + '</li>';
-				}
-				$users.html(html);
-			});
+		$messageForm.submit(function(e){
+			e.preventDefault();
+			socket.emit('send message', $message.val());
+			$message.val('');
+			document.getElementById('message').focus();
 		});
-		var player = icplayer('my_video_1');
-		  player.icon({
-		    image: "chat_button.png",
-		    title : "chat",
-		    id: "chat",
-				image2: "survey.png",
-				title2: "survey",
-		  });
 
-			var myPlayer = icplayer("my_video_1");
-			var con = document.getElementById("overlay");
-			myPlayer.overlay({
-			  class: 'overlay',
-			  overlays: [{
-			    align: "right",
-			    content: con,
-			    start: 'play',
-			    end: 'pause'
-			  }]
+		socket.on('new message', function(data){
+			$chat.append('<div class = "chat-card" style="max-width: 17rem;">'+data.user+'</string>: ' +data.msg+'</div>')
+			var scroll=document.getElementById("scroll");
+			scroll.scrollTop = scroll.scrollHeight;
+
+		})
+
+		$userForm.submit(function(e){
+			e.preventDefault();
+			socket.emit('new user', $username.val(), function(data){
+				if(data){
+					$userFormArea.hide();
+					$messageArea.show();
+				}
 			});
+			$username.val('');
+		});
+
+		socket.on('get users', function(data){
+			var html = '';
+			for(i=0 ; i<data.length; i++){
+				html += '<li class = "list-group-item">' + data[i] + '</li>';
+			}
+			$users.html(html);
+		});
+		});
+		//서버와의 통신을 위한 채팅 끝입니다.
+
+
+		function doDisplay(){//채팅창을 보여주는 함수
+		var con = document.getElementById("overlay");
+		if(con.style.display=='none'){
+		    con.style.display = 'block';
+		}else{
+		    con.style.display = 'none';
+		}
+		}
+
+		var player = icplayer('my_video_1');//채팅창 활성화 및 제거를 위한 버튼을 만들어 주는 함수
+		player.icon({
+		image: "chat_button.png",
+		title : "chat",
+		id: "chat",
+			image2: "survey.png",
+			title2: "survey",
+		});
+
+		var myPlayer = icplayer("my_video_1");//채팅창을 플레이어 위로 올려주는 함수
+		var con = document.getElementById("overlay");
+		myPlayer.overlay({
+		  class: 'overlay',
+		  overlays: [{
+		    align: "right",
+		    content: con,
+		    start: 'play',
+		    end: 'pause'
+		  }]
+		});
+
+
 
 
 	</script>

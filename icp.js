@@ -1,11 +1,8 @@
 /**
  * @license
- * Icp.js 7.1.0
+ * Icp.js 1.0
  * Available under Apache License Version 2.0
  *
- * Includes vtt.js
- * Available under Apache License Version 2.0
- * <https://github.com/mozilla/vtt.js/blob/master/LICENSE>
  */
 
 (function (global, factory) {
