@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
   <title>Survey Popup</title>
 </head>
-<body onload="window.resizeTo(800,400)">
-  <form action="http://localhost:8080/Test/response.jsp" method="post">
-  <table width = "700">
+<body onload="window.resizeTo(430,600)">
+  <script type="text/javascript" src = "http://code.jquery.com/jquery-latest.min.js"></script>
+
+  <form>
+  <table id="overlayed_survey" width = "385">
     <tr>
       <th>Survey</th>
     </tr>
@@ -14,44 +17,49 @@
       <td>
         <table width="100%" bgcolor="#0000000" cellpadding="5" cellspacing="1" border="0">
         <tr>
-          <td width="20%" bgcolor="#cacaca">
-            &nbsp;select age
-          </td>
-          <td width="*" bgcolor="#ffffff">
-            <input type="radio" name="age" value="10's">teen
-            <input type="radio" name="age" value="20's">twenties
-            <input type="radio" name="age" value="30's">thirties
-            <input type="radio" name="age" value="40's">forties
-            <input type="radio" name="age" value="50's">fifties
-          </td></tr><!-- end of table -->
+          <br>
+            <td bgcolor="#ffffff" style="filter:alpha(opacity=0)"><h5>select age</h5>
+            <h6><input type="radio" name="age" value="10's">teen
+            <input type="radio" name="age" value="20's">twenty
+            <input type="radio" name="age" value="30's">thirty
+            <input type="radio" name="age" value="40's">forty
+            <input type="radio" name="age" value="50's">fifty
+            <input type="radio" name="age" value="etc">etc</h6></td>
+          </tr><!-- end of table -->
+        </td>
         <tr>
-          <td width="20%" bgcolor="#cacaca">
-            &nbsp;select gender
-          </td>
-          <td width="*" bgcolor="#ffffff">
-            <input type="radio" name="gender" value="man"/>man
-            <input type="radio" name="gender" value="woman"/>woman
-          </td></tr><!-- end of table -->
+          <td bgcolor="#ffffff" style="filter:alpha(opacity=0)"><h5>select gender</h5>
+            <h6><input type="radio" name="gender" value="man"/>man
+            <input type="radio" name="gender" value="woman"/>woman</h6></td>
+        </tr><!-- end of table -->
         <tr>
-          <td width="20%" bgcolor="#cacaca">
-            &nbsp;accessment
-          </td>
-          <td width="*" bgcolor="#ffffff">
-            <input type="radio" name="assess" value="good">good
+          <td bgcolor="#ffffff" style="filter:alpha(opacity=0)">
+            <h5>assessment
+            <h6><input type="radio" name="assess" value="good">good
             <input type="radio" name="assess" value="normal">normal
-            <input type="radio" name="assess" value="bad">bad
-          </td></tr><!-- end of table -->
+            <input type="radio" name="assess" value="bad">bad</h6>
+          </tr><!-- end of table -->
           </table>
-          </td>
-      </td>
-    </tr>
-
-    <tr>
+      <tr>
       <td align="center">
-        <br/><input type="submit" value="submit" />&nbsp;&nbsp;
+        <br/><button type="submit">submit</button>
         <input type="button" value="close" onclick="self.close();"/>
-      </form>
+    </form>
+    <p id="output"></p>
     </td>
   </tr>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script>
+          // Attach an event for when the user submits the form
+          $('form').on('submit', function(event){
+              // Prevent the page from reloading
+              event.preventDefault();
+              // Set the output span to the value of the first input
+              var _age = $(this).find("input:radio[name=age]:checked").val();
+              var _gender = $(this).find("input:radio[name=gender]:checked").val();
+              var _assess = $(this).find("input:radio[name=assess]:checked").val();
+              $('#output').text("age: "+ _age);
+          });
+  </script>
 </body>
 </html>
