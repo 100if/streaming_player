@@ -1,21 +1,26 @@
 /**
  * @license
- * Icp.js 1.0
+ * Video.js 7.1.0 <http://videojs.com/>
+ * Copyright Brightcove, Inc. <https://www.brightcove.com/>
  * Available under Apache License Version 2.0
+ * <https://github.com/videojs/video.js/blob/master/LICENSE>
  *
+ * Includes vtt.js <https://github.com/mozilla/vtt.js>
+ * Available under Apache License Version 2.0
+ * <https://github.com/mozilla/vtt.js/blob/master/LICENSE>
  */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
-  (global.icplayer = factory());
+  (global.videojs = factory());
 }(this, (function () {
   var version = "7.1.0";
 
   var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
   function createCommonjsModule(fn, module) {
-    return module = { exports: {} }, fn(module, module.exports), module.exports;
+  	return module = { exports: {} }, fn(module, module.exports), module.exports;
   }
 
   var win;
@@ -96,7 +101,7 @@
     }
 
     // Add console prefix after adding to history.
-    args.unshift('ICPLAYER:');
+    args.unshift('VIDEOJS:');
 
     // If there's no console then don't try to output messages, but they will
     // still be stored in history.
@@ -145,11 +150,11 @@
    * in that logging level. These strings are used to create a regular expression
    * matching the function name being called.
    *
-   * Levels provided by icp.js are:
+   * Levels provided by video.js are:
    *
    * - `off`: Matches no calls. Any value that can be cast to `false` will have
    *   this effect. The most restrictive.
-   * - `all`: Matches only Icp.js-provided functions (`debug`, `log`,
+   * - `all`: Matches only Video.js-provided functions (`debug`, `log`,
    *   `log.warn`, and `log.error`).
    * - `debug`: Matches `log.debug`, `log`, `log.warn`, and `log.error` calls.
    * - `info` (default): Matches `log`, `log.warn`, and `log.error` calls.
@@ -509,7 +514,7 @@
     return '';
   }
 
-  var _templateObject = taggedTemplateLiteralLoose([''], ['']);
+  var _templateObject = taggedTemplateLiteralLoose(['Setting attributes in the second argument of createEl()\n                has been deprecated. Use the third argument instead.\n                createEl(type, properties, attributes). Attempting to set ', ' to ', '.'], ['Setting attributes in the second argument of createEl()\n                has been deprecated. Use the third argument instead.\n                createEl(type, properties, attributes). Attempting to set ', ' to ', '.']);
 
   /**
    * Detect if a value is a string with any non-whitespace characters.
@@ -1661,7 +1666,7 @@
       // 0 == left; 1 == middle; 2 == right
       if (event.button !== null && event.button !== undefined) {
 
-        // The following is disabled because it does not pass icplayer-standard
+        // The following is disabled because it does not pass videojs-standard
         // and... yikes.
         /* eslint-disable */
         event.button = event.button & 1 ? 0 : event.button & 4 ? 1 : event.button & 2 ? 2 : 0;
@@ -1960,7 +1965,7 @@
    */
 
   var _windowLoaded = false;
-  var icplayer = void 0;
+  var videojs = void 0;
 
   /**
    * Set up any tags that have a data-setup `attribute` when the player is started.
@@ -1968,13 +1973,13 @@
   var autoSetup = function autoSetup() {
 
     // Protect against breakage in non-browser environments and check global autoSetup option.
-    if (!isReal() || icplayer.options.autoSetup === false) {
+    if (!isReal() || videojs.options.autoSetup === false) {
       return;
     }
 
     var vids = Array.prototype.slice.call(document_1.getElementsByTagName('video'));
     var audios = Array.prototype.slice.call(document_1.getElementsByTagName('audio'));
-    var divs = Array.prototype.slice.call(document_1.getElementsByTagName('ic-player'));
+    var divs = Array.prototype.slice.call(document_1.getElementsByTagName('video-js'));
     var mediaEls = vids.concat(audios, divs);
 
     // Check if any media elements exist
@@ -1993,8 +1998,8 @@
             // Check if data-setup attr exists.
             // We only auto-setup if they've added the data-setup attr.
             if (options !== null) {
-              // Create new icp.js instance.
-              icplayer(mediaEl);
+              // Create new video.js instance.
+              videojs(mediaEl);
             }
           }
 
@@ -2018,12 +2023,12 @@
    * @param {number} wait
    *        How long to wait in ms
    *
-   * @param {module:icplayer} [icp]
-   *        The icplayer library function
+   * @param {module:videojs} [vjs]
+   *        The videojs library function
    */
-  function autoSetupTimeout(wait, icp) {
-    if (icp) {
-      icplayer = icp;
+  function autoSetupTimeout(wait, vjs) {
+    if (vjs) {
+      videojs = vjs;
     }
 
     window_1.setTimeout(autoSetup, wait);
@@ -2169,7 +2174,7 @@
    *
    * @param  {Object} [context=window]
    *         The "context" in which the debounced function should debounce. For
-   *         example, if this function should be tied to a Icp.js player,
+   *         example, if this function should be tied to a Video.js player,
    *         the player can be passed here. Alternatively, defaults to the
    *         global `window` object.
    *
@@ -2761,7 +2766,7 @@
       }
       target.eventBusEl_ = target[eventBusKey];
     } else {
-      target.eventBusEl_ = createEl('span', { className: 'icp-event-bus' });
+      target.eventBusEl_ = createEl('span', { className: 'vjs-event-bus' });
     }
 
     assign(target, EventedMixin);
@@ -3404,7 +3409,7 @@
           throw new Error('Component ' + componentClassName + ' does not exist');
         }
 
-        // data stored directly on the icplayer object may be
+        // data stored directly on the videojs object may be
         // misidentified as a component to retain
         // backwards-compatibility with 4.x. check to make sure the
         // component class can be instantiated.
@@ -3507,8 +3512,8 @@
           var opts = child.opts;
 
           // Allow options for children to be set at the parent options
-          // e.g. icplayer(id, { controlBar: false });
-          // instead of icplayer(id, { children: { controlBar: false });
+          // e.g. videojs(id, { controlBar: false });
+          // instead of videojs(id, { children: { controlBar: false });
           if (parentOptions[name] !== undefined) {
             opts = parentOptions[name];
           }
@@ -3577,7 +3582,7 @@
         }).filter(function (child) {
           // we have to make sure that child.name isn't in the techOrder since
           // techs are registerd as Components but can't aren't compatible
-
+          // See https://github.com/videojs/video.js/issues/2772
           var c = Component.getComponent(child.opts.componentClass || toTitleCase(child.name));
 
           return c && !Tech.isTech(c);
@@ -3773,26 +3778,26 @@
 
     /**
      * Show the `Component`s element if it is hidden by removing the
-     * 'icp-hidden' class name from it.
+     * 'vjs-hidden' class name from it.
      */
 
 
     Component.prototype.show = function show() {
-      this.removeClass('icp-hidden');
+      this.removeClass('vjs-hidden');
     };
 
     /**
      * Hide the `Component`s element if it is currently showing by adding the
-     * 'icp-hidden` class name to it.
+     * 'vjs-hidden` class name to it.
      */
 
 
     Component.prototype.hide = function hide() {
-      this.addClass('icp-hidden');
+      this.addClass('vjs-hidden');
     };
 
     /**
-     * Lock a `Component`s element in its visible state by adding the 'icp-lock-showing'
+     * Lock a `Component`s element in its visible state by adding the 'vjs-lock-showing'
      * class name to it. Used during fadeIn/fadeOut.
      *
      * @private
@@ -3800,11 +3805,11 @@
 
 
     Component.prototype.lockShowing = function lockShowing() {
-      this.addClass('icp-lock-showing');
+      this.addClass('vjs-lock-showing');
     };
 
     /**
-     * Unlock a `Component`s element from its visible state by removing the 'icp-lock-showing'
+     * Unlock a `Component`s element from its visible state by removing the 'vjs-lock-showing'
      * class name from it. Used during fadeIn/fadeOut.
      *
      * @private
@@ -3812,7 +3817,7 @@
 
 
     Component.prototype.unlockShowing = function unlockShowing() {
-      this.removeClass('icp-lock-showing');
+      this.removeClass('vjs-lock-showing');
     };
 
     /**
@@ -4325,7 +4330,7 @@
         return _this2.clearTimeout(timeoutId);
       };
 
-      disposeFn.guid = 'icp-timeout-' + timeoutId;
+      disposeFn.guid = 'vjs-timeout-' + timeoutId;
 
       this.on('dispose', disposeFn);
 
@@ -4354,7 +4359,7 @@
 
       var disposeFn = function disposeFn() {};
 
-      disposeFn.guid = 'icp-timeout-' + timeoutId;
+      disposeFn.guid = 'vjs-timeout-' + timeoutId;
 
       this.off('dispose', disposeFn);
 
@@ -4394,7 +4399,7 @@
         return _this3.clearInterval(intervalId);
       };
 
-      disposeFn.guid = 'icp-interval-' + intervalId;
+      disposeFn.guid = 'vjs-interval-' + intervalId;
 
       this.on('dispose', disposeFn);
 
@@ -4423,7 +4428,7 @@
 
       var disposeFn = function disposeFn() {};
 
-      disposeFn.guid = 'icp-interval-' + intervalId;
+      disposeFn.guid = 'vjs-interval-' + intervalId;
 
       this.off('dispose', disposeFn);
 
@@ -4476,7 +4481,7 @@
           return _this4.cancelAnimationFrame(id);
         };
 
-        disposeFn.guid = 'icp-raf-' + id;
+        disposeFn.guid = 'vjs-raf-' + id;
         this.on('dispose', disposeFn);
 
         return id;
@@ -4510,7 +4515,7 @@
 
         var disposeFn = function disposeFn() {};
 
-        disposeFn.guid = 'icp-raf-' + id;
+        disposeFn.guid = 'vjs-raf-' + id;
 
         this.off('dispose', disposeFn);
 
@@ -4522,14 +4527,14 @@
     };
 
     /**
-     * Register a `Component` with `icplayer` given the name and the component.
+     * Register a `Component` with `videojs` given the name and the component.
      *
      * > NOTE: {@link Tech}s should not be registered as a `Component`. {@link Tech}s
      *         should be registered using {@link Tech.registerTech} or
-     *         {@link icplayer:icplayer.registerTech}.
+     *         {@link videojs:videojs.registerTech}.
      *
-     * > NOTE: This function can also be seen on icplayer as
-     *         {@link icplayer:icplayer.registerComponent}.
+     * > NOTE: This function can also be seen on videojs as
+     *         {@link videojs:videojs.registerComponent}.
      *
      * @param {string} name
      *        The name of the `Component` to register.
@@ -4602,9 +4607,9 @@
      * @return {Component}
      *         The `Component` that got registered under the given name.
      *
-     * @deprecated In `icplayer` 6 this will not return `Component`s that were not
+     * @deprecated In `videojs` 6 this will not return `Component`s that were not
      *             registered using {@link Component.registerComponent}. Currently we
-     *             check the global `icplayer` object for a `Component` name and
+     *             check the global `videojs` object for a `Component` name and
      *             return that if it exists.
      */
 
@@ -4974,9 +4979,9 @@
    *        - number: should be a standard error code
    *        - string: an error message (the code will be 0)
    *        - Object: arbitrary properties
-   *        - `MediaError` (native): used to populate a icp.js `MediaError` object
-   *        - `MediaError` (icp.js): will return itself if it's already a
-   *          icp.js `MediaError` object.
+   *        - `MediaError` (native): used to populate a video.js `MediaError` object
+   *        - `MediaError` (video.js): will return itself if it's already a
+   *          video.js `MediaError` object.
    *
    * @see [MediaError Spec]{@link https://dev.w3.org/html5/spec-author-view/video.html#mediaerror}
    * @see [Encrypted MediaError Spec]{@link https://www.w3.org/TR/2013/WD-encrypted-media-20130510/#error-codes}
@@ -5222,7 +5227,7 @@
    * @file modal-dialog.js
    */
 
-  var MODAL_CLASS_NAME = 'icp-modal-dialog';
+  var MODAL_CLASS_NAME = 'vjs-modal-dialog';
   var ESC = 27;
 
   /**
@@ -5290,7 +5295,7 @@
       });
 
       _this.descEl_ = createEl('p', {
-        className: MODAL_CLASS_NAME + '-description icp-control-text',
+        className: MODAL_CLASS_NAME + '-description vjs-control-text',
         id: _this.el().getAttribute('aria-describedby')
       });
 
@@ -5337,7 +5342,7 @@
 
 
     ModalDialog.prototype.buildCSSClass = function buildCSSClass() {
-      return MODAL_CLASS_NAME + ' icp-hidden ' + _Component.prototype.buildCSSClass.call(this);
+      return MODAL_CLASS_NAME + ' vjs-hidden ' + _Component.prototype.buildCSSClass.call(this);
     };
 
     /**
@@ -6564,7 +6569,7 @@
      * @param {string} [options.kind='']
      *        A valid kind for the track type you are creating.
      *
-     * @param {string} [options.id='icp_track_' + Guid.newGUID()]
+     * @param {string} [options.id='vjs_track_' + Guid.newGUID()]
      *        A unique id for this AudioTrack.
      *
      * @param {string} [options.label='']
@@ -6582,7 +6587,7 @@
       var _this = possibleConstructorReturn(this, _EventTarget.call(this));
 
       var trackProps = {
-        id: options.id || 'icp_track_' + newGUID(),
+        id: options.id || 'vjs_track_' + newGUID(),
         kind: options.kind || '',
         label: options.label || '',
         language: options.language || ''
@@ -7322,7 +7327,7 @@
      * @param {TextTrack~Mode} [options.mode='disabled']
      *        A valid text track mode.
      *
-     * @param {string} [options.id='icp_track_' + Guid.newGUID()]
+     * @param {string} [options.id='vjs_track_' + Guid.newGUID()]
      *        A unique id for this TextTrack.
      *
      * @param {string} [options.label='']
@@ -7614,7 +7619,7 @@
      * @param {AudioTrack~Kind} [options.kind='']
      *        A valid audio track kind
      *
-     * @param {string} [options.id='icp_track_' + Guid.newGUID()]
+     * @param {string} [options.id='vjs_track_' + Guid.newGUID()]
      *        A unique id for this AudioTrack.
      *
      * @param {string} [options.label='']
@@ -7705,7 +7710,7 @@
      * @param {string} [options.kind='']
      *        A valid {@link VideoTrack~Kind}
      *
-     * @param {string} [options.id='icp_track_' + Guid.newGUID()]
+     * @param {string} [options.id='vjs_track_' + Guid.newGUID()]
      *        A unique id for this AudioTrack.
      *
      * @param {string} [options.label='']
@@ -7814,7 +7819,7 @@
      * @param {TextTrack~Mode} [options.mode='disabled']
      *        A valid text track mode.
      *
-     * @param {string} [options.id='icp_track_' + Guid.newGUID()]
+     * @param {string} [options.id='vjs_track_' + Guid.newGUID()]
      *        A unique id for this TextTrack.
      *
      * @param {string} [options.label='']
@@ -10323,7 +10328,7 @@
         // passed in
         var script = document_1.createElement('script');
 
-        script.src = this.options_['vtt.js'];
+        script.src = this.options_['vtt.js'] || 'https://vjs.zencdn.net/vttjs/0.14.1/vtt.min.js';
         script.onload = function () {
           /**
            * Fired when vtt.js is loaded.
@@ -10503,7 +10508,7 @@
 
       if (manualCleanup !== true && manualCleanup !== false) {
         // deprecation warning
-        log$1.warn('Calling addRemoteTextTrack without explicitly setting the "manualCleanup" parameter to `true` is deprecated and default to `false` in future version of icp.js');
+        log$1.warn('Calling addRemoteTextTrack without explicitly setting the "manualCleanup" parameter to `true` is deprecated and default to `false` in future version of video.js');
         manualCleanup = true;
       }
 
@@ -10677,7 +10682,7 @@
     };
 
     /**
-     * Registers a `Tech` into a shared list for icplayer.
+     * Registers a `Tech` into a shared list for videojs.
      *
      * @param {string} name
      *        Name of the `Tech` to register.
@@ -10735,9 +10740,9 @@
         return Tech.techs_[name];
       }
 
-      if (window_1 && window_1.icplayer && window_1.icplayer[name]) {
-        log$1.warn('The ' + name + ' tech was added to the icplayer object when it should be registered using icplayer.registerTech(name, tech)');
-        return window_1.icplayer[name];
+      if (window_1 && window_1.videojs && window_1.videojs[name]) {
+        log$1.warn('The ' + name + ' tech was added to the videojs object when it should be registered using videojs.registerTech(name, tech)');
+        return window_1.videojs[name];
       }
     };
 
@@ -10850,7 +10855,7 @@
 
   /**
    * Boolean indicating whether the `Tech` supports the `progress` event. This is currently
-   * not triggered by ic-player-swf. This will be used to determine if
+   * not triggered by video-js-swf. This will be used to determine if
    * {@link Tech#manualProgressOn} should be called.
    *
    * @type {boolean}
@@ -10872,7 +10877,7 @@
 
   /**
    * Boolean indicating whether the `Tech` supports the `timeupdate` event. This is currently
-   * not triggered by ic-player-swf. This will be used to determine if
+   * not triggered by video-js-swf. This will be used to determine if
    * {@link Tech#manualTimeUpdates} should be called.
    *
    * @type {boolean}
@@ -11578,7 +11583,7 @@
       var attributes = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
       props = assign({
-        innerHTML: '<span aria-hidden="true" class="icp-icon-placeholder"></span>',
+        innerHTML: '<span aria-hidden="true" class="vjs-icon-placeholder"></span>',
         className: this.buildCSSClass(),
         tabIndex: 0
       }, props);
@@ -11621,7 +11626,7 @@
 
     ClickableComponent.prototype.createControlTextEl = function createControlTextEl(el) {
       this.controlTextEl_ = createEl('span', {
-        className: 'icp-control-text'
+        className: 'vjs-control-text'
       }, {
         // let the screen reader user know that the text of the element may change
         'aria-live': 'polite'
@@ -11676,7 +11681,7 @@
 
 
     ClickableComponent.prototype.buildCSSClass = function buildCSSClass() {
-      return 'icp-control icp-button ' + _Component.prototype.buildCSSClass.call(this);
+      return 'vjs-control vjs-button ' + _Component.prototype.buildCSSClass.call(this);
     };
 
     /**
@@ -11687,7 +11692,7 @@
     ClickableComponent.prototype.enable = function enable() {
       if (!this.enabled_) {
         this.enabled_ = true;
-        this.removeClass('icp-disabled');
+        this.removeClass('vjs-disabled');
         this.el_.setAttribute('aria-disabled', 'false');
         if (typeof this.tabIndex_ !== 'undefined') {
           this.el_.setAttribute('tabIndex', this.tabIndex_);
@@ -11705,7 +11710,7 @@
 
     ClickableComponent.prototype.disable = function disable() {
       this.enabled_ = false;
-      this.addClass('icp-disabled');
+      this.addClass('vjs-disabled');
       this.el_.setAttribute('aria-disabled', 'true');
       if (typeof this.tabIndex_ !== 'undefined') {
         this.el_.removeAttribute('tabIndex');
@@ -11853,7 +11858,7 @@
 
     PosterImage.prototype.createEl = function createEl$$1() {
       var el = createEl('div', {
-        className: 'icp-poster',
+        className: 'vjs-poster',
 
         // Don't want poster to be tabbable.
         tabIndex: -1
@@ -12147,7 +12152,7 @@
 
     TextTrackDisplay.prototype.createEl = function createEl() {
       return _Component.prototype.createEl.call(this, 'div', {
-        className: 'icp-text-track-display'
+        className: 'vjs-text-track-display'
       }, {
         'aria-live': 'off',
         'aria-atomic': 'true'
@@ -12331,12 +12336,12 @@
       var isAudio = this.player_.isAudio();
       var playerType = this.localize(isAudio ? 'Audio Player' : 'Video Player');
       var controlText = createEl('span', {
-        className: 'icp-control-text',
+        className: 'vjs-control-text',
         innerHTML: this.localize('{1} is loading.', [playerType])
       });
 
       var el = _Component.prototype.createEl.call(this, 'div', {
-        className: 'icp-loading-spinner',
+        className: 'vjs-loading-spinner',
         dir: 'ltr'
       });
 
@@ -12391,7 +12396,7 @@
       tag = 'button';
 
       props = assign({
-        innerHTML: '<span aria-hidden="true" class="icp-icon-placeholder"></span>',
+        innerHTML: '<span aria-hidden="true" class="vjs-icon-placeholder"></span>',
         className: this.buildCSSClass()
       }, props);
 
@@ -12516,12 +12521,12 @@
      * Builds the default DOM `className`.
      *
      * @return {string}
-     *         The DOM `className` for this object. Always returns 'icp-big-play-button'.
+     *         The DOM `className` for this object. Always returns 'vjs-big-play-button'.
      */
 
 
     BigPlayButton.prototype.buildCSSClass = function buildCSSClass() {
-      return 'icp-big-play-button';
+      return 'vjs-big-play-button';
     };
 
     /**
@@ -12631,7 +12636,7 @@
 
 
     CloseButton.prototype.buildCSSClass = function buildCSSClass() {
-      return 'icp-close-button ' + _Button.prototype.buildCSSClass.call(this);
+      return 'vjs-close-button ' + _Button.prototype.buildCSSClass.call(this);
     };
 
     /**
@@ -12711,7 +12716,7 @@
 
 
     PlayToggle.prototype.buildCSSClass = function buildCSSClass() {
-      return 'icp-play-control ' + _Button.prototype.buildCSSClass.call(this);
+      return 'vjs-play-control ' + _Button.prototype.buildCSSClass.call(this);
     };
 
     /**
@@ -12747,7 +12752,7 @@
 
 
     PlayToggle.prototype.handleSeeked = function handleSeeked(event) {
-      this.removeClass('icp-ended');
+      this.removeClass('vjs-ended');
 
       if (this.player_.paused()) {
         this.handlePause(event);
@@ -12757,7 +12762,7 @@
     };
 
     /**
-     * Add the icp-playing class to the element so it can change appearance.
+     * Add the vjs-playing class to the element so it can change appearance.
      *
      * @param {EventTarget~Event} [event]
      *        The event that caused this function to run.
@@ -12767,15 +12772,15 @@
 
 
     PlayToggle.prototype.handlePlay = function handlePlay(event) {
-      this.removeClass('icp-ended');
-      this.removeClass('icp-paused');
-      this.addClass('icp-playing');
+      this.removeClass('vjs-ended');
+      this.removeClass('vjs-paused');
+      this.addClass('vjs-playing');
       // change the button text to "Pause"
       this.controlText('Pause');
     };
 
     /**
-     * Add the icp-paused class to the element so it can change appearance.
+     * Add the vjs-paused class to the element so it can change appearance.
      *
      * @param {EventTarget~Event} [event]
      *        The event that caused this function to run.
@@ -12785,14 +12790,14 @@
 
 
     PlayToggle.prototype.handlePause = function handlePause(event) {
-      this.removeClass('icp-playing');
-      this.addClass('icp-paused');
+      this.removeClass('vjs-playing');
+      this.addClass('vjs-paused');
       // change the button text to "Play"
       this.controlText('Play');
     };
 
     /**
-     * Add the icp-ended class to the element so it can change appearance
+     * Add the vjs-ended class to the element so it can change appearance
      *
      * @param {EventTarget~Event} [event]
      *        The event that caused this function to run.
@@ -12802,8 +12807,8 @@
 
 
     PlayToggle.prototype.handleEnded = function handleEnded(event) {
-      this.removeClass('icp-playing');
-      this.addClass('icp-ended');
+      this.removeClass('vjs-playing');
+      this.addClass('vjs-ended');
       // change the button text to "Replay"
       this.controlText('Replay');
 
@@ -12941,8 +12946,8 @@
     TimeDisplay.prototype.createEl = function createEl$$1(plainName) {
       var className = this.buildCSSClass();
       var el = _Component.prototype.createEl.call(this, 'div', {
-        className: className + ' icp-time-control icp-control',
-        innerHTML: '<span class="icp-control-text">' + this.localize(this.labelText_) + '\xA0</span>'
+        className: className + ' vjs-time-control vjs-control',
+        innerHTML: '<span class="vjs-control-text">' + this.localize(this.labelText_) + '\xA0</span>'
       });
 
       this.contentEl_ = createEl('span', {
@@ -13102,7 +13107,7 @@
 
 
     CurrentTimeDisplay.prototype.buildCSSClass = function buildCSSClass() {
-      return 'icp-current-time';
+      return 'vjs-current-time';
     };
 
     /**
@@ -13214,7 +13219,7 @@
 
 
     DurationDisplay.prototype.buildCSSClass = function buildCSSClass() {
-      return 'icp-duration';
+      return 'vjs-duration';
     };
 
     /**
@@ -13291,7 +13296,7 @@
      */
     TimeDivider.prototype.createEl = function createEl() {
       return _Component.prototype.createEl.call(this, 'div', {
-        className: 'icp-time-control icp-time-divider',
+        className: 'vjs-time-control vjs-time-divider',
         innerHTML: '<div><span>/</span></div>'
       });
     };
@@ -13341,7 +13346,7 @@
 
 
     RemainingTimeDisplay.prototype.buildCSSClass = function buildCSSClass() {
-      return 'icp-remaining-time';
+      return 'vjs-remaining-time';
     };
 
     /**
@@ -13379,7 +13384,7 @@
       }
 
       // @deprecated We should only use remainingTimeDisplay
-      // as of icp.js 7
+      // as of video.js 7
       if (this.player_.remainingTimeDisplay) {
         this.updateFormattedTime_(this.player_.remainingTimeDisplay());
       } else {
@@ -13475,12 +13480,12 @@
 
     LiveDisplay.prototype.createEl = function createEl$$1() {
       var el = _Component.prototype.createEl.call(this, 'div', {
-        className: 'icp-live-control icp-control'
+        className: 'vjs-live-control vjs-control'
       });
 
       this.contentEl_ = createEl('div', {
-        className: 'icp-live-display',
-        innerHTML: '<span class="icp-control-text">' + this.localize('Stream Type') + '\xA0</span>' + this.localize('LIVE')
+        className: 'vjs-live-display',
+        innerHTML: '<span class="vjs-control-text">' + this.localize('Stream Type') + '\xA0</span>' + this.localize('LIVE')
       }, {
         'aria-live': 'off'
       });
@@ -13650,7 +13655,7 @@
       var attributes = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
       // Add the slider element class to all sub classes
-      props.className = props.className + ' icp-slider';
+      props.className = props.className + ' vjs-slider';
       props = assign({
         tabIndex: 0
       }, props);
@@ -13693,7 +13698,7 @@
       }
       blockTextSelection();
 
-      this.addClass('icp-sliding');
+      this.addClass('vjs-sliding');
       /**
        * Triggered when the slider is in an active state
        *
@@ -13744,7 +13749,7 @@
 
       unblockTextSelection();
 
-      this.removeClass('icp-sliding');
+      this.removeClass('vjs-sliding');
       /**
        * Triggered when the slider is no longer in an active state.
        *
@@ -13919,9 +13924,9 @@
       this.vertical_ = !!bool;
 
       if (this.vertical_) {
-        this.addClass('icp-slider-vertical');
+        this.addClass('vjs-slider-vertical');
       } else {
-        this.addClass('icp-slider-horizontal');
+        this.addClass('vjs-slider-horizontal');
       }
     };
 
@@ -13972,8 +13977,8 @@
 
     LoadProgressBar.prototype.createEl = function createEl$$1() {
       return _Component.prototype.createEl.call(this, 'div', {
-        className: 'icp-load-progress',
-        innerHTML: '<span class="icp-control-text"><span>' + this.localize('Loaded') + '</span>: 0%</span>'
+        className: 'vjs-load-progress',
+        innerHTML: '<span class="vjs-control-text"><span>' + this.localize('Loaded') + '</span>: 0%</span>'
       });
     };
 
@@ -14064,7 +14069,7 @@
      */
     TimeTooltip.prototype.createEl = function createEl$$1() {
       return _Component.prototype.createEl.call(this, 'div', {
-        className: 'icp-time-tooltip'
+        className: 'vjs-time-tooltip'
       });
     };
 
@@ -14160,8 +14165,8 @@
      */
     PlayProgressBar.prototype.createEl = function createEl() {
       return _Component.prototype.createEl.call(this, 'div', {
-        className: 'icp-play-progress icp-slider-bar',
-        innerHTML: '<span class="icp-control-text"><span>' + this.localize('Progress') + '</span>: 0%</span>'
+        className: 'vjs-play-progress vjs-slider-bar',
+        innerHTML: '<span class="vjs-control-text"><span>' + this.localize('Progress') + '</span>: 0%</span>'
       });
     };
 
@@ -14264,7 +14269,7 @@
 
     MouseTimeDisplay.prototype.createEl = function createEl() {
       return _Component.prototype.createEl.call(this, 'div', {
-        className: 'icp-mouse-display'
+        className: 'vjs-mouse-display'
       });
     };
 
@@ -14399,7 +14404,7 @@
 
     SeekBar.prototype.createEl = function createEl$$1() {
       return _Slider.prototype.createEl.call(this, 'div', {
-        className: 'icp-progress-holder'
+        className: 'vjs-progress-holder'
       }, {
         'aria-label': this.localize('Progress Bar')
       });
@@ -14736,7 +14741,7 @@
 
     ProgressControl.prototype.createEl = function createEl$$1() {
       return _Component.prototype.createEl.call(this, 'div', {
-        className: 'icp-progress-control icp-control'
+        className: 'vjs-progress-control vjs-control'
       });
     };
 
@@ -14972,7 +14977,7 @@
 
 
     FullscreenToggle.prototype.buildCSSClass = function buildCSSClass() {
-      return 'icp-fullscreen-control ' + _Button.prototype.buildCSSClass.call(this);
+      return 'vjs-fullscreen-control ' + _Button.prototype.buildCSSClass.call(this);
     };
 
     /**
@@ -15032,7 +15037,7 @@
 
   /**
    * Check if volume control is supported and if it isn't hide the
-   * `Component` that was passed  using the `icp-hidden` class.
+   * `Component` that was passed  using the `vjs-hidden` class.
    *
    * @param {Component} self
    *        The component that should be hidden if volume is unsupported
@@ -15045,14 +15050,14 @@
   var checkVolumeSupport = function checkVolumeSupport(self, player) {
     // hide volume controls when they're not supported by the current tech
     if (player.tech_ && !player.tech_.featuresVolumeControl) {
-      self.addClass('icp-hidden');
+      self.addClass('vjs-hidden');
     }
 
     self.on(player, 'loadstart', function () {
       if (!player.tech_.featuresVolumeControl) {
-        self.addClass('icp-hidden');
+        self.addClass('vjs-hidden');
       } else {
-        self.removeClass('icp-hidden');
+        self.removeClass('vjs-hidden');
       }
     });
   };
@@ -15083,8 +15088,8 @@
      */
     VolumeLevel.prototype.createEl = function createEl() {
       return _Component.prototype.createEl.call(this, 'div', {
-        className: 'icp-volume-level',
-        innerHTML: '<span class="icp-control-text"></span>'
+        className: 'vjs-volume-level',
+        innerHTML: '<span class="vjs-control-text"></span>'
       });
     };
 
@@ -15138,7 +15143,7 @@
 
     VolumeBar.prototype.createEl = function createEl$$1() {
       return _Slider.prototype.createEl.call(this, 'div', {
-        className: 'icp-volume-bar icp-slider-bar'
+        className: 'vjs-volume-bar vjs-slider-bar'
       }, {
         'aria-label': this.localize('Volume Level'),
         'aria-live': 'polite'
@@ -15351,14 +15356,14 @@
       // while the slider is active (the mouse has been pressed down and
       // is dragging) or in focus we do not want to hide the VolumeBar
       _this.on(_this.volumeBar, ['focus', 'slideractive'], function () {
-        _this.volumeBar.addClass('icp-slider-active');
-        _this.addClass('icp-slider-active');
+        _this.volumeBar.addClass('vjs-slider-active');
+        _this.addClass('vjs-slider-active');
         _this.trigger('slideractive');
       });
 
       _this.on(_this.volumeBar, ['blur', 'sliderinactive'], function () {
-        _this.volumeBar.removeClass('icp-slider-active');
-        _this.removeClass('icp-slider-active');
+        _this.volumeBar.removeClass('vjs-slider-active');
+        _this.removeClass('vjs-slider-active');
         _this.trigger('sliderinactive');
       });
       return _this;
@@ -15373,14 +15378,14 @@
 
 
     VolumeControl.prototype.createEl = function createEl() {
-      var orientationClass = 'icp-volume-horizontal';
+      var orientationClass = 'vjs-volume-horizontal';
 
       if (this.options_.vertical) {
-        orientationClass = 'icp-volume-vertical';
+        orientationClass = 'vjs-volume-vertical';
       }
 
       return _Component.prototype.createEl.call(this, 'div', {
-        className: 'icp-volume-control icp-control ' + orientationClass
+        className: 'vjs-volume-control vjs-control ' + orientationClass
       });
     };
 
@@ -15471,14 +15476,14 @@
   var checkMuteSupport = function checkMuteSupport(self, player) {
     // hide mute toggle button if it's not supported by the current tech
     if (player.tech_ && !player.tech_.featuresMuteControl) {
-      self.addClass('icp-hidden');
+      self.addClass('vjs-hidden');
     }
 
     self.on(player, 'loadstart', function () {
       if (!player.tech_.featuresMuteControl) {
-        self.addClass('icp-hidden');
+        self.addClass('vjs-hidden');
       } else {
-        self.removeClass('icp-hidden');
+        self.removeClass('vjs-hidden');
       }
     });
   };
@@ -15526,7 +15531,7 @@
 
 
     MuteToggle.prototype.buildCSSClass = function buildCSSClass() {
-      return 'icp-mute-control ' + _Button.prototype.buildCSSClass.call(this);
+      return 'vjs-mute-control ' + _Button.prototype.buildCSSClass.call(this);
     };
 
     /**
@@ -15608,15 +15613,15 @@
 
       // TODO improve muted icon classes
       for (var i = 0; i < 4; i++) {
-        removeClass(this.el_, 'icp-vol-' + i);
+        removeClass(this.el_, 'vjs-vol-' + i);
       }
-      addClass(this.el_, 'icp-vol-' + level);
+      addClass(this.el_, 'vjs-vol-' + level);
     };
 
     /**
      * If `muted` has changed on the player, update the control text
-     * (`title` attribute on `icp-mute-control` element and content of
-     * `icp-control-text` element).
+     * (`title` attribute on `vjs-mute-control` element and content of
+     * `vjs-control-text` element).
      *
      * @private
      */
@@ -15699,7 +15704,7 @@
     }
 
     /**
-     * Add icp-slider-active class to the VolumePanel
+     * Add vjs-slider-active class to the VolumePanel
      *
      * @listens VolumeControl#slideractive
      * @private
@@ -15707,11 +15712,11 @@
 
 
     VolumePanel.prototype.sliderActive_ = function sliderActive_() {
-      this.addClass('icp-slider-active');
+      this.addClass('vjs-slider-active');
     };
 
     /**
-     * Removes icp-slider-active class to the VolumePanel
+     * Removes vjs-slider-active class to the VolumePanel
      *
      * @listens VolumeControl#sliderinactive
      * @private
@@ -15719,11 +15724,11 @@
 
 
     VolumePanel.prototype.sliderInactive_ = function sliderInactive_() {
-      this.removeClass('icp-slider-active');
+      this.removeClass('vjs-slider-active');
     };
 
     /**
-     * Adds icp-hidden or icp-mute-toggle-only to the VolumePanel
+     * Adds vjs-hidden or vjs-mute-toggle-only to the VolumePanel
      * depending on MuteToggle and VolumeControl state
      *
      * @listens Player#loadstart
@@ -15734,14 +15739,14 @@
     VolumePanel.prototype.volumePanelState_ = function volumePanelState_() {
       // hide volume panel if neither volume control or mute toggle
       // are displayed
-      if (this.volumeControl.hasClass('icp-hidden') && this.muteToggle.hasClass('icp-hidden')) {
-        this.addClass('icp-hidden');
+      if (this.volumeControl.hasClass('vjs-hidden') && this.muteToggle.hasClass('vjs-hidden')) {
+        this.addClass('vjs-hidden');
       }
 
       // if only mute toggle is visible we don't want
       // volume panel expanding when hovered or active
-      if (this.volumeControl.hasClass('icp-hidden') && !this.muteToggle.hasClass('icp-hidden')) {
-        this.addClass('icp-mute-toggle-only');
+      if (this.volumeControl.hasClass('vjs-hidden') && !this.muteToggle.hasClass('vjs-hidden')) {
+        this.addClass('vjs-mute-toggle-only');
       }
     };
 
@@ -15754,14 +15759,14 @@
 
 
     VolumePanel.prototype.createEl = function createEl() {
-      var orientationClass = 'icp-volume-panel-horizontal';
+      var orientationClass = 'vjs-volume-panel-horizontal';
 
       if (!this.options_.inline) {
-        orientationClass = 'icp-volume-panel-vertical';
+        orientationClass = 'vjs-volume-panel-vertical';
       }
 
       return _Component.prototype.createEl.call(this, 'div', {
-        className: 'icp-volume-panel icp-control ' + orientationClass
+        className: 'vjs-volume-panel vjs-control ' + orientationClass
       });
     };
 
@@ -15858,14 +15863,14 @@
       var contentElType = this.options_.contentElType || 'ul';
 
       this.contentEl_ = createEl(contentElType, {
-        className: 'icp-menu-content'
+        className: 'vjs-menu-content'
       });
 
       this.contentEl_.setAttribute('role', 'menu');
 
       var el = _Component.prototype.createEl.call(this, 'div', {
         append: this.contentEl_,
-        className: 'icp-menu'
+        className: 'vjs-menu'
       });
 
       el.appendChild(this.contentEl_);
@@ -15949,7 +15954,7 @@
       var item = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
 
       var children = this.children().slice();
-      var haveTitle = children.length && children[0].className && /icp-menu-title/.test(children[0].className);
+      var haveTitle = children.length && children[0].className && /vjs-menu-title/.test(children[0].className);
 
       if (haveTitle) {
         children.shift();
@@ -16010,7 +16015,7 @@
       var buttonClass = Button.prototype.buildCSSClass();
 
       _this.menuButton_.el_.className = _this.buildCSSClass() + ' ' + buttonClass;
-      _this.menuButton_.removeClass('icp-control');
+      _this.menuButton_.removeClass('vjs-control');
 
       _this.addChild(_this.menuButton_);
 
@@ -16083,7 +16088,7 @@
       // Add a title list item to the top
       if (this.options_.title) {
         var title = createEl('li', {
-          className: 'icp-menu-title',
+          className: 'vjs-menu-title',
           innerHTML: toTitleCase(this.options_.title),
           tabIndex: -1
         });
@@ -16138,7 +16143,7 @@
 
 
     MenuButton.prototype.buildWrapperCSSClass = function buildWrapperCSSClass() {
-      var menuButtonClass = 'icp-menu-button';
+      var menuButtonClass = 'vjs-menu-button';
 
       // If the inline option is passed, we want to use different styles altogether.
       if (this.options_.inline === true) {
@@ -16150,7 +16155,7 @@
       // TODO: Fix the CSS so that this isn't necessary
       var buttonClass = Button.prototype.buildCSSClass();
 
-      return 'icp-menu-button ' + menuButtonClass + ' ' + buttonClass + ' ' + _Component.prototype.buildCSSClass.call(this);
+      return 'vjs-menu-button ' + menuButtonClass + ' ' + buttonClass + ' ' + _Component.prototype.buildCSSClass.call(this);
     };
 
     /**
@@ -16162,7 +16167,7 @@
 
 
     MenuButton.prototype.buildCSSClass = function buildCSSClass() {
-      var menuButtonClass = 'icp-menu-button';
+      var menuButtonClass = 'vjs-menu-button';
 
       // If the inline option is passed, we want to use different styles altogether.
       if (this.options_.inline === true) {
@@ -16171,7 +16176,7 @@
         menuButtonClass += '-popup';
       }
 
-      return 'icp-menu-button ' + menuButtonClass + ' ' + _Component.prototype.buildCSSClass.call(this);
+      return 'vjs-menu-button ' + menuButtonClass + ' ' + _Component.prototype.buildCSSClass.call(this);
     };
 
     /**
@@ -16378,7 +16383,7 @@
       this.unpressButton();
 
       this.enabled_ = false;
-      this.addClass('icp-disabled');
+      this.addClass('vjs-disabled');
 
       this.menuButton_.disable();
     };
@@ -16390,7 +16395,7 @@
 
     MenuButton.prototype.enable = function enable() {
       this.enabled_ = true;
-      this.removeClass('icp-disabled');
+      this.removeClass('vjs-disabled');
 
       this.menuButton_.enable();
     };
@@ -16523,8 +16528,8 @@
       this.nonIconControl = true;
 
       return _ClickableComponent.prototype.createEl.call(this, 'li', assign({
-        className: 'icp-menu-item',
-        innerHTML: '<span class="icp-menu-item-text">' + this.localize(this.options_.label) + '</span>',
+        className: 'vjs-menu-item',
+        innerHTML: '<span class="vjs-menu-item-text">' + this.localize(this.options_.label) + '</span>',
         tabIndex: -1
       }, props), attrs);
     };
@@ -16557,14 +16562,14 @@
     MenuItem.prototype.selected = function selected(_selected) {
       if (this.selectable) {
         if (_selected) {
-          this.addClass('icp-selected');
+          this.addClass('vjs-selected');
           this.el_.setAttribute('aria-checked', 'true');
           // aria-checked isn't fully supported by browsers/screen readers,
           // so indicate selected state to screen reader in the control text.
           this.controlText(', selected');
           this.isSelected_ = true;
         } else {
-          this.removeClass('icp-selected');
+          this.removeClass('vjs-selected');
           this.el_.setAttribute('aria-checked', 'false');
           // Indicate un-selected state to screen reader
           this.controlText('');
@@ -16949,7 +16954,7 @@
             multiSelectable: false
           });
 
-          item.addClass('icp-' + track.kind + '-menu-item');
+          item.addClass('vjs-' + track.kind + '-menu-item');
           items.push(item);
         }
       }
@@ -17038,7 +17043,7 @@
       var cue = this.cue;
       var currentTime = this.player_.currentTime();
 
-      // icp.log(currentTime, cue.startTime);
+      // vjs.log(currentTime, cue.startTime);
       this.selected(cue.startTime <= currentTime && currentTime < cue.endTime);
     };
 
@@ -17088,11 +17093,11 @@
 
 
     ChaptersButton.prototype.buildCSSClass = function buildCSSClass() {
-      return 'icp-chapters-button ' + _TextTrackButton.prototype.buildCSSClass.call(this);
+      return 'vjs-chapters-button ' + _TextTrackButton.prototype.buildCSSClass.call(this);
     };
 
     ChaptersButton.prototype.buildWrapperCSSClass = function buildWrapperCSSClass() {
-      return 'icp-chapters-button ' + _TextTrackButton.prototype.buildWrapperCSSClass.call(this);
+      return 'vjs-chapters-button ' + _TextTrackButton.prototype.buildWrapperCSSClass.call(this);
     };
 
     /**
@@ -17342,11 +17347,11 @@
 
 
     DescriptionsButton.prototype.buildCSSClass = function buildCSSClass() {
-      return 'icp-descriptions-button ' + _TextTrackButton.prototype.buildCSSClass.call(this);
+      return 'vjs-descriptions-button ' + _TextTrackButton.prototype.buildCSSClass.call(this);
     };
 
     DescriptionsButton.prototype.buildWrapperCSSClass = function buildWrapperCSSClass() {
-      return 'icp-descriptions-button ' + _TextTrackButton.prototype.buildWrapperCSSClass.call(this);
+      return 'vjs-descriptions-button ' + _TextTrackButton.prototype.buildWrapperCSSClass.call(this);
     };
 
     return DescriptionsButton;
@@ -17411,11 +17416,11 @@
 
 
     SubtitlesButton.prototype.buildCSSClass = function buildCSSClass() {
-      return 'icp-subtitles-button ' + _TextTrackButton.prototype.buildCSSClass.call(this);
+      return 'vjs-subtitles-button ' + _TextTrackButton.prototype.buildCSSClass.call(this);
     };
 
     SubtitlesButton.prototype.buildWrapperCSSClass = function buildWrapperCSSClass() {
-      return 'icp-subtitles-button ' + _TextTrackButton.prototype.buildWrapperCSSClass.call(this);
+      return 'vjs-subtitles-button ' + _TextTrackButton.prototype.buildWrapperCSSClass.call(this);
     };
 
     return SubtitlesButton;
@@ -17482,7 +17487,7 @@
 
       var _this = possibleConstructorReturn(this, _TextTrackMenuItem.call(this, player, options));
 
-      _this.addClass('icp-texttrack-settings');
+      _this.addClass('vjs-texttrack-settings');
       _this.controlText(', opens ' + options.kind + ' settings dialog');
       return _this;
     }
@@ -17548,11 +17553,11 @@
 
 
     CaptionsButton.prototype.buildCSSClass = function buildCSSClass() {
-      return 'icp-captions-button ' + _TextTrackButton.prototype.buildCSSClass.call(this);
+      return 'vjs-captions-button ' + _TextTrackButton.prototype.buildCSSClass.call(this);
     };
 
     CaptionsButton.prototype.buildWrapperCSSClass = function buildWrapperCSSClass() {
-      return 'icp-captions-button ' + _TextTrackButton.prototype.buildWrapperCSSClass.call(this);
+      return 'vjs-captions-button ' + _TextTrackButton.prototype.buildWrapperCSSClass.call(this);
     };
 
     /**
@@ -17618,10 +17623,10 @@
     }
 
     SubsCapsMenuItem.prototype.createEl = function createEl(type, props, attrs) {
-      var innerHTML = '<span class="icp-menu-item-text">' + this.localize(this.options_.label);
+      var innerHTML = '<span class="vjs-menu-item-text">' + this.localize(this.options_.label);
 
       if (this.options_.track.kind === 'captions') {
-        innerHTML += '\n        <span aria-hidden="true" class="icp-icon-placeholder"></span>\n        <span class="icp-control-text"> ' + this.localize('Captions') + '</span>\n      ';
+        innerHTML += '\n        <span aria-hidden="true" class="vjs-icon-placeholder"></span>\n        <span class="vjs-control-text"> ' + this.localize('Captions') + '</span>\n      ';
       }
 
       innerHTML += '</span>';
@@ -17675,11 +17680,11 @@
 
 
     SubsCapsButton.prototype.buildCSSClass = function buildCSSClass() {
-      return 'icp-subs-caps-button ' + _TextTrackButton.prototype.buildCSSClass.call(this);
+      return 'vjs-subs-caps-button ' + _TextTrackButton.prototype.buildCSSClass.call(this);
     };
 
     SubsCapsButton.prototype.buildWrapperCSSClass = function buildWrapperCSSClass() {
-      return 'icp-subs-caps-button ' + _TextTrackButton.prototype.buildWrapperCSSClass.call(this);
+      return 'vjs-subs-caps-button ' + _TextTrackButton.prototype.buildWrapperCSSClass.call(this);
     };
 
     /**
@@ -17763,7 +17768,7 @@
 
       _this.track = track;
 
-      _this.addClass('icp-' + track.kind + '-menu-item');
+      _this.addClass('vjs-' + track.kind + '-menu-item');
 
       var changeHandler = function changeHandler() {
         for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
@@ -17781,10 +17786,10 @@
     }
 
     AudioTrackMenuItem.prototype.createEl = function createEl(type, props, attrs) {
-      var innerHTML = '<span class="icp-menu-item-text">' + this.localize(this.options_.label);
+      var innerHTML = '<span class="vjs-menu-item-text">' + this.localize(this.options_.label);
 
       if (this.options_.track.kind === 'main-desc') {
-        innerHTML += '\n        <span aria-hidden="true" class="icp-icon-placeholder"></span>\n        <span class="icp-control-text"> ' + this.localize('Descriptions') + '</span>\n      ';
+        innerHTML += '\n        <span aria-hidden="true" class="vjs-icon-placeholder"></span>\n        <span class="vjs-control-text"> ' + this.localize('Descriptions') + '</span>\n      ';
       }
 
       innerHTML += '</span>';
@@ -17880,11 +17885,11 @@
 
 
     AudioTrackButton.prototype.buildCSSClass = function buildCSSClass() {
-      return 'icp-audio-button ' + _TrackButton.prototype.buildCSSClass.call(this);
+      return 'vjs-audio-button ' + _TrackButton.prototype.buildCSSClass.call(this);
     };
 
     AudioTrackButton.prototype.buildWrapperCSSClass = function buildWrapperCSSClass() {
-      return 'icp-audio-button ' + _TrackButton.prototype.buildWrapperCSSClass.call(this);
+      return 'vjs-audio-button ' + _TrackButton.prototype.buildWrapperCSSClass.call(this);
     };
 
     /**
@@ -18072,7 +18077,7 @@
       var el = _MenuButton.prototype.createEl.call(this);
 
       this.labelEl_ = createEl('div', {
-        className: 'icp-playback-rate-value',
+        className: 'vjs-playback-rate-value',
         innerHTML: '1x'
       });
 
@@ -18096,11 +18101,11 @@
 
 
     PlaybackRateMenuButton.prototype.buildCSSClass = function buildCSSClass() {
-      return 'icp-playback-rate ' + _MenuButton.prototype.buildCSSClass.call(this);
+      return 'vjs-playback-rate ' + _MenuButton.prototype.buildCSSClass.call(this);
     };
 
     PlaybackRateMenuButton.prototype.buildWrapperCSSClass = function buildWrapperCSSClass() {
-      return 'icp-playback-rate ' + _MenuButton.prototype.buildWrapperCSSClass.call(this);
+      return 'vjs-playback-rate ' + _MenuButton.prototype.buildWrapperCSSClass.call(this);
     };
 
     /**
@@ -18201,9 +18206,9 @@
 
     PlaybackRateMenuButton.prototype.updateVisibility = function updateVisibility(event) {
       if (this.playbackRateSupported()) {
-        this.removeClass('icp-hidden');
+        this.removeClass('vjs-hidden');
       } else {
-        this.addClass('icp-hidden');
+        this.addClass('vjs-hidden');
       }
     };
 
@@ -18264,7 +18269,7 @@
      *         The DOM `className` for this object.
      */
     Spacer.prototype.buildCSSClass = function buildCSSClass() {
-      return 'icp-spacer ' + _Component.prototype.buildCSSClass.call(this);
+      return 'vjs-spacer ' + _Component.prototype.buildCSSClass.call(this);
     };
 
     /**
@@ -18311,7 +18316,7 @@
      *         The DOM `className` for this object.
      */
     CustomControlSpacer.prototype.buildCSSClass = function buildCSSClass() {
-      return 'icp-custom-control-spacer ' + _Spacer.prototype.buildCSSClass.call(this);
+      return 'vjs-custom-control-spacer ' + _Spacer.prototype.buildCSSClass.call(this);
     };
 
     /**
@@ -18364,7 +18369,7 @@
      */
     ControlBar.prototype.createEl = function createEl() {
       return _Component.prototype.createEl.call(this, 'div', {
-        className: 'icp-control-bar',
+        className: 'vjs-control-bar',
         dir: 'ltr'
       });
     };
@@ -18429,7 +18434,7 @@
 
 
     ErrorDisplay.prototype.buildCSSClass = function buildCSSClass() {
-      return 'icp-error-display ' + _ModalDialog.prototype.buildCSSClass.call(this);
+      return 'vjs-error-display ' + _ModalDialog.prototype.buildCSSClass.call(this);
     };
 
     /**
@@ -18469,7 +18474,7 @@
    * @file text-track-settings.js
    */
 
-  var LOCAL_STORAGE_KEY = 'icp-text-track-settings';
+  var LOCAL_STORAGE_KEY = 'vjs-text-track-settings';
 
   var COLOR_BLACK = ['#000', 'Black'];
   var COLOR_BLUE = ['#00F', 'Blue'];
@@ -18497,42 +18502,42 @@
   //   The selector used to find the associated <select> element.
   var selectConfigs = {
     backgroundColor: {
-      selector: '.icp-bg-color > select',
+      selector: '.vjs-bg-color > select',
       id: 'captions-background-color-%s',
       label: 'Color',
       options: [COLOR_BLACK, COLOR_WHITE, COLOR_RED, COLOR_GREEN, COLOR_BLUE, COLOR_YELLOW, COLOR_MAGENTA, COLOR_CYAN]
     },
 
     backgroundOpacity: {
-      selector: '.icp-bg-opacity > select',
+      selector: '.vjs-bg-opacity > select',
       id: 'captions-background-opacity-%s',
       label: 'Transparency',
       options: [OPACITY_OPAQUE, OPACITY_SEMI, OPACITY_TRANS]
     },
 
     color: {
-      selector: '.icp-fg-color > select',
+      selector: '.vjs-fg-color > select',
       id: 'captions-foreground-color-%s',
       label: 'Color',
       options: [COLOR_WHITE, COLOR_BLACK, COLOR_RED, COLOR_GREEN, COLOR_BLUE, COLOR_YELLOW, COLOR_MAGENTA, COLOR_CYAN]
     },
 
     edgeStyle: {
-      selector: '.icp-edge-style > select',
+      selector: '.vjs-edge-style > select',
       id: '%s',
       label: 'Text Edge Style',
       options: [['none', 'None'], ['raised', 'Raised'], ['depressed', 'Depressed'], ['uniform', 'Uniform'], ['dropshadow', 'Dropshadow']]
     },
 
     fontFamily: {
-      selector: '.icp-font-family > select',
+      selector: '.vjs-font-family > select',
       id: 'captions-font-family-%s',
       label: 'Font Family',
       options: [['proportionalSansSerif', 'Proportional Sans-Serif'], ['monospaceSansSerif', 'Monospace Sans-Serif'], ['proportionalSerif', 'Proportional Serif'], ['monospaceSerif', 'Monospace Serif'], ['casual', 'Casual'], ['script', 'Script'], ['small-caps', 'Small Caps']]
     },
 
     fontPercent: {
-      selector: '.icp-font-percent > select',
+      selector: '.vjs-font-percent > select',
       id: 'captions-font-size-%s',
       label: 'Font Size',
       options: [['0.50', '50%'], ['0.75', '75%'], ['1.00', '100%'], ['1.25', '125%'], ['1.50', '150%'], ['1.75', '175%'], ['2.00', '200%'], ['3.00', '300%'], ['4.00', '400%']],
@@ -18543,7 +18548,7 @@
     },
 
     textOpacity: {
-      selector: '.icp-text-opacity > select',
+      selector: '.vjs-text-opacity > select',
       id: 'captions-foreground-opacity-%s',
       label: 'Transparency',
       options: [OPACITY_OPAQUE, OPACITY_SEMI]
@@ -18551,14 +18556,14 @@
 
     // Options for this object are defined below.
     windowColor: {
-      selector: '.icp-window-color > select',
+      selector: '.vjs-window-color > select',
       id: 'captions-window-color-%s',
       label: 'Color'
     },
 
     // Options for this object are defined below.
     windowOpacity: {
-      selector: '.icp-window-opacity > select',
+      selector: '.vjs-window-opacity > select',
       id: 'captions-window-opacity-%s',
       label: 'Transparency',
       options: [OPACITY_TRANS, OPACITY_SEMI, OPACITY_OPAQUE]
@@ -18675,7 +18680,7 @@
       _this.hasBeenOpened_ = _this.hasBeenFilled_ = true;
 
       _this.endDialog = createEl('p', {
-        className: 'icp-control-text',
+        className: 'vjs-control-text',
         textContent: _this.localize('End of dialog window.')
       });
       _this.el().appendChild(_this.endDialog);
@@ -18687,12 +18692,12 @@
         _this.options_.persistTextTrackSettings = _this.options_.playerOptions.persistTextTrackSettings;
       }
 
-      _this.on(_this.$('.icp-done-button'), 'click', function () {
+      _this.on(_this.$('.vjs-done-button'), 'click', function () {
         _this.saveSettings();
         _this.close();
       });
 
-      _this.on(_this.$('.icp-default-button'), 'click', function () {
+      _this.on(_this.$('.vjs-default-button'), 'click', function () {
         _this.setDefaults();
         _this.updateDisplay();
       });
@@ -18736,7 +18741,7 @@
       var id = config.id.replace('%s', this.id_);
       var selectLabelledbyIds = [legendId, id].join(' ').trim();
 
-      return ['<' + type + ' id="' + id + '" class="' + (type === 'label' ? 'icp-label' : '') + '">', this.localize(config.label), '</' + type + '>', '<select aria-labelledby="' + selectLabelledbyIds + '">'].concat(config.options.map(function (o) {
+      return ['<' + type + ' id="' + id + '" class="' + (type === 'label' ? 'vjs-label' : '') + '">', this.localize(config.label), '</' + type + '>', '<select aria-labelledby="' + selectLabelledbyIds + '">'].concat(config.options.map(function (o) {
         var optionId = id + '-' + o[1].replace(/\W+/g, '');
 
         return ['<option id="' + optionId + '" value="' + o[0] + '" ', 'aria-labelledby="' + selectLabelledbyIds + ' ' + optionId + '">', _this2.localize(o[1]), '</option>'].join('');
@@ -18756,7 +18761,7 @@
     TextTrackSettings.prototype.createElFgColor_ = function createElFgColor_() {
       var legendId = 'captions-text-legend-' + this.id_;
 
-      return ['<fieldset class="icp-fg-color icp-track-setting">', '<legend id="' + legendId + '">', this.localize('Text'), '</legend>', this.createElSelect_('color', legendId), '<span class="icp-text-opacity icp-opacity">', this.createElSelect_('textOpacity', legendId), '</span>', '</fieldset>'].join('');
+      return ['<fieldset class="vjs-fg-color vjs-track-setting">', '<legend id="' + legendId + '">', this.localize('Text'), '</legend>', this.createElSelect_('color', legendId), '<span class="vjs-text-opacity vjs-opacity">', this.createElSelect_('textOpacity', legendId), '</span>', '</fieldset>'].join('');
     };
 
     /**
@@ -18772,7 +18777,7 @@
     TextTrackSettings.prototype.createElBgColor_ = function createElBgColor_() {
       var legendId = 'captions-background-' + this.id_;
 
-      return ['<fieldset class="icp-bg-color icp-track-setting">', '<legend id="' + legendId + '">', this.localize('Background'), '</legend>', this.createElSelect_('backgroundColor', legendId), '<span class="icp-bg-opacity icp-opacity">', this.createElSelect_('backgroundOpacity', legendId), '</span>', '</fieldset>'].join('');
+      return ['<fieldset class="vjs-bg-color vjs-track-setting">', '<legend id="' + legendId + '">', this.localize('Background'), '</legend>', this.createElSelect_('backgroundColor', legendId), '<span class="vjs-bg-opacity vjs-opacity">', this.createElSelect_('backgroundOpacity', legendId), '</span>', '</fieldset>'].join('');
     };
 
     /**
@@ -18788,7 +18793,7 @@
     TextTrackSettings.prototype.createElWinColor_ = function createElWinColor_() {
       var legendId = 'captions-window-' + this.id_;
 
-      return ['<fieldset class="icp-window-color icp-track-setting">', '<legend id="' + legendId + '">', this.localize('Window'), '</legend>', this.createElSelect_('windowColor', legendId), '<span class="icp-window-opacity icp-opacity">', this.createElSelect_('windowOpacity', legendId), '</span>', '</fieldset>'].join('');
+      return ['<fieldset class="vjs-window-color vjs-track-setting">', '<legend id="' + legendId + '">', this.localize('Window'), '</legend>', this.createElSelect_('windowColor', legendId), '<span class="vjs-window-opacity vjs-opacity">', this.createElSelect_('windowOpacity', legendId), '</span>', '</fieldset>'].join('');
     };
 
     /**
@@ -18803,7 +18808,7 @@
 
     TextTrackSettings.prototype.createElColors_ = function createElColors_() {
       return createEl('div', {
-        className: 'icp-track-settings-colors',
+        className: 'vjs-track-settings-colors',
         innerHTML: [this.createElFgColor_(), this.createElBgColor_(), this.createElWinColor_()].join('')
       });
     };
@@ -18820,8 +18825,8 @@
 
     TextTrackSettings.prototype.createElFont_ = function createElFont_() {
       return createEl('div', {
-        className: 'icp-track-settings-font',
-        innerHTML: ['<fieldset class="icp-font-percent icp-track-setting">', this.createElSelect_('fontPercent', '', 'legend'), '</fieldset>', '<fieldset class="icp-edge-style icp-track-setting">', this.createElSelect_('edgeStyle', '', 'legend'), '</fieldset>', '<fieldset class="icp-font-family icp-track-setting">', this.createElSelect_('fontFamily', '', 'legend'), '</fieldset>'].join('')
+        className: 'vjs-track-settings-font',
+        innerHTML: ['<fieldset class="vjs-font-percent vjs-track-setting">', this.createElSelect_('fontPercent', '', 'legend'), '</fieldset>', '<fieldset class="vjs-edge-style vjs-track-setting">', this.createElSelect_('edgeStyle', '', 'legend'), '</fieldset>', '<fieldset class="vjs-font-family vjs-track-setting">', this.createElSelect_('fontFamily', '', 'legend'), '</fieldset>'].join('')
       });
     };
 
@@ -18839,8 +18844,8 @@
       var defaultsDescription = this.localize('restore all settings to the default values');
 
       return createEl('div', {
-        className: 'icp-track-settings-controls',
-        innerHTML: ['<button class="icp-default-button" title="' + defaultsDescription + '">', this.localize('Reset'), '<span class="icp-control-text"> ' + defaultsDescription + '</span>', '</button>', '<button class="icp-done-button">' + this.localize('Done') + '</button>'].join('')
+        className: 'vjs-track-settings-controls',
+        innerHTML: ['<button class="vjs-default-button" title="' + defaultsDescription + '">', this.localize('Reset'), '<span class="vjs-control-text"> ' + defaultsDescription + '</span>', '</button>', '<button class="vjs-done-button">' + this.localize('Done') + '</button>'].join('')
       });
     };
 
@@ -18857,7 +18862,7 @@
     };
 
     TextTrackSettings.prototype.buildCSSClass = function buildCSSClass() {
-      return _ModalDialog.prototype.buildCSSClass.call(this) + ' icp-text-track-settings';
+      return _ModalDialog.prototype.buildCSSClass.call(this) + ' vjs-text-track-settings';
     };
 
     /**
@@ -19007,7 +19012,7 @@
    * If the ResizeObserver is available natively, it will be used. A polyfill can be passed in as an option.
    * If a `playerresize` event is not needed, the ResizeManager component can be removed from the player, see the example below.
    * @example <caption>How to disable the resize manager</caption>
-   * const player = icplayer('#vid', {
+   * const player = videojs('#vid', {
    *   resizeManager: false
    * });
    *
@@ -19072,7 +19077,7 @@
 
     ResizeManager.prototype.createEl = function createEl() {
       return _Component.prototype.createEl.call(this, 'iframe', {
-        className: 'icp-resize-manager'
+        className: 'vjs-resize-manager'
       });
     };
 
@@ -19427,7 +19432,7 @@
     };
   };
 
-  var _templateObject$1 = taggedTemplateLiteralLoose([''], ['']);
+  var _templateObject$1 = taggedTemplateLiteralLoose(['Text Tracks are being loaded from another origin but the crossorigin attribute isn\'t used.\n            This may prevent text tracks from loading.'], ['Text Tracks are being loaded from another origin but the crossorigin attribute isn\'t used.\n            This may prevent text tracks from loading.']);
 
   /**
    * HTML5 Media Controller - Wrapper for HTML5 Media API
@@ -19817,7 +19822,7 @@
 
           setAttributes(el, assign(attributes, {
             id: this.options_.techId,
-            class: 'icp-tech'
+            class: 'vjs-tech'
           }));
         }
 
@@ -19851,12 +19856,12 @@
     };
 
     /**
-     * This will be triggered if the loadstart event has already fired, before icplayer was
+     * This will be triggered if the loadstart event has already fired, before videojs was
      * ready. Two known examples of when this can happen are:
      * 1. If we're loading the playback object after it has started loading
      * 2. The media is already playing the (often with autoplay on) then
      *
-     * This function will fire another loadstart so that icplayer can catchup.
+     * This function will fire another loadstart so that videojs can catchup.
      *
      * @fires Tech#loadstart
      *
@@ -19957,8 +19962,8 @@
       try {
         this.el_.currentTime = seconds;
       } catch (e) {
-        log$1(e, 'Video is not ready. (Icp.js)');
-        // this.warning(Icplayer.warnings.videoNotReady);
+        log$1(e, 'Video is not ready. (Video.js)');
+        // this.warning(VideoJS.warnings.videoNotReady);
       }
     };
 
@@ -20268,7 +20273,7 @@
      * @return {HTMLTrackElement} An Html Track Element.
      * This can be an emulated {@link HTMLTrackElement} or a native one.
      * @deprecated The default value of the "manualCleanup" parameter will default
-     * to "false" in upcoming versions of Icp.js
+     * to "false" in upcoming versions of Video.js
      */
 
 
@@ -20459,7 +20464,7 @@
    */
   Html5.canControlPlaybackRate = function () {
     // Playback rate API is implemented in Android Chrome, but doesn't do anything
-
+    // https://github.com/videojs/video.js/issues/3180
     if (IS_ANDROID && IS_CHROME && CHROME_VERSION < 58) {
       return false;
     }
@@ -21382,7 +21387,7 @@
 
   Tech.registerTech('Html5', Html5);
 
-  var _templateObject$2 = taggedTemplateLiteralLoose([''], ['']);
+  var _templateObject$2 = taggedTemplateLiteralLoose(['\n        Using the tech directly can be dangerous. I hope you know what you\'re doing.\n        See https://github.com/videojs/video.js/issues/2617 for more info.\n      '], ['\n        Using the tech directly can be dangerous. I hope you know what you\'re doing.\n        See https://github.com/videojs/video.js/issues/2617 for more info.\n      ']);
 
   // The following tech events are simply re-triggered
   // on the player when they happen
@@ -21573,12 +21578,12 @@
   };
 
   /**
-   * An instance of the `Player` class is created when any of the Icp.js setup methods
+   * An instance of the `Player` class is created when any of the Video.js setup methods
    * are used to initialize a video.
    *
    * After an instance has been created it can be accessed globally in two ways:
-   * 1. By calling `icplayer('example_video_1');`
-   * 2. By using it directly via  `icplayer.players.example_video_1;`
+   * 1. By calling `videojs('example_video_1');`
+   * 2. By using it directly via  `videojs.players.example_video_1;`
    *
    * @extends Component
    */
@@ -21602,7 +21607,7 @@
       classCallCheck(this, Player);
 
       // Make sure tag ID exists
-      tag.id = tag.id || options.id || 'icp_video_' + newGUID();
+      tag.id = tag.id || options.id || 'vjs_video_' + newGUID();
 
       // Set Options
       // The options argument overrides options set in the video tag
@@ -21669,7 +21674,7 @@
       // if the global option object was accidentally blown away by
       // someone, bail early with an informative error
       if (!_this.options_ || !_this.options_.techOrder || !_this.options_.techOrder.length) {
-        throw new Error('No techOrder specified. Did you overwrite ' + 'icplayer.options instead of just changing the ' + 'properties you want to override?');
+        throw new Error('No techOrder specified. Did you overwrite ' + 'videojs.options instead of just changing the ' + 'properties you want to override?');
       }
 
       // Store the original tag used to set options
@@ -21768,9 +21773,9 @@
       // Update controls className. Can't do this when the controls are initially
       // set because the element doesn't exist yet.
       if (_this.controls()) {
-        _this.addClass('icp-controls-enabled');
+        _this.addClass('vjs-controls-enabled');
       } else {
-        _this.addClass('icp-controls-disabled');
+        _this.addClass('vjs-controls-disabled');
       }
 
       // Set ARIA label and region role depending on player type
@@ -21782,22 +21787,22 @@
       }
 
       if (_this.isAudio()) {
-        _this.addClass('icp-audio');
+        _this.addClass('vjs-audio');
       }
 
       if (_this.flexNotSupported_()) {
-        _this.addClass('icp-no-flex');
+        _this.addClass('vjs-no-flex');
       }
 
       // TODO: Make this smarter. Toggle user state between touching/mousing
       // using events, since devices can have both touch and mouse events.
       // if (browser.TOUCH_ENABLED) {
-      //   this.addClass('icp-touch-enabled');
+      //   this.addClass('vjs-touch-enabled');
       // }
 
       // iOS Safari has broken hover handling
       if (!IS_IOS) {
-        _this.addClass('icp-workinghover');
+        _this.addClass('vjs-workinghover');
       }
 
       // Make player easily findable by ID
@@ -21806,7 +21811,7 @@
       // Add a major version class to aid css in plugins
       var majorVersion = version.split('.')[0];
 
-      _this.addClass('icp-v' + majorVersion);
+      _this.addClass('vjs-v' + majorVersion);
 
       // When the player is first initialized, trigger activity so components
       // like the control bar show themselves if needed
@@ -21891,8 +21896,8 @@
     Player.prototype.createEl = function createEl$$1() {
       var tag = this.tag;
       var el = void 0;
-      var playerElIngest = this.playerElIngest_ = tag.parentNode && tag.parentNode.hasAttribute && tag.parentNode.hasAttribute('data-icp-player');
-      var divEmbed = this.tag.tagName.toLowerCase() === 'ic-player';
+      var playerElIngest = this.playerElIngest_ = tag.parentNode && tag.parentNode.hasAttribute && tag.parentNode.hasAttribute('data-vjs-player');
+      var divEmbed = this.tag.tagName.toLowerCase() === 'video-js';
 
       if (playerElIngest) {
         el = this.el_ = tag.parentNode;
@@ -21911,14 +21916,14 @@
           tag.appendChild(el.firstChild);
         }
 
-        if (!hasClass(el, 'ic-player')) {
-          addClass(el, 'ic-player');
+        if (!hasClass(el, 'video-js')) {
+          addClass(el, 'video-js');
         }
 
         el.appendChild(tag);
 
         playerElIngest = this.playerElIngest_ = el;
-        // move properties over from our custom `ic-player` element
+        // move properties over from our custom `video-js` element
         // to our new `video` element. This will move things like
         // `src` or `controls` that were set via js before the player
         // was initialized.
@@ -21944,7 +21949,7 @@
       Object.getOwnPropertyNames(attrs).forEach(function (attr) {
         // don't copy over the class attribute to the player element when we're in a div embed
         // the class is already set up properly in the divEmbed case
-        // and we want to make sure that the `ic-player` class doesn't get lost
+        // and we want to make sure that the `video-js` class doesn't get lost
         if (!(divEmbed && attr === 'class')) {
           el.setAttribute(attr, attrs[attr]);
         }
@@ -21955,23 +21960,23 @@
       });
 
       // Update tag id/class for use as HTML5 playback tech
-      // Might think we should do this after embedding in container so .icp-tech class
-      // doesn't flash 100% width/height, but class only applies with .ic-player parent
+      // Might think we should do this after embedding in container so .vjs-tech class
+      // doesn't flash 100% width/height, but class only applies with .video-js parent
       tag.playerId = tag.id;
       tag.id += '_html5_api';
-      tag.className = 'icp-tech';
+      tag.className = 'vjs-tech';
 
       // Make player findable on elements
       tag.player = el.player = this;
       // Default state of video is paused
-      this.addClass('icp-paused');
+      this.addClass('vjs-paused');
 
       // Add a style element in the player that we'll use to set the width/height
       // of the player in a way that's still overrideable by CSS, just like the
       // video element
-      if (window_1.ICPLAYER_NO_DYNAMIC_STYLE !== true) {
-        this.styleEl_ = createStyleElement('icp-styles-dimensions');
-        var defaultsStyleEl = $('.icp-styles-defaults');
+      if (window_1.VIDEOJS_NO_DYNAMIC_STYLE !== true) {
+        this.styleEl_ = createStyleElement('vjs-styles-dimensions');
+        var defaultsStyleEl = $('.vjs-styles-defaults');
         var head = $('head');
 
         head.insertBefore(this.styleEl_, defaultsStyleEl ? defaultsStyleEl.nextSibling : head.firstChild);
@@ -21990,7 +21995,7 @@
       for (var i = 0; i < links.length; i++) {
         var linkEl = links.item(i);
 
-        addClass(linkEl, 'icp-hidden');
+        addClass(linkEl, 'vjs-hidden');
         linkEl.setAttribute('hidden', 'hidden');
       }
 
@@ -22094,7 +22099,7 @@
     };
 
     /**
-     * A getter/setter/toggler for the icp-fluid `className` on the `Player`.
+     * A getter/setter/toggler for the vjs-fluid `className` on the `Player`.
      *
      * @param {boolean} [bool]
      *        - A value of true adds the class.
@@ -22115,9 +22120,9 @@
       this.fluid_ = !!bool;
 
       if (bool) {
-        this.addClass('icp-fluid');
+        this.addClass('vjs-fluid');
       } else {
-        this.removeClass('icp-fluid');
+        this.removeClass('vjs-fluid');
       }
 
       this.updateStyleEl_();
@@ -22172,7 +22177,7 @@
 
 
     Player.prototype.updateStyleEl_ = function updateStyleEl_() {
-      if (window_1.ICPLAYER_NO_DYNAMIC_STYLE === true) {
+      if (window_1.VIDEOJS_NO_DYNAMIC_STYLE === true) {
         var _width = typeof this.width_ === 'number' ? this.width_ : this.options_.width;
         var _height = typeof this.height_ === 'number' ? this.height_ : this.options_.height;
         var techEl = this.tech_ && this.tech_.el();
@@ -22239,7 +22244,7 @@
       // Ensure the right class is still on the player for the style element
       this.addClass(idClass);
 
-      setTextContent(this.styleEl_, '\n      .' + idClass + ' {\n        width: ' + width + 'px;\n        height: ' + height + 'px;\n      }\n\n      .' + idClass + '.icp-fluid {\n        padding-top: ' + ratioMultiplier * 100 + '%;\n      }\n    ');
+      setTextContent(this.styleEl_, '\n      .' + idClass + ' {\n        width: ' + width + 'px;\n        height: ' + height + 'px;\n      }\n\n      .' + idClass + '.vjs-fluid {\n        padding-top: ' + ratioMultiplier * 100 + '%;\n      }\n    ');
     };
 
     /**
@@ -22324,7 +22329,7 @@
       var TechClass = Tech.getTech(techName);
 
       if (!TechClass) {
-        throw new Error('No Tech named \'' + titleTechName + '\' exists! \'' + titleTechName + '\' should be registered using icplayer.registerTech()\'');
+        throw new Error('No Tech named \'' + titleTechName + '\' exists! \'' + titleTechName + '\' should be registered using videojs.registerTech()\'');
       }
 
       this.tech_ = new TechClass(techOptions);
@@ -22542,8 +22547,8 @@
     Player.prototype.handleTechLoadStart_ = function handleTechLoadStart_() {
       // TODO: Update to use `emptied` event instead. See #1277.
 
-      this.removeClass('icp-ended');
-      this.removeClass('icp-seeking');
+      this.removeClass('vjs-ended');
+      this.removeClass('vjs-seeking');
 
       // reset the error state
       this.error(null);
@@ -22703,10 +22708,10 @@
      * causing the media element to reload.
      *
      * It will fire for the initial source and each subsequent source.
-     * This event is a custom event from Icp.js and is triggered by the {@link Tech}.
+     * This event is a custom event from Video.js and is triggered by the {@link Tech}.
      *
      * The event object for this event contains a `src` property that will contain the source
-     * that was available when the event was triggered. This is generally only necessary if Icp.js
+     * that was available when the event was triggered. This is generally only necessary if Video.js
      * is switching techs while the source was being changed.
      *
      * It is also fired when `load` is called on the player (or media element)
@@ -22769,7 +22774,7 @@
     };
 
     /**
-     * Add/remove the icp-has-started class
+     * Add/remove the vjs-has-started class
      *
      * @fires Player#firstplay
      *
@@ -22795,10 +22800,10 @@
       this.hasStarted_ = request;
 
       if (this.hasStarted_) {
-        this.addClass('icp-has-started');
+        this.addClass('vjs-has-started');
         this.trigger('firstplay');
       } else {
-        this.removeClass('icp-has-started');
+        this.removeClass('vjs-has-started');
       }
     };
 
@@ -22813,9 +22818,9 @@
 
 
     Player.prototype.handleTechPlay_ = function handleTechPlay_() {
-      this.removeClass('icp-ended');
-      this.removeClass('icp-paused');
-      this.addClass('icp-playing');
+      this.removeClass('vjs-ended');
+      this.removeClass('vjs-paused');
+      this.addClass('vjs-playing');
 
       // hide the poster when the user hits play
       this.hasStarted(true);
@@ -22871,7 +22876,7 @@
     Player.prototype.handleTechWaiting_ = function handleTechWaiting_() {
       var _this6 = this;
 
-      this.addClass('icp-waiting');
+      this.addClass('vjs-waiting');
       /**
        * A readyState change on the DOM element has caused playback to stop.
        *
@@ -22880,7 +22885,7 @@
        */
       this.trigger('waiting');
       this.one('timeupdate', function () {
-        return _this6.removeClass('icp-waiting');
+        return _this6.removeClass('vjs-waiting');
       });
     };
 
@@ -22895,7 +22900,7 @@
 
 
     Player.prototype.handleTechCanPlay_ = function handleTechCanPlay_() {
-      this.removeClass('icp-waiting');
+      this.removeClass('vjs-waiting');
       /**
        * The media has a readyState of HAVE_FUTURE_DATA or greater.
        *
@@ -22915,7 +22920,7 @@
 
 
     Player.prototype.handleTechCanPlayThrough_ = function handleTechCanPlayThrough_() {
-      this.removeClass('icp-waiting');
+      this.removeClass('vjs-waiting');
       /**
        * The media has a readyState of HAVE_ENOUGH_DATA or greater. This means that the
        * entire media file can be played without buffering.
@@ -22936,7 +22941,7 @@
 
 
     Player.prototype.handleTechPlaying_ = function handleTechPlaying_() {
-      this.removeClass('icp-waiting');
+      this.removeClass('vjs-waiting');
       /**
        * The media is no longer blocked from playback, and has started playing.
        *
@@ -22956,7 +22961,7 @@
 
 
     Player.prototype.handleTechSeeking_ = function handleTechSeeking_() {
-      this.addClass('icp-seeking');
+      this.addClass('vjs-seeking');
       /**
        * Fired whenever the player is jumping to a new time
        *
@@ -22976,7 +22981,7 @@
 
 
     Player.prototype.handleTechSeeked_ = function handleTechSeeked_() {
-      this.removeClass('icp-seeking');
+      this.removeClass('vjs-seeking');
       /**
        * Fired when the player has finished jumping to a new time
        *
@@ -23005,7 +23010,7 @@
         this.currentTime(this.options_.starttime);
       }
 
-      this.addClass('icp-has-started');
+      this.addClass('vjs-has-started');
       /**
        * Fired the first time a video is played. Not part of the HLS spec, and this is
        * probably not the best implementation yet, so use sparingly. If you don't have a
@@ -23028,8 +23033,8 @@
 
 
     Player.prototype.handleTechPause_ = function handleTechPause_() {
-      this.removeClass('icp-playing');
-      this.addClass('icp-paused');
+      this.removeClass('vjs-playing');
+      this.addClass('vjs-paused');
       /**
        * Fired whenever the media has been paused
        *
@@ -23049,7 +23054,7 @@
 
 
     Player.prototype.handleTechEnded_ = function handleTechEnded_() {
-      this.addClass('icp-ended');
+      this.addClass('vjs-ended');
       if (this.options_.loop) {
         this.currentTime(0);
         this.play();
@@ -23125,7 +23130,7 @@
 
       // we do not want to toggle fullscreen state
       // when double-clicking inside a control bar or a modal
-      var inAllowedEls = Array.prototype.some.call(this.$$('.icp-control-bar, .icp-modal-dialog'), function (el) {
+      var inAllowedEls = Array.prototype.some.call(this.$$('.vjs-control-bar, .vjs-modal-dialog'), function (el) {
         return el.contains(event.target);
       });
 
@@ -23204,9 +23209,9 @@
 
     Player.prototype.handleFullscreenChange_ = function handleFullscreenChange_() {
       if (this.isFullscreen()) {
-        this.addClass('icp-fullscreen');
+        this.addClass('vjs-fullscreen');
       } else {
-        this.removeClass('icp-fullscreen');
+        this.removeClass('vjs-fullscreen');
       }
     };
 
@@ -23369,13 +23374,13 @@
 
         // When building additional tech libs, an expected method may not be defined yet
         if (this.tech_[method] === undefined) {
-          log$1('Icp.js: ' + method + ' method not defined for ' + this.techName_ + ' playback technology.', e);
+          log$1('Video.js: ' + method + ' method not defined for ' + this.techName_ + ' playback technology.', e);
           throw e;
         }
 
         // When a method isn't available on the object it throws a TypeError
         if (e.name === 'TypeError') {
-          log$1('Icp.js: ' + method + ' unavailable on ' + this.techName_ + ' playback technology element.', e);
+          log$1('Video.js: ' + method + ' unavailable on ' + this.techName_ + ' playback technology element.', e);
           this.tech_.isReady_ = false;
           throw e;
         }
@@ -23502,9 +23507,9 @@
       this.scrubbing_ = !!isScrubbing;
 
       if (isScrubbing) {
-        this.addClass('icp-scrubbing');
+        this.addClass('vjs-scrubbing');
       } else {
-        this.removeClass('icp-scrubbing');
+        this.removeClass('vjs-scrubbing');
       }
     };
 
@@ -23574,9 +23579,9 @@
         this.cache_.duration = seconds;
 
         if (seconds === Infinity) {
-          this.addClass('icp-live');
+          this.addClass('vjs-live');
         } else {
-          this.removeClass('icp-live');
+          this.removeClass('vjs-live');
         }
         /**
          * @event Player#durationchange
@@ -23733,7 +23738,7 @@
      * indicates the state of muted on initial playback.
      *
      * ```js
-     *   var myPlayer = icplayer('some-player-id');
+     *   var myPlayer = videojs('some-player-id');
      *
      *   myPlayer.src("http://www.example.com/path/to/video.mp4");
      *
@@ -23830,7 +23835,7 @@
      * In some browsers, full screen is not supported natively, so it enters
      * "full window mode", where the video fills the browser window.
      * In browsers and devices that support native full screen, sometimes the
-     * browser's default controls will be shown, and not the Icp.js custom skin.
+     * browser's default controls will be shown, and not the Video.js custom skin.
      * This includes most mobile devices (iOS, Android) and older versions of
      * Safari.
      *
@@ -23868,7 +23873,7 @@
 
         this.el_[fsApi.requestFullscreen]();
       } else if (this.tech_.supportsFullScreen()) {
-        // we can't take the icp.js controls fullscreen but we can go fullscreen
+        // we can't take the video.js controls fullscreen but we can go fullscreen
         // with native controls
         this.techCall_('enterFullScreen');
       } else {
@@ -23931,7 +23936,7 @@
       document_1.documentElement.style.overflow = 'hidden';
 
       // Apply fullscreen styles
-      addClass(document_1.body, 'icp-full-window');
+      addClass(document_1.body, 'vjs-full-window');
 
       /**
        * @event Player#enterFullWindow
@@ -23974,7 +23979,7 @@
       document_1.documentElement.style.overflow = this.docOrigOverflow;
 
       // Remove fullscreen styles
-      removeClass(document_1.body, 'icp-full-window');
+      removeClass(document_1.body, 'vjs-full-window');
 
       // Resize the box, controller, and poster to original sizes
       // this.positionAll();
@@ -24552,8 +24557,8 @@
       }
 
       if (this.controls_) {
-        this.removeClass('icp-controls-disabled');
-        this.addClass('icp-controls-enabled');
+        this.removeClass('vjs-controls-disabled');
+        this.addClass('vjs-controls-enabled');
         /**
          * @event Player#controlsenabled
          * @type {EventTarget~Event}
@@ -24563,8 +24568,8 @@
           this.addTechControlsListeners_();
         }
       } else {
-        this.removeClass('icp-controls-enabled');
-        this.addClass('icp-controls-disabled');
+        this.removeClass('vjs-controls-enabled');
+        this.addClass('vjs-controls-disabled');
         /**
          * @event Player#controlsdisabled
          * @type {EventTarget~Event}
@@ -24610,7 +24615,7 @@
       this.usingNativeControls_ = bool;
 
       if (this.usingNativeControls_) {
-        this.addClass('icp-using-native-controls');
+        this.addClass('vjs-using-native-controls');
 
         /**
          * player is using the native device controls
@@ -24620,7 +24625,7 @@
          */
         this.trigger('usingnativecontrols');
       } else {
-        this.removeClass('icp-using-native-controls');
+        this.removeClass('vjs-using-native-controls');
 
         /**
          * player is using the custom HTML controls
@@ -24654,7 +24659,7 @@
       // restoring to default
       if (err === null) {
         this.error_ = err;
-        this.removeClass('icp-error');
+        this.removeClass('vjs-error');
         if (this.errorDisplay) {
           this.errorDisplay.close();
         }
@@ -24663,8 +24668,8 @@
 
       this.error_ = new MediaError(err);
 
-      // add the icp-error classname to the player
-      this.addClass('icp-error');
+      // add the vjs-error classname to the player
+      this.addClass('vjs-error');
 
       // log the name of the error type and any message
       // IE11 logs "[object object]" and required you to expand message to see error object
@@ -24721,8 +24726,8 @@
 
       if (this.userActive_) {
         this.userActivity_ = true;
-        this.removeClass('icp-user-inactive');
-        this.addClass('icp-user-active');
+        this.removeClass('vjs-user-inactive');
+        this.addClass('vjs-user-active');
         /**
          * @event Player#useractive
          * @type {EventTarget~Event}
@@ -24747,8 +24752,8 @@
       }
 
       this.userActivity_ = false;
-      this.removeClass('icp-user-active');
-      this.addClass('icp-user-inactive');
+      this.removeClass('vjs-user-active');
+      this.addClass('vjs-user-inactive');
       /**
        * @event Player#userinactive
        * @type {EventTarget~Event}
@@ -24972,7 +24977,7 @@
      *         TextTrackList
      *
      * @deprecated The default value of the "manualCleanup" parameter will default
-     *             to "false" in upcoming versions of Icp.js
+     *             to "false" in upcoming versions of Video.js
      */
 
 
@@ -25071,7 +25076,7 @@
 
     /**
      * Get the player's language dictionary
-     * Merge every time, because a newly added plugin might call icplayer.addLanguage() at any time
+     * Merge every time, because a newly added plugin might call videojs.addLanguage() at any time
      * Languages specified directly in the player options have precedence
      *
      * @return {Array}
@@ -25166,7 +25171,7 @@
       var tagOptions = getAttributes(tag);
       var dataSetup = tagOptions['data-setup'];
 
-      if (hasClass(tag, 'icp-fluid')) {
+      if (hasClass(tag, 'vjs-fluid')) {
         tagOptions.fluid = true;
       }
 
@@ -25540,7 +25545,7 @@
    *
    * @private
    * @param   {Player} player
-   *          A Icp.js player instance.
+   *          A Video.js player instance.
    *
    * @param   {string} name
    *          The name of a plugin.
@@ -25555,7 +25560,7 @@
    *
    * @private
    * @param  {Player} player
-   *         A Icp.js player instance.
+   *         A Video.js player instance.
    *
    * @param  {Plugin~PluginEventHash} hash
    *         A plugin event hash.
@@ -25676,7 +25681,7 @@
      * Sub-classes should call `super` to ensure plugins are properly initialized.
      *
      * @param {Player} player
-     *        A Icp.js player instance.
+     *        A Video.js player instance.
      */
     function Plugin(player) {
       classCallCheck(this, Plugin);
@@ -25828,7 +25833,7 @@
     };
 
     /**
-     * Register a Icp.js plugin.
+     * Register a Video.js plugin.
      *
      * @param   {string} name
      *          The name of the plugin to be registered. Must be a string and
@@ -25875,7 +25880,7 @@
     };
 
     /**
-     * De-register a Icp.js plugin.
+     * De-register a Video.js plugin.
      *
      * @param {string} name
      *        The name of the plugin to be deregistered.
@@ -25893,7 +25898,7 @@
     };
 
     /**
-     * Gets an object containing multiple Icp.js plugins.
+     * Gets an object containing multiple Video.js plugins.
      *
      * @param   {Array} [names]
      *          If provided, should be an array of plugin names. Defaults to _all_
@@ -26025,7 +26030,7 @@
 
   /**
    * Function for subclassing using the same inheritance that
-   * icplayer uses internally
+   * videojs uses internally
    *
    * @static
    * @const
@@ -26070,8 +26075,8 @@
   };
 
   /**
-   * @file icp.js
-   * @module icplayer
+   * @file video.js
+   * @module videojs
    */
 
   /**
@@ -26090,7 +26095,7 @@
   /**
    * Doubles as the main function for users to create a player instance and also
    * the main library object.
-   * The `icplayer` function can be used to initialize or retrieve a player.
+   * The `videojs` function can be used to initialize or retrieve a player.
     *
    * @param {string|Element} id
    *        Video element or video element ID
@@ -26104,8 +26109,8 @@
    * @return {Player}
    *         A player instance
    */
-  function icplayer$1(id, options, ready) {
-    var player = icplayer$1.getPlayer(id);
+  function videojs$1(id, options, ready) {
+    var player = videojs$1.getPlayer(id);
 
     if (player) {
       if (options) {
@@ -26120,7 +26125,7 @@
     var el = typeof id === 'string' ? $('#' + normalizeId(id)) : id;
 
     if (!isEl(el)) {
-      throw new TypeError('The element or ID supplied is not valid. (icplayer)');
+      throw new TypeError('The element or ID supplied is not valid. (videojs)');
     }
 
     if (!document_1.body.contains(el)) {
@@ -26129,7 +26134,7 @@
 
     options = options || {};
 
-    icplayer$1.hooks('beforesetup').forEach(function (hookFunction) {
+    videojs$1.hooks('beforesetup').forEach(function (hookFunction) {
       var opts = hookFunction(el, mergeOptions(options));
 
       if (!isObject(opts) || Array.isArray(opts)) {
@@ -26146,7 +26151,7 @@
 
     player = new PlayerComponent(el, options, ready);
 
-    icplayer$1.hooks('setup').forEach(function (hookFunction) {
+    videojs$1.hooks('setup').forEach(function (hookFunction) {
       return hookFunction(player);
     });
 
@@ -26157,11 +26162,11 @@
    * An Object that contains lifecycle hooks as keys which point to an array
    * of functions that are run when a lifecycle is triggered
    */
-  icplayer$1.hooks_ = {};
+  videojs$1.hooks_ = {};
 
   /**
    * Get a list of hooks for a specific lifecycle
-   * @function icplayer.hooks
+   * @function videojs.hooks
    *
    * @param {string} type
    *        the lifecyle to get hooks from
@@ -26172,16 +26177,16 @@
    * @return {Array}
    *         an array of hooks, or an empty array if there are none.
    */
-  icplayer$1.hooks = function (type, fn) {
-    icplayer$1.hooks_[type] = icplayer$1.hooks_[type] || [];
+  videojs$1.hooks = function (type, fn) {
+    videojs$1.hooks_[type] = videojs$1.hooks_[type] || [];
     if (fn) {
-      icplayer$1.hooks_[type] = icplayer$1.hooks_[type].concat(fn);
+      videojs$1.hooks_[type] = videojs$1.hooks_[type].concat(fn);
     }
-    return icplayer$1.hooks_[type];
+    return videojs$1.hooks_[type];
   };
 
   /**
-   * Add a function hook to a specific icplayer lifecycle.
+   * Add a function hook to a specific videojs lifecycle.
    *
    * @param {string} type
    *        the lifecycle to hook the function to.
@@ -26189,12 +26194,12 @@
    * @param {Function|Function[]}
    *        The function or array of functions to attach.
    */
-  icplayer$1.hook = function (type, fn) {
-    icplayer$1.hooks(type, fn);
+  videojs$1.hook = function (type, fn) {
+    videojs$1.hooks(type, fn);
   };
 
   /**
-   * Add a function hook that will only run once to a specific icplayer lifecycle.
+   * Add a function hook that will only run once to a specific videojs lifecycle.
    *
    * @param {string} type
    *        the lifecycle to hook the function to.
@@ -26202,10 +26207,10 @@
    * @param {Function|Function[]}
    *        The function or array of functions to attach.
    */
-  icplayer$1.hookOnce = function (type, fn) {
-    icplayer$1.hooks(type, [].concat(fn).map(function (original) {
+  videojs$1.hookOnce = function (type, fn) {
+    videojs$1.hooks(type, [].concat(fn).map(function (original) {
       var wrapper = function wrapper() {
-        icplayer$1.removeHook(type, wrapper);
+        videojs$1.removeHook(type, wrapper);
         return original.apply(undefined, arguments);
       };
 
@@ -26214,7 +26219,7 @@
   };
 
   /**
-   * Remove a hook from a specific icplayer lifecycle.
+   * Remove a hook from a specific videojs lifecycle.
    *
    * @param {string} type
    *        the lifecycle that the function hooked to
@@ -26225,45 +26230,45 @@
    * @return {boolean}
    *         The function that was removed or undef
    */
-  icplayer$1.removeHook = function (type, fn) {
-    var index = icplayer$1.hooks(type).indexOf(fn);
+  videojs$1.removeHook = function (type, fn) {
+    var index = videojs$1.hooks(type).indexOf(fn);
 
     if (index <= -1) {
       return false;
     }
 
-    icplayer$1.hooks_[type] = icplayer$1.hooks_[type].slice();
-    icplayer$1.hooks_[type].splice(index, 1);
+    videojs$1.hooks_[type] = videojs$1.hooks_[type].slice();
+    videojs$1.hooks_[type].splice(index, 1);
 
     return true;
   };
 
   // Add default styles
-  if (window_1.ICPLAYER_NO_DYNAMIC_STYLE !== true && isReal()) {
-    var style$1 = $('.icp-styles-defaults');
+  if (window_1.VIDEOJS_NO_DYNAMIC_STYLE !== true && isReal()) {
+    var style$1 = $('.vjs-styles-defaults');
 
     if (!style$1) {
-      style$1 = createStyleElement('icp-styles-defaults');
+      style$1 = createStyleElement('vjs-styles-defaults');
       var head = $('head');
 
       if (head) {
         head.insertBefore(style$1, head.firstChild);
       }
-      setTextContent(style$1, '\n      .ic-player {\n        width: 300px;\n        height: 150px;\n      }\n\n      .icp-fluid {\n        padding-top: 56.25%\n      }\n    ');
+      setTextContent(style$1, '\n      .video-js {\n        width: 300px;\n        height: 150px;\n      }\n\n      .vjs-fluid {\n        padding-top: 56.25%\n      }\n    ');
     }
   }
 
   // Run Auto-load players
   // You have to wait at least once in case this script is loaded after your
   // video in the DOM (weird behavior only with minified version)
-  autoSetupTimeout(1, icplayer$1);
+  autoSetupTimeout(1, videojs$1);
 
   /**
    * Current software version. Follows semver.
    *
    * @type {string}
    */
-  icplayer$1.VERSION = version;
+  videojs$1.VERSION = version;
 
   /**
    * The global options object. These are the settings that take effect
@@ -26271,7 +26276,7 @@
    *
    * @type {Object}
    */
-  icplayer$1.options = Player.prototype.options_;
+  videojs$1.options = Player.prototype.options_;
 
   /**
    * Get an object with the currently created players, keyed by player ID
@@ -26279,7 +26284,7 @@
    * @return {Object}
    *         The created players
    */
-  icplayer$1.getPlayers = function () {
+  videojs$1.getPlayers = function () {
     return Player.players;
   };
 
@@ -26287,17 +26292,17 @@
    * Get a single player based on an ID or DOM element.
    *
    * This is useful if you want to check if an element or ID has an associated
-   * Icp.js player, but not create one if it doesn't.
+   * Video.js player, but not create one if it doesn't.
    *
    * @param   {string|Element} id
-   *          An HTML element - `<video>`, `<audio>`, or `<ic-player>` -
+   *          An HTML element - `<video>`, `<audio>`, or `<video-js>` -
    *          or a string matching the `id` of such an element.
    *
    * @returns {Player|undefined}
    *          A player instance or `undefined` if there is no player instance
    *          matching the argument.
    */
-  icplayer$1.getPlayer = function (id) {
+  videojs$1.getPlayer = function (id) {
     var players = Player.players;
     var tag = void 0;
 
@@ -26337,7 +26342,7 @@
    *         JavaScript engines.
    *
    */
-  icplayer$1.getAllPlayers = function () {
+  videojs$1.getAllPlayers = function () {
     return (
 
       // Disposed players leave a key with a `null` value, so we need to make sure
@@ -26351,17 +26356,17 @@
   /**
    * Expose players object.
    *
-   * @memberOf icplayer
+   * @memberOf videojs
    * @property {Object} players
    */
-  icplayer$1.players = Player.players;
+  videojs$1.players = Player.players;
 
   /**
    * Get a component class object by name
    *
-   * @borrows Component.getComponent as icplayer.getComponent
+   * @borrows Component.getComponent as videojs.getComponent
    */
-  icplayer$1.getComponent = Component.getComponent;
+  videojs$1.getComponent = Component.getComponent;
 
   /**
    * Register a component so it can referred to by name. Used when adding to other
@@ -26380,9 +26385,9 @@
    * @return {Component}
    *         The newly registered component
    */
-  icplayer$1.registerComponent = function (name$$1, comp) {
+  videojs$1.registerComponent = function (name$$1, comp) {
     if (Tech.isTech(comp)) {
-      log$1.warn('The ' + name$$1 + ' tech was registered as a component. It should instead be registered using icplayer.registerTech(name, tech)');
+      log$1.warn('The ' + name$$1 + ' tech was registered as a component. It should instead be registered using videojs.registerTech(name, tech)');
     }
 
     Component.registerComponent.call(Component, name$$1, comp);
@@ -26391,17 +26396,17 @@
   /**
    * Get a Tech class object by name
    *
-   * @borrows Tech.getTech as icplayer.getTech
+   * @borrows Tech.getTech as videojs.getTech
    */
-  icplayer$1.getTech = Tech.getTech;
+  videojs$1.getTech = Tech.getTech;
 
   /**
    * Register a Tech so it can referred to by name.
    * This is used in the tech order for the player.
    *
-   * @borrows Tech.registerTech as icplayer.registerTech
+   * @borrows Tech.registerTech as videojs.registerTech
    */
-  icplayer$1.registerTech = Tech.registerTech;
+  videojs$1.registerTech = Tech.registerTech;
 
   /**
    * Register a middleware to a source type.
@@ -26409,23 +26414,23 @@
    * @param {String} type A string representing a MIME type.
    * @param {function(player):object} middleware A middleware factory that takes a player.
    */
-  icplayer$1.use = use;
+  videojs$1.use = use;
 
   /**
    * An object that can be returned by a middleware to signify
    * that the middleware is being terminated.
    *
    * @type {object}
-   * @memberOf {icplayer}
+   * @memberOf {videojs}
    * @property {object} middleware.TERMINATOR
    */
-  Object.defineProperty(icplayer$1, 'middleware', {
+  Object.defineProperty(videojs$1, 'middleware', {
     value: {},
     writeable: false,
     enumerable: true
   });
 
-  Object.defineProperty(icplayer$1.middleware, 'TERMINATOR', {
+  Object.defineProperty(videojs$1.middleware, 'TERMINATOR', {
     value: TERMINATOR,
     writeable: false,
     enumerable: true
@@ -26437,25 +26442,25 @@
    * @type {Object}
    * @private
    */
-  icplayer$1.browser = browser;
+  videojs$1.browser = browser;
 
   /**
    * Whether or not the browser supports touch events. Included for backward
-   * compatibility with 4.x, but deprecated. Use `icplayer.browser.TOUCH_ENABLED`
+   * compatibility with 4.x, but deprecated. Use `videojs.browser.TOUCH_ENABLED`
    * instead going forward.
    *
    * @deprecated since version 5.0
    * @type {boolean}
    */
-  icplayer$1.TOUCH_ENABLED = TOUCH_ENABLED;
+  videojs$1.TOUCH_ENABLED = TOUCH_ENABLED;
 
   /**
    * Subclass an existing class
    * Mimics ES6 subclassing with the `extend` keyword
    *
-   * @borrows extend:extendFn as icplayer.extend
+   * @borrows extend:extendFn as videojs.extend
    */
-  icplayer$1.extend = extendFn;
+  videojs$1.extend = extendFn;
 
   /**
    * Merge two options objects recursively
@@ -26463,9 +26468,9 @@
    * (not arrays, elements, anything else)
    * Other values will be copied directly from the second object.
    *
-   * @borrows merge-options:mergeOptions as icplayer.mergeOptions
+   * @borrows merge-options:mergeOptions as videojs.mergeOptions
    */
-  icplayer$1.mergeOptions = mergeOptions;
+  videojs$1.mergeOptions = mergeOptions;
 
   /**
    * Change the context (this) of a function
@@ -26473,14 +26478,14 @@
    * > NOTE: as of v5.0 we require an ES5 shim, so you should use the native
    * `function() {}.bind(newContext);` instead of this.
    *
-   * @borrows fn:bind as icplayer.bind
+   * @borrows fn:bind as videojs.bind
    */
-  icplayer$1.bind = bind;
+  videojs$1.bind = bind;
 
   /**
-   * Register a Icp.js plugin.
+   * Register a Video.js plugin.
    *
-   * @borrows plugin:registerPlugin as icplayer.registerPlugin
+   * @borrows plugin:registerPlugin as videojs.registerPlugin
    * @method registerPlugin
    *
    * @param  {string} name
@@ -26495,13 +26500,13 @@
    *         For advanced plugins, a factory function for that plugin. For
    *         basic plugins, a wrapper function that initializes the plugin.
    */
-  icplayer$1.registerPlugin = Plugin.registerPlugin;
+  videojs$1.registerPlugin = Plugin.registerPlugin;
 
   /**
-   * Deprecated method to register a plugin with Icp.js
+   * Deprecated method to register a plugin with Video.js
    *
    * @deprecated
-   *        icplayer.plugin() is deprecated; use icplayer.registerPlugin() instead
+   *        videojs.plugin() is deprecated; use videojs.registerPlugin() instead
    *
    * @param {string} name
    *        The plugin name
@@ -26509,13 +26514,13 @@
    * @param {Plugin|Function} plugin
    *         The plugin sub-class or function
    */
-  icplayer$1.plugin = function (name$$1, plugin) {
-    log$1.warn('icplayer.plugin() is deprecated; use icplayer.registerPlugin() instead');
+  videojs$1.plugin = function (name$$1, plugin) {
+    log$1.warn('videojs.plugin() is deprecated; use videojs.registerPlugin() instead');
     return Plugin.registerPlugin(name$$1, plugin);
   };
 
   /**
-   * Gets an object containing multiple Icp.js plugins.
+   * Gets an object containing multiple Video.js plugins.
    *
    * @param  {Array} [names]
    *         If provided, should be an array of plugin names. Defaults to _all_
@@ -26525,7 +26530,7 @@
    *         An object containing plugin(s) associated with their name(s) or
    *         `undefined` if no matching plugins exist).
    */
-  icplayer$1.getPlugins = Plugin.getPlugins;
+  videojs$1.getPlugins = Plugin.getPlugins;
 
   /**
    * Gets a plugin by name if it exists.
@@ -26536,7 +26541,7 @@
    * @return {Function|undefined}
    *         The plugin (or `undefined`).
    */
-  icplayer$1.getPlugin = Plugin.getPlugin;
+  videojs$1.getPlugin = Plugin.getPlugin;
 
   /**
    * Gets a plugin's version, if available
@@ -26547,11 +26552,11 @@
    * @return {string}
    *         The plugin's version or an empty string.
    */
-  icplayer$1.getPluginVersion = Plugin.getPluginVersion;
+  videojs$1.getPluginVersion = Plugin.getPluginVersion;
 
   /**
    * Adding languages so that they're available to all players.
-   * Example: `icplayer.addLanguage('es', { 'Hello': 'Hola' });`
+   * Example: `videojs.addLanguage('es', { 'Hello': 'Hola' });`
    *
    * @param {string} code
    *        The language code or dictionary property
@@ -26562,46 +26567,46 @@
    * @return {Object}
    *         The resulting language dictionary object
    */
-  icplayer$1.addLanguage = function (code, data) {
+  videojs$1.addLanguage = function (code, data) {
     var _mergeOptions;
 
     code = ('' + code).toLowerCase();
 
-    icplayer$1.options.languages = mergeOptions(icplayer$1.options.languages, (_mergeOptions = {}, _mergeOptions[code] = data, _mergeOptions));
+    videojs$1.options.languages = mergeOptions(videojs$1.options.languages, (_mergeOptions = {}, _mergeOptions[code] = data, _mergeOptions));
 
-    return icplayer$1.options.languages[code];
+    return videojs$1.options.languages[code];
   };
 
   /**
    * Log messages
    *
-   * @borrows log:log as icplayer.log
+   * @borrows log:log as videojs.log
    */
-  icplayer$1.log = log$1;
+  videojs$1.log = log$1;
 
   /**
    * Creates an emulated TimeRange object.
    *
-   * @borrows time-ranges:createTimeRanges as icplayer.createTimeRange
+   * @borrows time-ranges:createTimeRanges as videojs.createTimeRange
    */
   /**
-   * @borrows time-ranges:createTimeRanges as icplayer.createTimeRanges
+   * @borrows time-ranges:createTimeRanges as videojs.createTimeRanges
    */
-  icplayer$1.createTimeRange = icplayer$1.createTimeRanges = createTimeRanges;
+  videojs$1.createTimeRange = videojs$1.createTimeRanges = createTimeRanges;
 
   /**
    * Format seconds as a time string, H:MM:SS or M:SS
    * Supplying a guide (in seconds) will force a number of leading zeros
    * to cover the length of the guide
    *
-   * @borrows format-time:formatTime as icplayer.formatTime
+   * @borrows format-time:formatTime as videojs.formatTime
    */
-  icplayer$1.formatTime = formatTime;
+  videojs$1.formatTime = formatTime;
 
   /**
    * Replaces format-time with a custom implementation, to be used in place of the default.
    *
-   * @borrows format-time:setFormatTime as icplayer.setFormatTime
+   * @borrows format-time:setFormatTime as videojs.setFormatTime
    *
    * @method setFormatTime
    *
@@ -26609,38 +26614,38 @@
    *        A custom format-time function which will be called with the current time and guide (in seconds) as arguments.
    *        Passed fn should return a string.
    */
-  icplayer$1.setFormatTime = setFormatTime;
+  videojs$1.setFormatTime = setFormatTime;
 
   /**
    * Resets format-time to the default implementation.
    *
-   * @borrows format-time:resetFormatTime as icplayer.resetFormatTime
+   * @borrows format-time:resetFormatTime as videojs.resetFormatTime
    *
    * @method resetFormatTime
    */
-  icplayer$1.resetFormatTime = resetFormatTime;
+  videojs$1.resetFormatTime = resetFormatTime;
 
   /**
    * Resolve and parse the elements of a URL
    *
-   * @borrows url:parseUrl as icplayer.parseUrl
+   * @borrows url:parseUrl as videojs.parseUrl
    *
    */
-  icplayer$1.parseUrl = parseUrl;
+  videojs$1.parseUrl = parseUrl;
 
   /**
    * Returns whether the url passed is a cross domain request or not.
    *
-   * @borrows url:isCrossOrigin as icplayer.isCrossOrigin
+   * @borrows url:isCrossOrigin as videojs.isCrossOrigin
    */
-  icplayer$1.isCrossOrigin = isCrossOrigin;
+  videojs$1.isCrossOrigin = isCrossOrigin;
 
   /**
    * Event target class.
    *
-   * @borrows EventTarget as icplayer.EventTarget
+   * @borrows EventTarget as videojs.EventTarget
    */
-  icplayer$1.EventTarget = EventTarget;
+  videojs$1.EventTarget = EventTarget;
 
   /**
    * Add an event listener to element
@@ -26648,30 +26653,30 @@
    * and adds a generic handler to the element's event,
    * along with a unique id (guid) to the element.
    *
-   * @borrows events:on as icplayer.on
+   * @borrows events:on as videojs.on
    */
-  icplayer$1.on = on;
+  videojs$1.on = on;
 
   /**
    * Trigger a listener only once for an event
    *
-   * @borrows events:one as icplayer.one
+   * @borrows events:one as videojs.one
    */
-  icplayer$1.one = one;
+  videojs$1.one = one;
 
   /**
    * Removes event listeners from an element
    *
-   * @borrows events:off as icplayer.off
+   * @borrows events:off as videojs.off
    */
-  icplayer$1.off = off;
+  videojs$1.off = off;
 
   /**
    * Trigger an event for an element
    *
-   * @borrows events:trigger as icplayer.trigger
+   * @borrows events:trigger as videojs.trigger
    */
-  icplayer$1.trigger = trigger;
+  videojs$1.trigger = trigger;
 
   /**
    * A cross-browser XMLHttpRequest wrapper. Here's a simple example:
@@ -26684,86 +26689,86 @@
    *
    * @see https://github.com/Raynos/xhr
    */
-  icplayer$1.xhr = xhr;
+  videojs$1.xhr = xhr;
 
   /**
    * TextTrack class
    *
-   * @borrows TextTrack as icplayer.TextTrack
+   * @borrows TextTrack as videojs.TextTrack
    */
-  icplayer$1.TextTrack = TextTrack;
+  videojs$1.TextTrack = TextTrack;
 
   /**
    * export the AudioTrack class so that source handlers can create
    * AudioTracks and then add them to the players AudioTrackList
    *
-   * @borrows AudioTrack as icplayer.AudioTrack
+   * @borrows AudioTrack as videojs.AudioTrack
    */
-  icplayer$1.AudioTrack = AudioTrack;
+  videojs$1.AudioTrack = AudioTrack;
 
   /**
    * export the VideoTrack class so that source handlers can create
    * VideoTracks and then add them to the players VideoTrackList
    *
-   * @borrows VideoTrack as icplayer.VideoTrack
+   * @borrows VideoTrack as videojs.VideoTrack
    */
-  icplayer$1.VideoTrack = VideoTrack;
+  videojs$1.VideoTrack = VideoTrack;
 
   /**
    * Determines, via duck typing, whether or not a value is a DOM element.
    *
-   * @borrows dom:isEl as icplayer.isEl
-   * @deprecated Use icplayer.dom.isEl() instead
+   * @borrows dom:isEl as videojs.isEl
+   * @deprecated Use videojs.dom.isEl() instead
    */
 
   /**
    * Determines, via duck typing, whether or not a value is a text node.
    *
-   * @borrows dom:isTextNode as icplayer.isTextNode
-   * @deprecated Use icplayer.dom.isTextNode() instead
+   * @borrows dom:isTextNode as videojs.isTextNode
+   * @deprecated Use videojs.dom.isTextNode() instead
    */
 
   /**
    * Creates an element and applies properties.
    *
-   * @borrows dom:createEl as icplayer.createEl
-   * @deprecated Use icplayer.dom.createEl() instead
+   * @borrows dom:createEl as videojs.createEl
+   * @deprecated Use videojs.dom.createEl() instead
    */
 
   /**
    * Check if an element has a CSS class
    *
-   * @borrows dom:hasElClass as icplayer.hasClass
-   * @deprecated Use icplayer.dom.hasClass() instead
+   * @borrows dom:hasElClass as videojs.hasClass
+   * @deprecated Use videojs.dom.hasClass() instead
    */
 
   /**
    * Add a CSS class name to an element
    *
-   * @borrows dom:addElClass as icplayer.addClass
-   * @deprecated Use icplayer.dom.addClass() instead
+   * @borrows dom:addElClass as videojs.addClass
+   * @deprecated Use videojs.dom.addClass() instead
    */
 
   /**
    * Remove a CSS class name from an element
    *
-   * @borrows dom:removeElClass as icplayer.removeClass
-   * @deprecated Use icplayer.dom.removeClass() instead
+   * @borrows dom:removeElClass as videojs.removeClass
+   * @deprecated Use videojs.dom.removeClass() instead
    */
 
   /**
    * Adds or removes a CSS class name on an element depending on an optional
    * condition or the presence/absence of the class name.
    *
-   * @borrows dom:toggleElClass as icplayer.toggleClass
-   * @deprecated Use icplayer.dom.toggleClass() instead
+   * @borrows dom:toggleElClass as videojs.toggleClass
+   * @deprecated Use videojs.dom.toggleClass() instead
    */
 
   /**
    * Apply attributes to an HTML element.
    *
-   * @borrows dom:setElAttributes as icplayer.setAttribute
-   * @deprecated Use icplayer.dom.setAttributes() instead
+   * @borrows dom:setElAttributes as videojs.setAttribute
+   * @deprecated Use videojs.dom.setAttributes() instead
    */
 
   /**
@@ -26772,15 +26777,15 @@
    * or with setAttribute (which shouldn't be used with HTML)
    * This will return true or false for boolean attributes.
    *
-   * @borrows dom:getElAttributes as icplayer.getAttributes
-   * @deprecated Use icplayer.dom.getAttributes() instead
+   * @borrows dom:getElAttributes as videojs.getAttributes
+   * @deprecated Use videojs.dom.getAttributes() instead
    */
 
   /**
    * Empties the contents of an element.
    *
-   * @borrows dom:emptyEl as icplayer.emptyEl
-   * @deprecated Use icplayer.dom.emptyEl() instead
+   * @borrows dom:emptyEl as videojs.emptyEl
+   * @deprecated Use videojs.dom.emptyEl() instead
    */
 
   /**
@@ -26803,8 +26808,8 @@
    *   If the sole argument, is expected to produce a string, element,
    *   node, or array.
    *
-   * @borrows dom:appendContents as icplayer.appendContet
-   * @deprecated Use icplayer.dom.appendContent() instead
+   * @borrows dom:appendContents as videojs.appendContet
+   * @deprecated Use videojs.dom.appendContent() instead
    */
 
   /**
@@ -26828,12 +26833,12 @@
    *   If the sole argument, is expected to produce a string, element,
    *   node, or array.
    *
-   * @borrows dom:insertContent as icplayer.insertContent
-   * @deprecated Use icplayer.dom.insertContent() instead
+   * @borrows dom:insertContent as videojs.insertContent
+   * @deprecated Use videojs.dom.insertContent() instead
    */
   ['isEl', 'isTextNode', 'createEl', 'hasClass', 'addClass', 'removeClass', 'toggleClass', 'setAttributes', 'getAttributes', 'emptyEl', 'appendContent', 'insertContent'].forEach(function (k) {
-    icplayer$1[k] = function () {
-      log$1.warn('icplayer.' + k + '() is deprecated; use icplayer.dom.' + k + '() instead');
+    videojs$1[k] = function () {
+      log$1.warn('videojs.' + k + '() is deprecated; use videojs.dom.' + k + '() instead');
       return Dom[k].apply(null, arguments);
     };
   });
@@ -26846,21 +26851,21 @@
    * that the player doesn't break in these cases.
    * See https://bugzilla.mozilla.org/show_bug.cgi?id=548397 for more details.
    *
-   * @borrows computed-style:computedStyle as icplayer.computedStyle
+   * @borrows computed-style:computedStyle as videojs.computedStyle
    */
-  icplayer$1.computedStyle = computedStyle;
+  videojs$1.computedStyle = computedStyle;
 
   /**
    * Export the Dom utilities for use in external plugins
    * and Tech's
    */
-  icplayer$1.dom = Dom;
+  videojs$1.dom = Dom;
 
   /**
    * Export the Url utilities for use in external plugins
    * and Tech's
    */
-  icplayer$1.url = Url;
+  videojs$1.url = Url;
 
   var urlToolkit = createCommonjsModule(function (module, exports) {
     // see https://tools.ietf.org/html/rfc1808
@@ -28105,6 +28110,8 @@
 
   /**
    * mpd-parser
+   * @version 0.6.1
+   * @copyright 2018 Brightcove, Inc
    * @license Apache-2.0
    */
 
@@ -28369,6 +28376,7 @@
    * Converts a URLType node (5.3.9.2.3 Table 13) to a segment object
    * that conforms to how m3u8-parser is structured
    *
+   * @see https://github.com/videojs/m3u8-parser
    *
    * @param {string} baseUrl - baseUrl provided by <BaseUrl> nodes
    * @param {string} source - source url for segment
@@ -28886,7 +28894,7 @@
 
   /**
    * Converts a <SegmentUrl> (of type URLType from the DASH spec 5.3.9.2 Table 14)
-   * to an object that matches the output of a segment in icplayer/mpd-parser
+   * to an object that matches the output of a segment in videojs/mpd-parser
    *
    * @param {Object} attributes
    *   Object containing all inherited attributes from parent elements with attribute
@@ -29958,6 +29966,9 @@
   /**
    * mux.js
    *
+   * Copyright (c) 2014 Brightcove
+   * All rights reserved.
+   *
    * A lightweight readable stream implemention that handles event dispatching.
    * Objects that inherit from streams should call init in their constructors.
    */
@@ -30443,6 +30454,9 @@
 
   /**
    * mux.js
+   *
+   * Copyright (c) 2016 Brightcove
+   * All rights reserved.
    *
    * Utilities to detect basic properties and metadata about Aac data.
    */
@@ -31094,7 +31108,10 @@
   };
 
   /*
-
+   * pkcs7.pad
+   * https://github.com/brightcove/pkcs7
+   *
+   * Copyright (c) 2014 Brightcove
    * Licensed under the apache2 license.
    */
 
@@ -31704,8 +31721,9 @@
   }();
 
   /**
-   * @icplayer/http-streaming
+   * @videojs/http-streaming
    * @version 1.1.0
+   * @copyright 2018 Brightcove, Inc
    * @license Apache-2.0
    */
 
@@ -31846,9 +31864,9 @@
    *
    */
 
-  var mergeOptions$1 = icplayer$1.mergeOptions,
-      EventTarget$1 = icplayer$1.EventTarget,
-      log$2 = icplayer$1.log;
+  var mergeOptions$1 = videojs$1.mergeOptions,
+      EventTarget$1 = videojs$1.EventTarget,
+      log$2 = videojs$1.log;
 
   /**
    * Loops through all supported media groups in master and calls the provided
@@ -32430,7 +32448,7 @@
    * Playlist related utilities.
    */
 
-  var createTimeRange = icplayer$1.createTimeRange;
+  var createTimeRange = videojs$1.createTimeRange;
 
   /**
    * walk backward until we find a duration we can use
@@ -32987,8 +33005,8 @@
    * @file xhr.js
    */
 
-  var icplayerXHR = icplayer$1.xhr,
-      mergeOptions$1$1 = icplayer$1.mergeOptions;
+  var videojsXHR = videojs$1.xhr,
+      mergeOptions$1$1 = videojs$1.mergeOptions;
 
   var xhrFactory = function xhrFactory() {
     var xhr = function XhrFunction(options, callback) {
@@ -32999,7 +33017,7 @@
 
       // Allow an optional user-specified function to modify the option
       // object before we construct the xhr request
-      var beforeRequest = XhrFunction.beforeRequest || icplayer$1.Hls.xhr.beforeRequest;
+      var beforeRequest = XhrFunction.beforeRequest || videojs$1.Hls.xhr.beforeRequest;
 
       if (beforeRequest && typeof beforeRequest === 'function') {
         var newOptions = beforeRequest(options);
@@ -33009,7 +33027,7 @@
         }
       }
 
-      var request = icplayerXHR(options, function (error, response) {
+      var request = videojsXHR(options, function (error, response) {
         var reqResponse = request.response;
 
         if (!error && reqResponse) {
@@ -33025,14 +33043,14 @@
           request.responseHeaders = response.headers;
         }
 
-        // icplayer.xhr now uses a specific code on the error
+        // videojs.xhr now uses a specific code on the error
         // object to signal that a request has timed out instead
         // of setting a boolean on the request object
         if (error && error.code === 'ETIMEDOUT') {
           request.timedout = true;
         }
 
-        // icplayer.xhr no longer considers status codes outside of 200 and 0
+        // videojs.xhr no longer considers status codes outside of 200 and 0
         // (for file uris) to be errors, but the old XHR did, so emulate that
         // behavior. Status 206 may be used in response to byterange requests.
         if (!error && !request.aborted && response.statusCode !== 200 && response.statusCode !== 206 && response.statusCode !== 0) {
@@ -33200,7 +33218,7 @@
       }
     }
 
-    return icplayer$1.createTimeRanges(results);
+    return videojs$1.createTimeRanges(results);
   };
 
   /**
@@ -33235,7 +33253,7 @@
    */
   var findGaps = function findGaps(buffered) {
     if (buffered.length < 2) {
-      return icplayer$1.createTimeRanges();
+      return videojs$1.createTimeRanges();
     }
 
     var ranges = [];
@@ -33247,7 +33265,7 @@
       ranges.push([start, end]);
     }
 
-    return icplayer$1.createTimeRanges(ranges);
+    return videojs$1.createTimeRanges(ranges);
   };
 
   /**
@@ -33315,7 +33333,7 @@
    */
 
   /**
-   * Create text tracks on icp.js if they exist on a segment.
+   * Create text tracks on video.js if they exist on a segment.
    *
    * @param {Object} sourceBuffer the VSB or FSB
    * @param {Object} mediaSource the HTML media source
@@ -33338,7 +33356,7 @@
 
           if (track) {
             // Resuse an existing track with a CC# id because this was
-            // very likely created by icplayer-contrib-hls from information
+            // very likely created by videojs-contrib-hls from information
             // in the m3u8 for us to use
             sourceBuffer.inbandTextTracks_[trackId] = track;
           } else {
@@ -33368,7 +33386,7 @@
    */
 
   /**
-   * Remove cues from a track on icp.js.
+   * Remove cues from a track on video.js.
    *
    * @param {Double} start start of where we should remove the cue
    * @param {Double} end end of where the we should remove the cue
@@ -33414,19 +33432,19 @@
     Object.defineProperties(cue.frame, {
       id: {
         get: function get$$1() {
-          icplayer$1.log.warn('cue.frame.id is deprecated. Use cue.value.key instead.');
+          videojs$1.log.warn('cue.frame.id is deprecated. Use cue.value.key instead.');
           return cue.value.key;
         }
       },
       value: {
         get: function get$$1() {
-          icplayer$1.log.warn('cue.frame.value is deprecated. Use cue.value.data instead.');
+          videojs$1.log.warn('cue.frame.value is deprecated. Use cue.value.data instead.');
           return cue.value.data;
         }
       },
       privateData: {
         get: function get$$1() {
-          icplayer$1.log.warn('cue.frame.privateData is deprecated. Use cue.value.data instead.');
+          videojs$1.log.warn('cue.frame.privateData is deprecated. Use cue.value.data instead.');
           return cue.value.data;
         }
       }
@@ -33638,6 +33656,8 @@
       /**
        * mux.js
        *
+       * Copyright (c) 2015 Brightcove
+       * All rights reserved.
        *
        * Functions that generate fragmented MP4s suitable for use with Media
        * Source Extensions.
@@ -34218,6 +34238,8 @@
       /**
        * mux.js
        *
+       * Copyright (c) 2014 Brightcove
+       * All rights reserved.
        *
        * A lightweight readable stream implemention that handles event dispatching.
        * Objects that inherit from streams should call init in their constructors.
@@ -38529,7 +38551,7 @@
   // We create a wrapper around the SourceBuffer so that we can manage the
   // state of the `updating` property manually. We have to do this because
   // Firefox changes `updating` to false long before triggering `updateend`
-  // events and that was causing strange problems in icplayer-contrib-hls
+  // events and that was causing strange problems in videojs-contrib-hls
   var makeWrappedSourceBuffer = function makeWrappedSourceBuffer(mediaSource, mimeType) {
     var sourceBuffer = mediaSource.addSourceBuffer(mimeType);
     var wrapper = Object.create(null);
@@ -38690,16 +38712,16 @@
    * @param {HtmlMediaSource} mediaSource the parent mediaSource
    * @param {Array} codecs array of codecs that we will be dealing with
    * @class VirtualSourceBuffer
-   * @extends icp.js.EventTarget
+   * @extends video.js.EventTarget
    */
 
-  var VirtualSourceBuffer = function (_icplayer$EventTarget) {
-    inherits$3(VirtualSourceBuffer, _icplayer$EventTarget);
+  var VirtualSourceBuffer = function (_videojs$EventTarget) {
+    inherits$3(VirtualSourceBuffer, _videojs$EventTarget);
 
     function VirtualSourceBuffer(mediaSource, codecs) {
       classCallCheck$3(this, VirtualSourceBuffer);
 
-      var _this = possibleConstructorReturn$3(this, (VirtualSourceBuffer.__proto__ || Object.getPrototypeOf(VirtualSourceBuffer)).call(this, icplayer$1.EventTarget));
+      var _this = possibleConstructorReturn$3(this, (VirtualSourceBuffer.__proto__ || Object.getPrototypeOf(VirtualSourceBuffer)).call(this, videojs$1.EventTarget));
 
       _this.timestampOffset_ = 0;
       _this.pendingBuffers_ = [];
@@ -38713,7 +38735,7 @@
       _this.appendAudioInitSegment_ = true;
       _this.gopBuffer_ = [];
       _this.timeMapping_ = 0;
-      _this.safeAppend_ = icplayer$1.browser.IE_VERSION >= 11;
+      _this.safeAppend_ = videojs$1.browser.IE_VERSION >= 11;
 
       var options = {
         remux: false,
@@ -38806,7 +38828,7 @@
 
           // neither buffer has been created yet
           if (!this.videoBuffer_ && !this.audioBuffer_) {
-            return icplayer$1.createTimeRange();
+            return videojs$1.createTimeRange();
           }
 
           // only one buffer is configured
@@ -38824,7 +38846,7 @@
 
           // both buffers are empty
           if (this.videoBuffer_.buffered.length === 0 && this.audioBuffer_.buffered.length === 0) {
-            return icplayer$1.createTimeRange();
+            return videojs$1.createTimeRange();
           }
 
           // Handle the case where we have both buffers and create an
@@ -38877,7 +38899,7 @@
             }
           }
 
-          return icplayer$1.createTimeRanges(ranges);
+          return videojs$1.createTimeRanges(ranges);
         }
       });
       return _this;
@@ -38972,7 +38994,7 @@
             // on the main VirtualSourceBuffer by the HTMLMediaSource much earlier
             // than createRealSourceBuffers_ is called to create the second
             // VirtualSourceBuffer because that happens as a side-effect of
-            // icplayer-contrib-hls starting the audioSegmentLoader. As a result,
+            // videojs-contrib-hls starting the audioSegmentLoader. As a result,
             // the audioBuffer is essentially "ownerless" and no one will toggle
             // the `updating` state back to false once the `updateend` event is received
             //
@@ -39299,7 +39321,7 @@
       }
     }]);
     return VirtualSourceBuffer;
-  }(icplayer$1.EventTarget);
+  }(videojs$1.EventTarget);
 
   /**
    * @file html-media-source.js
@@ -39311,11 +39333,11 @@
    *
    * @link https://developer.mozilla.org/en-US/docs/Web/API/MediaSource
    * @class HtmlMediaSource
-   * @extends icplayer.EventTarget
+   * @extends videojs.EventTarget
    */
 
-  var HtmlMediaSource = function (_icplayer$EventTarget) {
-    inherits$3(HtmlMediaSource, _icplayer$EventTarget);
+  var HtmlMediaSource = function (_videojs$EventTarget) {
+    inherits$3(HtmlMediaSource, _videojs$EventTarget);
 
     function HtmlMediaSource() {
       classCallCheck$3(this, HtmlMediaSource);
@@ -39354,7 +39376,7 @@
       Object.defineProperty(_this, 'seekable', {
         get: function get$$1() {
           if (this.duration_ === Infinity) {
-            return icplayer$1.createTimeRanges([[0, this.nativeMediaSource_.duration]]);
+            return videojs$1.createTimeRanges([[0, this.nativeMediaSource_.duration]]);
           }
           return this.nativeMediaSource_.seekable;
         }
@@ -39380,7 +39402,7 @@
 
       /**
        * update the list of active source buffers based upon various
-       * imformation from HLS and icp.js
+       * imformation from HLS and video.js
        *
        * @private
        */
@@ -39489,12 +39511,12 @@
           return;
         }
 
-        _this.player_ = icplayer$1(video.parentNode);
+        _this.player_ = videojs$1(video.parentNode);
 
-        // hls-reset is fired by icplayer.Hls on to the tech after the main SegmentLoader
+        // hls-reset is fired by videojs.Hls on to the tech after the main SegmentLoader
         // resets its state and flushes the buffer
         _this.player_.tech_.on('hls-reset', _this.onHlsReset_);
-        // hls-segment-time-mapping is fired by icplayer.Hls on to the tech after the main
+        // hls-segment-time-mapping is fired by videojs.Hls on to the tech after the main
         // SegmentLoader inspects an MTS segment and has an accurate stream to display
         // time mapping
         _this.player_.tech_.on('hls-segment-time-mapping', _this.onHlsSegmentTimeMapping_);
@@ -39635,10 +39657,10 @@
       }
     }]);
     return HtmlMediaSource;
-  }(icplayer$1.EventTarget);
+  }(videojs$1.EventTarget);
 
   /**
-   * @file icplayer-contrib-media-sources.js
+   * @file videojs-contrib-media-sources.js
    */
   var urlCount = 0;
 
@@ -39649,7 +39671,7 @@
   // store references to the media sources so they can be connected
   // to a video element (a swf object)
   // TODO: can we store this somewhere local to this module?
-  icplayer$1.mediaSources = {};
+  videojs$1.mediaSources = {};
 
   /**
    * Provide a method for a swf object to notify JS that a
@@ -39659,12 +39681,12 @@
    * @param {String} swfId the swf id
    */
   var open = function open(msObjectURL, swfId) {
-    var mediaSource = icplayer$1.mediaSources[msObjectURL];
+    var mediaSource = videojs$1.mediaSources[msObjectURL];
 
     if (mediaSource) {
       mediaSource.trigger({ type: 'sourceopen', swfId: swfId });
     } else {
-      throw new Error('Media Source not found (Icp.js)');
+      throw new Error('Media Source not found (Video.js)');
     }
   };
 
@@ -39703,7 +39725,7 @@
 
   /**
    * A wrapper around the native URL for our MSE object
-   * implementation, this object is exposed under icplayer.URL
+   * implementation, this object is exposed under videojs.URL
    *
    * @link https://developer.mozilla.org/en-US/docs/Web/API/URL/URL
    */
@@ -39711,13 +39733,13 @@
     /**
      * A wrapper around the native createObjectURL for our objects.
      * This function maps a native or emulated mediaSource to a blob
-     * url so that it can be loaded into icp.js
+     * url so that it can be loaded into video.js
      *
      * @link https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
      * @param {MediaSource} object the object to create a blob url to
      */
     createObjectURL: function createObjectURL(object) {
-      var objectUrlPrefix = 'blob:icp-media-source/';
+      var objectUrlPrefix = 'blob:vjs-media-source/';
       var url = void 0;
 
       // use the native MediaSource to generate an object URL
@@ -39741,17 +39763,17 @@
       urlCount++;
 
       // setup the mapping back to object
-      icplayer$1.mediaSources[url] = object;
+      videojs$1.mediaSources[url] = object;
 
       return url;
     }
   };
 
-  icplayer$1.MediaSource = MediaSource;
-  icplayer$1.URL = URL$1;
+  videojs$1.MediaSource = MediaSource;
+  videojs$1.URL = URL$1;
 
-  var EventTarget$1$1 = icplayer$1.EventTarget,
-      mergeOptions$2 = icplayer$1.mergeOptions;
+  var EventTarget$1$1 = videojs$1.EventTarget,
+      mergeOptions$2 = videojs$1.mergeOptions;
 
   /**
    * Returns a new master manifest that is the result of merging an updated master manifest
@@ -40224,8 +40246,8 @@
   }(EventTarget$1$1);
 
   var logger = function logger(source) {
-    if (icplayer$1.log.debug) {
-      return icplayer$1.log.debug.bind(icplayer$1, 'VHS:', source + ' >');
+    if (videojs$1.log.debug) {
+      return videojs$1.log.debug.bind(videojs$1, 'VHS:', source + ' >');
     }
 
     return function () {};
@@ -40374,7 +40396,7 @@
       key: 'buffered',
       value: function buffered() {
         if (!this.sourceBuffer_) {
-          return icplayer$1.createTimeRanges();
+          return videojs$1.createTimeRanges();
         }
         return this.sourceBuffer_.buffered;
       }
@@ -40816,7 +40838,7 @@
    */
   var handleProgress = function handleProgress(segment, progressFn) {
     return function (event) {
-      segment.stats = icplayer$1.mergeOptions(segment.stats, getProgressStats(event));
+      segment.stats = videojs$1.mergeOptions(segment.stats, getProgressStats(event));
 
       // record the time that we receive the first byte of data
       if (!segment.stats.firstBytesReceivedAt && segment.stats.bytesReceived) {
@@ -40881,7 +40903,7 @@
 
     // optionally, request the decryption key
     if (segment.key) {
-      var keyRequestOptions = icplayer$1.mergeOptions(xhrOptions, {
+      var keyRequestOptions = videojs$1.mergeOptions(xhrOptions, {
         uri: segment.key.resolvedUri,
         responseType: 'arraybuffer'
       });
@@ -40893,7 +40915,7 @@
 
     // optionally, request the associated media init segment
     if (segment.map && !segment.map.bytes) {
-      var initSegmentOptions = icplayer$1.mergeOptions(xhrOptions, {
+      var initSegmentOptions = videojs$1.mergeOptions(xhrOptions, {
         uri: segment.map.resolvedUri,
         responseType: 'arraybuffer',
         headers: segmentXhrHeaders(segment.map)
@@ -40904,7 +40926,7 @@
       activeXhrs.push(initSegmentXhr);
     }
 
-    var segmentRequestOptions = icplayer$1.mergeOptions(xhrOptions, {
+    var segmentRequestOptions = videojs$1.mergeOptions(xhrOptions, {
       uri: segment.resolvedUri,
       responseType: 'arraybuffer',
       headers: segmentXhrHeaders(segment)
@@ -41109,7 +41131,7 @@
       }
 
       if (!codecInfo.audioProfile) {
-        icplayer$1.log.warn('Multiple audio tracks present but no audio codec string is specified. ' + 'Attempting to use the default audio codec (mp4a.40.2)');
+        videojs$1.log.warn('Multiple audio tracks present but no audio codec string is specified. ' + 'Attempting to use the default audio codec (mp4a.40.2)');
         codecInfo.audioProfile = defaultCodecs.audioProfile;
       }
     }
@@ -41644,11 +41666,11 @@
    *
    * @class SegmentLoader
    * @param {Object} options required and optional options
-   * @extends icplayer.EventTarget
+   * @extends videojs.EventTarget
    */
 
-  var SegmentLoader = function (_icplayer$EventTarget) {
-    inherits$3(SegmentLoader, _icplayer$EventTarget);
+  var SegmentLoader = function (_videojs$EventTarget) {
+    inherits$3(SegmentLoader, _videojs$EventTarget);
 
     function SegmentLoader(settings) {
       classCallCheck$3(this, SegmentLoader);
@@ -41855,7 +41877,7 @@
       key: 'buffered_',
       value: function buffered_() {
         if (!this.sourceUpdater_) {
-          return icplayer$1.createTimeRanges();
+          return videojs$1.createTimeRanges();
         }
 
         return this.sourceUpdater_.buffered();
@@ -42931,7 +42953,7 @@
       }
     }]);
     return SegmentLoader;
-  }(icplayer$1.EventTarget);
+  }(videojs$1.EventTarget);
 
   /**
    * @file vtt-segment-loader.js
@@ -42950,7 +42972,7 @@
    *
    * @class VTTSegmentLoader
    * @param {Object} options required and optional options
-   * @extends icplayer.EventTarget
+   * @extends videojs.EventTarget
    */
 
   var VTTSegmentLoader = function (_SegmentLoader) {
@@ -42981,14 +43003,14 @@
       key: 'buffered_',
       value: function buffered_() {
         if (!this.subtitlesTrack_ || !this.subtitlesTrack_.cues.length) {
-          return icplayer$1.createTimeRanges();
+          return videojs$1.createTimeRanges();
         }
 
         var cues = this.subtitlesTrack_.cues;
         var start = cues[0].startTime;
         var end = cues[cues.length - 1].startTime;
 
-        return icplayer$1.createTimeRanges([[start, end]]);
+        return videojs$1.createTimeRanges([[start, end]]);
       }
 
       /**
@@ -43282,7 +43304,7 @@
           return segmentInfo.timestampmap = map;
         };
         parser.onparsingerror = function (error) {
-          icplayer$1.log.warn('Error encountered when parsing cues: ' + error.message);
+          videojs$1.log.warn('Error encountered when parsing cues: ' + error.message);
         };
 
         if (segmentInfo.segment.map) {
@@ -43608,8 +43630,8 @@
     }
   }];
 
-  var SyncController = function (_icplayer$EventTarget) {
-    inherits$3(SyncController, _icplayer$EventTarget);
+  var SyncController = function (_videojs$EventTarget) {
+    inherits$3(SyncController, _videojs$EventTarget);
 
     function SyncController() {
       classCallCheck$3(this, SyncController);
@@ -44049,7 +44071,7 @@
       }
     }]);
     return SyncController;
-  }(icplayer$1.EventTarget);
+  }(videojs$1.EventTarget);
 
   var Decrypter$1 = new shimWorker("./decrypter-worker.worker.js", function (window, document$$1) {
     var self = this;
@@ -44072,6 +44094,10 @@
       var window_1$$1 = win;
 
       /*
+       * pkcs7.pad
+       * https://github.com/brightcove/pkcs7
+       *
+       * Copyright (c) 2014 Brightcove
        * Licensed under the apache2 license.
        */
 
@@ -44946,7 +44972,7 @@
           return;
         }
 
-        icplayer$1.log.warn('Problem encountered loading the alternate audio track.' + 'Switching back to default.');
+        videojs$1.log.warn('Problem encountered loading the alternate audio track.' + 'Switching back to default.');
 
         for (var trackId in mediaType.tracks) {
           mediaType.tracks[trackId].enabled = mediaType.tracks[trackId] === defaultTrack;
@@ -44972,7 +44998,7 @@
         var segmentLoader = settings.segmentLoaders[type],
             mediaType = settings.mediaTypes[type];
 
-        icplayer$1.log.warn('Problem encountered loading the subtitle track.' + 'Disabling subtitle track.');
+        videojs$1.log.warn('Problem encountered loading the subtitle track.' + 'Disabling subtitle track.');
 
         stopLoaders(segmentLoader, mediaType);
 
@@ -45153,14 +45179,14 @@
             playlistLoader = null;
           }
 
-          properties = icplayer$1.mergeOptions({ id: variantLabel, playlistLoader: playlistLoader }, properties);
+          properties = videojs$1.mergeOptions({ id: variantLabel, playlistLoader: playlistLoader }, properties);
 
           setupListeners[type](type, properties.playlistLoader, settings);
 
           groups[groupId].push(properties);
 
           if (typeof tracks[variantLabel] === 'undefined') {
-            var track = new icplayer$1.AudioTrack({
+            var track = new videojs$1.AudioTrack({
               id: variantLabel,
               kind: audioTrackKind_(properties),
               enabled: false,
@@ -45226,7 +45252,7 @@
             playlistLoader = new DashPlaylistLoader(properties.playlists[0], hls, withCredentials, masterPlaylistLoader);
           }
 
-          properties = icplayer$1.mergeOptions({
+          properties = videojs$1.mergeOptions({
             id: variantLabel,
             playlistLoader: playlistLoader
           }, properties);
@@ -45284,7 +45310,7 @@
 
           // No PlaylistLoader is required for Closed-Captions because the captions are
           // embedded within the video stream
-          groups[groupId].push(icplayer$1.mergeOptions({ id: variantLabel }, properties));
+          groups[groupId].push(videojs$1.mergeOptions({ id: variantLabel }, properties));
 
           if (typeof tracks[variantLabel] === 'undefined') {
             var track = tech.addRemoteTextTrack({
@@ -45537,10 +45563,10 @@
    * if they are available
    *
    * @class MasterPlaylistController
-   * @extends icplayer.EventTarget
+   * @extends videojs.EventTarget
    */
-  var MasterPlaylistController = function (_icplayer$EventTarget) {
-    inherits$3(MasterPlaylistController, _icplayer$EventTarget);
+  var MasterPlaylistController = function (_videojs$EventTarget) {
+    inherits$3(MasterPlaylistController, _videojs$EventTarget);
 
     function MasterPlaylistController(options) {
       classCallCheck$3(this, MasterPlaylistController);
@@ -45582,12 +45608,12 @@
 
       _this.mediaTypes_ = createMediaTypes();
 
-      _this.mediaSource = new icplayer$1.MediaSource();
+      _this.mediaSource = new videojs$1.MediaSource();
 
       // load the media source into the player
       _this.mediaSource.addEventListener('sourceopen', _this.handleSourceOpen_.bind(_this));
 
-      _this.seekable_ = icplayer$1.createTimeRanges();
+      _this.seekable_ = videojs$1.createTimeRanges();
       _this.hasPlayed_ = function () {
         return false;
       };
@@ -45630,17 +45656,17 @@
 
       // setup segment loaders
       // combined audio/video or just video when alternate audio track is selected
-      _this.mainSegmentLoader_ = new SegmentLoader(icplayer$1.mergeOptions(segmentLoaderSettings, {
+      _this.mainSegmentLoader_ = new SegmentLoader(videojs$1.mergeOptions(segmentLoaderSettings, {
         segmentMetadataTrack: _this.segmentMetadataTrack_,
         loaderType: 'main'
       }), options);
 
       // alternate audio track
-      _this.audioSegmentLoader_ = new SegmentLoader(icplayer$1.mergeOptions(segmentLoaderSettings, {
+      _this.audioSegmentLoader_ = new SegmentLoader(videojs$1.mergeOptions(segmentLoaderSettings, {
         loaderType: 'audio'
       }), options);
 
-      _this.subtitleSegmentLoader_ = new VTTSegmentLoader(icplayer$1.mergeOptions(segmentLoaderSettings, {
+      _this.subtitleSegmentLoader_ = new VTTSegmentLoader(videojs$1.mergeOptions(segmentLoaderSettings, {
         loaderType: 'vtt'
       }), options);
 
@@ -45709,7 +45735,7 @@
           try {
             _this2.setupSourceBuffers_();
           } catch (e) {
-            icplayer$1.log.warn('Failed to create SourceBuffers', e);
+            videojs$1.log.warn('Failed to create SourceBuffers', e);
             return _this2.mediaSource.endOfStream('decode');
           }
           _this2.setupFirstPlay();
@@ -45957,13 +45983,13 @@
         });
 
         this.mainSegmentLoader_.on('reseteverything', function () {
-          // If playing an MTS stream, a icplayer.MediaSource is listening for
+          // If playing an MTS stream, a videojs.MediaSource is listening for
           // hls-reset to reset caption parsing state in the transmuxer
           _this3.tech_.trigger('hls-reset');
         });
 
         this.mainSegmentLoader_.on('segmenttimemapping', function (event) {
-          // If playing an MTS stream in html, a icplayer.MediaSource is listening for
+          // If playing an MTS stream in html, a videojs.MediaSource is listening for
           // hls-segment-time-mapping update its internal mapping of stream to display time
           _this3.tech_.trigger({
             type: 'hls-segment-time-mapping',
@@ -46080,7 +46106,7 @@
             return false;
           }
 
-          if (icplayer$1.browser.IE_VERSION && this.tech_.readyState() === 0) {
+          if (videojs$1.browser.IE_VERSION && this.tech_.readyState() === 0) {
             // IE11 throws an InvalidStateError if you try to set currentTime while the
             // readyState is 0, so it must be delayed until the tech fires loadedmetadata.
             this.tech_.one('loadedmetadata', function () {
@@ -46123,12 +46149,12 @@
         try {
           this.setupSourceBuffers_();
         } catch (e) {
-          icplayer$1.log.warn('Failed to create Source Buffers', e);
+          videojs$1.log.warn('Failed to create Source Buffers', e);
           return this.mediaSource.endOfStream('decode');
         }
 
         // if autoplay is enabled, begin playback. This is duplicative of
-        // code in icp.js but is required because play() must be invoked
+        // code in video.js but is required because play() must be invoked
         // *after* the media source has opened.
         if (this.tech_.autoplay()) {
           var playPromise = this.tech_.play();
@@ -46258,7 +46284,7 @@
 
         if (isFinalRendition) {
           // Never blacklisting this playlist because it's final rendition
-          icplayer$1.log.warn('Problem encountered with the current ' + 'HLS playlist. Trying again since it is the final playlist.');
+          videojs$1.log.warn('Problem encountered with the current ' + 'HLS playlist. Trying again since it is the final playlist.');
 
           this.tech_.trigger('retryplaylist');
           return this.masterPlaylistLoader_.load(isFinalRendition);
@@ -46270,7 +46296,7 @@
 
         // Select a new playlist
         nextPlaylist = this.selectPlaylist();
-        icplayer$1.log.warn('Problem encountered with the current HLS playlist.' + (error.message ? ' ' + error.message : '') + ' Switching to another playlist.');
+        videojs$1.log.warn('Problem encountered with the current HLS playlist.' + (error.message ? ' ' + error.message : '') + ' Switching to another playlist.');
 
         return this.masterPlaylistLoader_.media(nextPlaylist);
       }
@@ -46422,7 +46448,7 @@
           // seekables are pretty far off, rely on main
           this.seekable_ = mainSeekable;
         } else {
-          this.seekable_ = icplayer$1.createTimeRanges([[audioSeekable.start(0) > mainSeekable.start(0) ? audioSeekable.start(0) : mainSeekable.start(0), audioSeekable.end(0) < mainSeekable.end(0) ? audioSeekable.end(0) : mainSeekable.end(0)]]);
+          this.seekable_ = videojs$1.createTimeRanges([[audioSeekable.start(0) > mainSeekable.start(0) ? audioSeekable.start(0) : mainSeekable.start(0), audioSeekable.end(0) < mainSeekable.end(0) ? audioSeekable.end(0) : mainSeekable.end(0)]]);
         }
 
         this.logger_('seekable updated [' + printableRange(this.seekable_) + ']');
@@ -46564,7 +46590,7 @@
         // only with alternate audio)
         mimeTypes[0] !== mimeTypes[1] ?
         // then we want to wait on the second source buffer
-        new icplayer$1.EventTarget() :
+        new videojs$1.EventTarget() :
         // otherwise there is no need to wait as the content is either audio only,
         // video only, or muxed content.
         null;
@@ -46688,7 +46714,7 @@
       }
     }]);
     return MasterPlaylistController;
-  }(icplayer$1.EventTarget);
+  }(videojs$1.EventTarget);
 
   /**
    * Returns a function that acts as the Enable/disable playlist function.
@@ -47211,14 +47237,14 @@
   /**
    * Main entry point for the plugin
    *
-   * @param {Player} player a reference to a icplayer Player instance
+   * @param {Player} player a reference to a videojs Player instance
    * @param {Object} [options] an object with plugin options
    * @private
    */
   var initPlugin = function initPlugin(player, options) {
     var lastCalled = 0;
     var seekTo = 0;
-    var localOptions = icplayer$1.mergeOptions(defaultOptions, options);
+    var localOptions = videojs$1.mergeOptions(defaultOptions, options);
 
     player.ready(function () {
       player.trigger({ type: 'usage', name: 'hls-error-reload-initialized' });
@@ -47270,7 +47296,7 @@
       }
 
       if (!localOptions.getSource || typeof localOptions.getSource !== 'function') {
-        icplayer$1.log.error('ERROR: reloadSourceOnError - The option getSource must be a function!');
+        videojs$1.log.error('ERROR: reloadSourceOnError - The option getSource must be a function!');
         return;
       }
       lastCalled = Date.now();
@@ -47321,8 +47347,10 @@
   var version$3 = "1.1.0";
 
   /**
-   * @file icplayer-http-streaming.js
+   * @file videojs-http-streaming.js
    *
+   * The main file for the HLS project.
+   * License: https://github.com/videojs/videojs-http-streaming/blob/master/LICENSE
    */
 
   var Hls$1 = {
@@ -47348,14 +47376,14 @@
   ['GOAL_BUFFER_LENGTH', 'MAX_GOAL_BUFFER_LENGTH', 'GOAL_BUFFER_LENGTH_RATE', 'BUFFER_LOW_WATER_LINE', 'MAX_BUFFER_LOW_WATER_LINE', 'BUFFER_LOW_WATER_LINE_RATE', 'BANDWIDTH_VARIANCE'].forEach(function (prop) {
     Object.defineProperty(Hls$1, prop, {
       get: function get$$1() {
-        icplayer$1.log.warn('using Hls.' + prop + ' is UNSAFE be sure you know what you are doing');
+        videojs$1.log.warn('using Hls.' + prop + ' is UNSAFE be sure you know what you are doing');
         return Config[prop];
       },
       set: function set$$1(value) {
-        icplayer$1.log.warn('using Hls.' + prop + ' is UNSAFE be sure you know what you are doing');
+        videojs$1.log.warn('using Hls.' + prop + ' is UNSAFE be sure you know what you are doing');
 
         if (typeof value !== 'number' || value < 0) {
-          icplayer$1.log.warn('value of Hls.' + prop + ' must be greater than or equal to 0');
+          videojs$1.log.warn('value of Hls.' + prop + ' must be greater than or equal to 0');
           return;
         }
 
@@ -47422,7 +47450,7 @@
   // HLS is a source handler, not a tech. Make sure attempts to use it
   // as one do not cause exceptions.
   Hls$1.canPlaySource = function () {
-    return icplayer$1.log.warn('HLS is no longer a tech. Please remove it from ' + 'your player\'s techOrder.');
+    return videojs$1.log.warn('HLS is no longer a tech. Please remove it from ' + 'your player\'s techOrder.');
   };
 
   var emeKeySystems = function emeKeySystems(keySystemOptions, videoPlaylist, audioPlaylist) {
@@ -47443,21 +47471,21 @@
         keySystemContentTypes[keySystem].pssh = videoPlaylist.contentProtection[keySystem].pssh;
       }
 
-      // icplayer-contrib-eme accepts the option of specifying: 'com.some.cdm': 'url'
+      // videojs-contrib-eme accepts the option of specifying: 'com.some.cdm': 'url'
       // so we need to prevent overwriting the URL entirely
       if (typeof keySystemOptions[keySystem] === 'string') {
         keySystemContentTypes[keySystem].url = keySystemOptions[keySystem];
       }
     }
 
-    return icplayer$1.mergeOptions(keySystemOptions, keySystemContentTypes);
+    return videojs$1.mergeOptions(keySystemOptions, keySystemContentTypes);
   };
 
   var setupEmeOptions = function setupEmeOptions(hlsHandler) {
     if (hlsHandler.options_.sourceType !== 'dash') {
       return;
     }
-    var player = icplayer$1.players[hlsHandler.tech_.options_.playerId];
+    var player = videojs$1.players[hlsHandler.tech_.options_.playerId];
 
     if (player.eme) {
       var sourceOptions = emeKeySystems(hlsHandler.source_.keySystems, hlsHandler.playlists.media(), hlsHandler.masterPlaylistController_.mediaTypes_.AUDIO.activePlaylistLoader.media());
@@ -47475,7 +47503,7 @@
     var video = document_1.createElement('video');
 
     // native HLS is definitely not supported if HTML5 video isn't
-    if (!icplayer$1.getTech('Html5').isSupported()) {
+    if (!videojs$1.getTech('Html5').isSupported()) {
       return false;
     }
 
@@ -47499,7 +47527,7 @@
   }();
 
   Hls$1.supportsNativeDash = function () {
-    if (!icplayer$1.getTech('Html5').isSupported()) {
+    if (!videojs$1.getTech('Html5').isSupported()) {
       return false;
     }
 
@@ -47524,17 +47552,17 @@
    * as one do not cause exceptions.
    */
   Hls$1.isSupported = function () {
-    return icplayer$1.log.warn('HLS is no longer a tech. Please remove it from ' + 'your player\'s techOrder.');
+    return videojs$1.log.warn('HLS is no longer a tech. Please remove it from ' + 'your player\'s techOrder.');
   };
 
-  var Component$1 = icplayer$1.getComponent('Component');
+  var Component$1 = videojs$1.getComponent('Component');
 
   /**
    * The Hls Handler object, where we orchestrate all of the parts
-   * of HLS to interact with icp.js
+   * of HLS to interact with video.js
    *
    * @class HlsHandler
-   * @extends icplayer.Component
+   * @extends videojs.Component
    * @param {Object} source the soruce object
    * @param {Tech} tech the parent tech object
    * @param {Object} options optional and required options
@@ -47551,12 +47579,12 @@
       var _this = possibleConstructorReturn$3(this, (HlsHandler.__proto__ || Object.getPrototypeOf(HlsHandler)).call(this, tech, options.hls));
 
       if (tech.options_ && tech.options_.playerId) {
-        var _player = icplayer$1(tech.options_.playerId);
+        var _player = videojs$1(tech.options_.playerId);
 
         if (!_player.hasOwnProperty('hls')) {
           Object.defineProperty(_player, 'hls', {
             get: function get$$1() {
-              icplayer$1.log.warn('player.hls is deprecated. Use player.tech_.hls instead.');
+              videojs$1.log.warn('player.hls is deprecated. Use player.tech_.hls instead.');
               tech.trigger({ type: 'usage', name: 'hls-player-access' });
               return _this;
             }
@@ -47565,8 +47593,8 @@
 
         // Set up a reference to the HlsHandler from player.vhs. This allows users to start
         // migrating from player.tech_.hls... to player.vhs... for API access. Although this
-        // isn't the most appropriate form of reference for icp.js (since all APIs should
-        // be provided through core icp.js), it is a common pattern for plugins, and vhs
+        // isn't the most appropriate form of reference for video.js (since all APIs should
+        // be provided through core video.js), it is a common pattern for plugins, and vhs
         // will act accordingly.
         _player.vhs = _this;
         // deprecated, for backwards compatibility
@@ -47670,14 +47698,14 @@
         this.options_.sourceType = simpleTypeFromSourceType(type);
 
         this.masterPlaylistController_ = new MasterPlaylistController(this.options_);
-        this.playbackWatcher_ = new PlaybackWatcher(icplayer$1.mergeOptions(this.options_, {
+        this.playbackWatcher_ = new PlaybackWatcher(videojs$1.mergeOptions(this.options_, {
           seekable: function seekable$$1() {
             return _this3.seekable();
           }
         }));
 
         this.masterPlaylistController_.on('error', function () {
-          var player = icplayer$1.players[_this3.tech_.options_.playerId];
+          var player = videojs$1.players[_this3.tech_.options_.playerId];
 
           player.error(_this3.masterPlaylistController_.error);
         });
@@ -47755,7 +47783,7 @@
               return systemBitrate;
             },
             set: function set$$1() {
-              icplayer$1.log.error('The "systemBandwidth" property is read-only');
+              videojs$1.log.error('The "systemBandwidth" property is read-only');
             }
           }
         });
@@ -47901,7 +47929,7 @@
           return;
         }
 
-        this.tech_.src(icplayer$1.URL.createObjectURL(this.masterPlaylistController_.mediaSource));
+        this.tech_.src(videojs$1.URL.createObjectURL(this.masterPlaylistController_.mediaSource));
       }
 
       /**
@@ -47916,7 +47944,7 @@
       value: function setupQualityLevels_() {
         var _this4 = this;
 
-        var player = icplayer$1.players[this.tech_.options_.playerId];
+        var player = videojs$1.players[this.tech_.options_.playerId];
 
         if (player && player.qualityLevels) {
           this.qualityLevels_ = player.qualityLevels();
@@ -47994,7 +48022,7 @@
   }(Component$1);
 
   /**
-   * The Source Handler object, which informs icp.js what additional
+   * The Source Handler object, which informs video.js what additional
    * MIME types are supported and sets up playback. It is registered
    * automatically to the appropriate tech based on the capabilities of
    * the browser it is running in. It is not necessary to use or modify
@@ -48002,19 +48030,19 @@
    */
 
   var HlsSourceHandler = {
-    name: 'icplayer-http-streaming',
+    name: 'videojs-http-streaming',
     VERSION: version$3,
     canHandleSource: function canHandleSource(srcObj) {
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-      var localOptions = icplayer$1.mergeOptions(icplayer$1.options, options);
+      var localOptions = videojs$1.mergeOptions(videojs$1.options, options);
 
       return HlsSourceHandler.canPlayType(srcObj.type, localOptions);
     },
     handleSource: function handleSource(source, tech) {
       var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-      var localOptions = icplayer$1.mergeOptions(icplayer$1.options, options);
+      var localOptions = videojs$1.mergeOptions(videojs$1.options, options);
 
       tech.hls = new HlsHandler(source, tech, localOptions);
       tech.hls.xhr = xhrFactory();
@@ -48025,8 +48053,8 @@
     canPlayType: function canPlayType(type) {
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-      var _icplayer$mergeOptions = icplayer$1.mergeOptions(icplayer$1.options, options),
-          overrideNative = _icplayer$mergeOptions.hls.overrideNative;
+      var _videojs$mergeOptions = videojs$1.mergeOptions(videojs$1.options, options),
+          overrideNative = _videojs$mergeOptions.hls.overrideNative;
 
       var supportedType = simpleTypeFromSourceType(type);
       var canUseMsePlayback = supportedType && (!Hls$1.supportsTypeNatively(supportedType) || overrideNative);
@@ -48035,30 +48063,30 @@
     }
   };
 
-  if (typeof icplayer$1.MediaSource === 'undefined' || typeof icplayer$1.URL === 'undefined') {
-    icplayer$1.MediaSource = MediaSource;
-    icplayer$1.URL = URL$1;
+  if (typeof videojs$1.MediaSource === 'undefined' || typeof videojs$1.URL === 'undefined') {
+    videojs$1.MediaSource = MediaSource;
+    videojs$1.URL = URL$1;
   }
 
   // register source handlers with the appropriate techs
   if (MediaSource.supportsNativeMediaSources()) {
-    icplayer$1.getTech('Html5').registerSourceHandler(HlsSourceHandler, 0);
+    videojs$1.getTech('Html5').registerSourceHandler(HlsSourceHandler, 0);
   }
 
-  icplayer$1.HlsHandler = HlsHandler;
-  icplayer$1.HlsSourceHandler = HlsSourceHandler;
-  icplayer$1.Hls = Hls$1;
-  if (!icplayer$1.use) {
-    icplayer$1.registerComponent('Hls', Hls$1);
+  videojs$1.HlsHandler = HlsHandler;
+  videojs$1.HlsSourceHandler = HlsSourceHandler;
+  videojs$1.Hls = Hls$1;
+  if (!videojs$1.use) {
+    videojs$1.registerComponent('Hls', Hls$1);
   }
-  icplayer$1.options.hls = icplayer$1.options.hls || {};
+  videojs$1.options.hls = videojs$1.options.hls || {};
 
-  if (icplayer$1.registerPlugin) {
-    icplayer$1.registerPlugin('reloadSourceOnError', reloadSourceOnError);
+  if (videojs$1.registerPlugin) {
+    videojs$1.registerPlugin('reloadSourceOnError', reloadSourceOnError);
   } else {
-    icplayer$1.plugin('reloadSourceOnError', reloadSourceOnError);
+    videojs$1.plugin('reloadSourceOnError', reloadSourceOnError);
   }
 
-  return icplayer$1;
+  return videojs$1;
 
 })));

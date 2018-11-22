@@ -1,9 +1,9 @@
 /**
- * icplayer-icon
+ * videojs-icon
 * @version 1.0
  * @license Apache-2.0
  */
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.icplayerIcon = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.videojsIcon = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -13,9 +13,9 @@ Object.defineProperty(exports, "__esModule", {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var _icplayer = (typeof window !== "undefined" ? window['icplayer'] : typeof global !== "undefined" ? global['icplayer'] : null);
+var _videojs = (typeof window !== "undefined" ? window['videojs'] : typeof global !== "undefined" ? global['videojs'] : null);
 
-var _icplayer2 = _interopRequireDefault(_icplayer);
+var _videojs2 = _interopRequireDefault(_videojs);
 
 // Default options for the plugin.
 var defaults = {
@@ -39,10 +39,10 @@ var defaults = {
  */
 var onPlayerReady = function onPlayerReady(player, options) {
   var containerElement = document.createElement("div");
-  containerElement.className = "icp-icon-container";
+  containerElement.className = "vjs-icon-container";
 
   var linkElement = document.createElement("a");
-  linkElement.className = "icp-icon-container-link";
+  linkElement.className = "vjs-icon-container-link";
   // linkElement.setAttribute("href", options.destination || defaults.destination);
   linkElement.setAttribute("title", options.title || defaults.title);
     // linkElement.setAttribute("href", options.destination || defaults.destination);
@@ -59,10 +59,10 @@ var onPlayerReady = function onPlayerReady(player, options) {
   containerElement.appendChild(linkElement);
 /*--------------------- end of chatbox Button -----------------------*/
    var containerElement2 = document.createElement("div");
-   containerElement2.className = "icp-icon-container2";
+   containerElement2.className = "vjs-icon-container2";
 
    var linkElement2 = document.createElement("a");
-   linkElement2.className = "icp-icon-container-link2";
+   linkElement2.className = "vjs-icon-container-link2";
    //linkElement.setAttribute("href", options.destination || defaults.destination);
    linkElement2.setAttribute("title2", options.title2 || defaults.title2);
    //linkElement.setAttribute("target", options.destinationTarget || defaults.destinationTarget);
@@ -77,13 +77,13 @@ var onPlayerReady = function onPlayerReady(player, options) {
 /*--------------------- end of survey Button -----------------------*/
   player.controlBar.el().insertBefore(containerElement, player.controlBar.fullscreenToggle.el());
   player.controlBar.el().insertBefore(containerElement2, containerElement);
-  player.addClass('icp-icon');
+  player.addClass('vjs-icon');
 };
 
 /**
- * A icp.js plugin.
+ * A video.js plugin.
  *
- * In the plugin function, the value of `this` is a icp.js `Player`
+ * In the plugin function, the value of `this` is a video.js `Player`
  * instance. You cannot rely on the player being in a "ready" state here,
  * depending on how the plugin is invoked. This may or may not be important
  * to you; if not, remove the wait for "ready"!
@@ -96,12 +96,12 @@ var icon = function icon(options) {
   var _this = this;
 
   this.ready(function () {
-    onPlayerReady(_this, _icplayer2["default"].mergeOptions(defaults, options));
+    onPlayerReady(_this, _videojs2["default"].mergeOptions(defaults, options));
   });
 };
 
-// Register the plugin with icp.js.
-_icplayer2["default"].plugin('icon', icon);
+// Register the plugin with video.js.
+_videojs2["default"].plugin('icon', icon);
 
 // Include the version number.
 icon.VERSION = '0.0.4';

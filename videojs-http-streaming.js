@@ -1,15 +1,16 @@
 /**
- * @icplayer/http-streaming
- * @version 1.0
+ * @videojs/http-streaming
+ * @version 1.2.5
+ * @copyright 2018 Brightcove, Inc
  * @license Apache-2.0
  */
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('icp.js')) :
-	typeof define === 'function' && define.amd ? define(['exports', 'icp.js'], factory) :
-	(factory((global.icplayerHttpStreaming = {}),global.icplayer));
-}(this, (function (exports,icplayer) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('video.js')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'video.js'], factory) :
+	(factory((global.videojsHttpStreaming = {}),global.videojs));
+}(this, (function (exports,videojs) { 'use strict';
 
-	icplayer = icplayer && icplayer.hasOwnProperty('default') ? icplayer['default'] : icplayer;
+	videojs = videojs && videojs.hasOwnProperty('default') ? videojs['default'] : videojs;
 
 	var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -1433,9 +1434,9 @@
 	 *
 	 */
 
-	var mergeOptions = icplayer.mergeOptions,
-	    EventTarget = icplayer.EventTarget,
-	    log = icplayer.log;
+	var mergeOptions = videojs.mergeOptions,
+	    EventTarget = videojs.EventTarget,
+	    log = videojs.log;
 
 	/**
 	 * Loops through all supported media groups in master and calls the provided
@@ -2017,7 +2018,7 @@
 	 * Playlist related utilities.
 	 */
 
-	var createTimeRange = icplayer.createTimeRange;
+	var createTimeRange = videojs.createTimeRange;
 
 	/**
 	 * walk backward until we find a duration we can use
@@ -2574,8 +2575,8 @@
 	 * @file xhr.js
 	 */
 
-	var icplayerXHR = icplayer.xhr,
-	    mergeOptions$1 = icplayer.mergeOptions;
+	var videojsXHR = videojs.xhr,
+	    mergeOptions$1 = videojs.mergeOptions;
 
 
 	var xhrFactory = function xhrFactory() {
@@ -2587,7 +2588,7 @@
 
 	    // Allow an optional user-specified function to modify the option
 	    // object before we construct the xhr request
-	    var beforeRequest = XhrFunction.beforeRequest || icplayer.Hls.xhr.beforeRequest;
+	    var beforeRequest = XhrFunction.beforeRequest || videojs.Hls.xhr.beforeRequest;
 
 	    if (beforeRequest && typeof beforeRequest === 'function') {
 	      var newOptions = beforeRequest(options);
@@ -2597,7 +2598,7 @@
 	      }
 	    }
 
-	    var request = icplayerXHR(options, function (error, response) {
+	    var request = videojsXHR(options, function (error, response) {
 	      var reqResponse = request.response;
 
 	      if (!error && reqResponse) {
@@ -2613,14 +2614,14 @@
 	        request.responseHeaders = response.headers;
 	      }
 
-	      // icplayer.xhr now uses a specific code on the error
+	      // videojs.xhr now uses a specific code on the error
 	      // object to signal that a request has timed out instead
 	      // of setting a boolean on the request object
 	      if (error && error.code === 'ETIMEDOUT') {
 	        request.timedout = true;
 	      }
 
-	      // icplayer.xhr no longer considers status codes outside of 200 and 0
+	      // videojs.xhr no longer considers status codes outside of 200 and 0
 	      // (for file uris) to be errors, but the old XHR did, so emulate that
 	      // behavior. Status 206 may be used in response to byterange requests.
 	      if (!error && !request.aborted && response.statusCode !== 200 && response.statusCode !== 206 && response.statusCode !== 0) {
@@ -2645,6 +2646,9 @@
 
 	/*
 	 * pkcs7.pad
+	 * https://github.com/brightcove/pkcs7
+	 *
+	 * Copyright (c) 2014 Brightcove
 	 * Licensed under the apache2 license.
 	 */
 
@@ -3398,7 +3402,7 @@
 	    }
 	  }
 
-	  return icplayer.createTimeRanges(results);
+	  return videojs.createTimeRanges(results);
 	};
 
 	/**
@@ -3433,7 +3437,7 @@
 	 */
 	var findGaps = function findGaps(buffered) {
 	  if (buffered.length < 2) {
-	    return icplayer.createTimeRanges();
+	    return videojs.createTimeRanges();
 	  }
 
 	  var ranges = [];
@@ -3445,7 +3449,7 @@
 	    ranges.push([start, end]);
 	  }
 
-	  return icplayer.createTimeRanges(ranges);
+	  return videojs.createTimeRanges(ranges);
 	};
 
 	/**
@@ -3513,7 +3517,7 @@
 	 */
 
 	/**
-	 * Create text tracks on icp.js if they exist on a segment.
+	 * Create text tracks on video.js if they exist on a segment.
 	 *
 	 * @param {Object} sourceBuffer the VSB or FSB
 	 * @param {Object} mediaSource the HTML media source
@@ -3536,7 +3540,7 @@
 
 	        if (track) {
 	          // Resuse an existing track with a CC# id because this was
-	          // very likely created by icplayer-contrib-hls from information
+	          // very likely created by videojs-contrib-hls from information
 	          // in the m3u8 for us to use
 	          sourceBuffer.inbandTextTracks_[trackId] = track;
 	        } else {
@@ -3566,7 +3570,7 @@
 	 */
 
 	/**
-	 * Remove cues from a track on icp.js.
+	 * Remove cues from a track on video.js.
 	 *
 	 * @param {Double} start start of where we should remove the cue
 	 * @param {Double} end end of where the we should remove the cue
@@ -3612,19 +3616,19 @@
 	  Object.defineProperties(cue.frame, {
 	    id: {
 	      get: function get() {
-	        icplayer.log.warn('cue.frame.id is deprecated. Use cue.value.key instead.');
+	        videojs.log.warn('cue.frame.id is deprecated. Use cue.value.key instead.');
 	        return cue.value.key;
 	      }
 	    },
 	    value: {
 	      get: function get() {
-	        icplayer.log.warn('cue.frame.value is deprecated. Use cue.value.data instead.');
+	        videojs.log.warn('cue.frame.value is deprecated. Use cue.value.data instead.');
 	        return cue.value.data;
 	      }
 	    },
 	    privateData: {
 	      get: function get() {
-	        icplayer.log.warn('cue.frame.privateData is deprecated. Use cue.value.data instead.');
+	        videojs.log.warn('cue.frame.privateData is deprecated. Use cue.value.data instead.');
 	        return cue.value.data;
 	      }
 	    }
@@ -3820,6 +3824,8 @@
 	    /**
 	     * mux.js
 	     *
+	     * Copyright (c) 2015 Brightcove
+	     * All rights reserved.
 	     *
 	     * Functions that generate fragmented MP4s suitable for use with Media
 	     * Source Extensions.
@@ -4614,6 +4620,8 @@
 	    /**
 	     * mux.js
 	     *
+	     * Copyright (c) 2014 Brightcove
+	     * All rights reserved.
 	     *
 	     * A lightweight readable stream implemention that handles event dispatching.
 	     * Objects that inherit from streams should call init in their constructors.
@@ -5087,6 +5095,8 @@
 	    /**
 	     * mux.js
 	     *
+	     * Copyright (c) 2015 Brightcove
+	     * All rights reserved.
 	     *
 	     * Reads in-band caption information from a video elementary
 	     * stream. Captions must follow the CEA-708 standard for injection
@@ -9885,7 +9895,7 @@
 	    };
 
 	    /**
-	      * Converts SEI NALUs into captions that can be used by icp.js
+	      * Converts SEI NALUs into captions that can be used by video.js
 	     **/
 	    var CaptionParser = function CaptionParser() {
 	      var isInitialized = false;
@@ -10512,7 +10522,7 @@
 	    }
 
 	    if (!codecInfo.audioProfile) {
-	      icplayer.log.warn('Multiple audio tracks present but no audio codec string is specified. ' + 'Attempting to use the default audio codec (mp4a.40.2)');
+	      videojs.log.warn('Multiple audio tracks present but no audio codec string is specified. ' + 'Attempting to use the default audio codec (mp4a.40.2)');
 	      codecInfo.audioProfile = defaultCodecs.audioProfile;
 	    }
 	  }
@@ -10741,7 +10751,7 @@
 
 	  // neither buffer has been created yet
 	  if (!videoBuffer && !audioBuffer) {
-	    return icplayer.createTimeRange();
+	    return videojs.createTimeRange();
 	  }
 
 	  // only one buffer is configured
@@ -10759,7 +10769,7 @@
 
 	  // both buffers are empty
 	  if (videoBuffer.buffered.length === 0 && audioBuffer.buffered.length === 0) {
-	    return icplayer.createTimeRange();
+	    return videojs.createTimeRange();
 	  }
 
 	  // Handle the case where we have both buffers and create an
@@ -10812,7 +10822,7 @@
 	    }
 	  }
 
-	  return icplayer.createTimeRanges(ranges);
+	  return videojs.createTimeRanges(ranges);
 	};
 
 	/**
@@ -10822,7 +10832,7 @@
 	// We create a wrapper around the SourceBuffer so that we can manage the
 	// state of the `updating` property manually. We have to do this because
 	// Firefox changes `updating` to false long before triggering `updateend`
-	// events and that was causing strange problems in icplayer-contrib-hls
+	// events and that was causing strange problems in videojs-contrib-hls
 	var makeWrappedSourceBuffer = function makeWrappedSourceBuffer(mediaSource, mimeType) {
 	  var sourceBuffer = mediaSource.addSourceBuffer(mimeType);
 	  var wrapper = Object.create(null);
@@ -10865,16 +10875,16 @@
 	 * @param {HtmlMediaSource} mediaSource the parent mediaSource
 	 * @param {Array} codecs array of codecs that we will be dealing with
 	 * @class VirtualSourceBuffer
-	 * @extends icp.js.EventTarget
+	 * @extends video.js.EventTarget
 	 */
 
-	var VirtualSourceBuffer = function (_icplayer$EventTarget) {
-	  inherits$1(VirtualSourceBuffer, _icplayer$EventTarget);
+	var VirtualSourceBuffer = function (_videojs$EventTarget) {
+	  inherits$1(VirtualSourceBuffer, _videojs$EventTarget);
 
 	  function VirtualSourceBuffer(mediaSource, codecs) {
 	    classCallCheck$1(this, VirtualSourceBuffer);
 
-	    var _this = possibleConstructorReturn$1(this, (VirtualSourceBuffer.__proto__ || Object.getPrototypeOf(VirtualSourceBuffer)).call(this, icplayer.EventTarget));
+	    var _this = possibleConstructorReturn$1(this, (VirtualSourceBuffer.__proto__ || Object.getPrototypeOf(VirtualSourceBuffer)).call(this, videojs.EventTarget));
 
 	    _this.timestampOffset_ = 0;
 	    _this.pendingBuffers_ = [];
@@ -10888,7 +10898,7 @@
 	    _this.appendAudioInitSegment_ = true;
 	    _this.gopBuffer_ = [];
 	    _this.timeMapping_ = 0;
-	    _this.safeAppend_ = icplayer.browser.IE_VERSION >= 11;
+	    _this.safeAppend_ = videojs.browser.IE_VERSION >= 11;
 
 	    var options = {
 	      remux: false,
@@ -11069,7 +11079,7 @@
 	          // on the main VirtualSourceBuffer by the HTMLMediaSource much earlier
 	          // than createRealSourceBuffers_ is called to create the second
 	          // VirtualSourceBuffer because that happens as a side-effect of
-	          // icplayer-contrib-hls starting the audioSegmentLoader. As a result,
+	          // videojs-contrib-hls starting the audioSegmentLoader. As a result,
 	          // the audioBuffer is essentially "ownerless" and no one will toggle
 	          // the `updating` state back to false once the `updateend` event is received
 	          //
@@ -11396,7 +11406,7 @@
 	    }
 	  }]);
 	  return VirtualSourceBuffer;
-	}(icplayer.EventTarget);
+	}(videojs.EventTarget);
 
 	/**
 	 * @file html-media-source.js
@@ -11408,11 +11418,11 @@
 	 *
 	 * @link https://developer.mozilla.org/en-US/docs/Web/API/MediaSource
 	 * @class HtmlMediaSource
-	 * @extends icplayer.EventTarget
+	 * @extends videojs.EventTarget
 	 */
 
-	var HtmlMediaSource = function (_icplayer$EventTarget) {
-	  inherits$1(HtmlMediaSource, _icplayer$EventTarget);
+	var HtmlMediaSource = function (_videojs$EventTarget) {
+	  inherits$1(HtmlMediaSource, _videojs$EventTarget);
 
 	  function HtmlMediaSource() {
 	    classCallCheck$1(this, HtmlMediaSource);
@@ -11451,7 +11461,7 @@
 	    Object.defineProperty(_this, 'seekable', {
 	      get: function get$$1() {
 	        if (this.duration_ === Infinity) {
-	          return icplayer.createTimeRanges([[0, this.nativeMediaSource_.duration]]);
+	          return videojs.createTimeRanges([[0, this.nativeMediaSource_.duration]]);
 	        }
 	        return this.nativeMediaSource_.seekable;
 	      }
@@ -11477,7 +11487,7 @@
 
 	    /**
 	     * update the list of active source buffers based upon various
-	     * imformation from HLS and icp.js
+	     * imformation from HLS and video.js
 	     *
 	     * @private
 	     */
@@ -11586,12 +11596,12 @@
 	        return;
 	      }
 
-	      _this.player_ = icplayer(video.parentNode);
+	      _this.player_ = videojs(video.parentNode);
 
-	      // hls-reset is fired by icplayer.Hls on to the tech after the main SegmentLoader
+	      // hls-reset is fired by videojs.Hls on to the tech after the main SegmentLoader
 	      // resets its state and flushes the buffer
 	      _this.player_.tech_.on('hls-reset', _this.onHlsReset_);
-	      // hls-segment-time-mapping is fired by icplayer.Hls on to the tech after the main
+	      // hls-segment-time-mapping is fired by videojs.Hls on to the tech after the main
 	      // SegmentLoader inspects an MTS segment and has an accurate stream to display
 	      // time mapping
 	      _this.player_.tech_.on('hls-segment-time-mapping', _this.onHlsSegmentTimeMapping_);
@@ -11733,10 +11743,10 @@
 	    }
 	  }]);
 	  return HtmlMediaSource;
-	}(icplayer.EventTarget);
+	}(videojs.EventTarget);
 
 	/**
-	 * @file icplayer-contrib-media-sources.js
+	 * @file videojs-contrib-media-sources.js
 	 */
 	var urlCount = 0;
 
@@ -11747,7 +11757,7 @@
 	// store references to the media sources so they can be connected
 	// to a video element (a swf object)
 	// TODO: can we store this somewhere local to this module?
-	icplayer.mediaSources = {};
+	videojs.mediaSources = {};
 
 	/**
 	 * Provide a method for a swf object to notify JS that a
@@ -11757,12 +11767,12 @@
 	 * @param {String} swfId the swf id
 	 */
 	var open = function open(msObjectURL, swfId) {
-	  var mediaSource = icplayer.mediaSources[msObjectURL];
+	  var mediaSource = videojs.mediaSources[msObjectURL];
 
 	  if (mediaSource) {
 	    mediaSource.trigger({ type: 'sourceopen', swfId: swfId });
 	  } else {
-	    throw new Error('Media Source not found (Icp.js)');
+	    throw new Error('Media Source not found (Video.js)');
 	  }
 	};
 
@@ -11801,7 +11811,7 @@
 
 	/**
 	 * A wrapper around the native URL for our MSE object
-	 * implementation, this object is exposed under icplayer.URL
+	 * implementation, this object is exposed under videojs.URL
 	 *
 	 * @link https://developer.mozilla.org/en-US/docs/Web/API/URL/URL
 	 */
@@ -11809,13 +11819,13 @@
 	  /**
 	   * A wrapper around the native createObjectURL for our objects.
 	   * This function maps a native or emulated mediaSource to a blob
-	   * url so that it can be loaded into icp.js
+	   * url so that it can be loaded into video.js
 	   *
 	   * @link https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
 	   * @param {MediaSource} object the object to create a blob url to
 	   */
 	  createObjectURL: function createObjectURL(object) {
-	    var objectUrlPrefix = 'blob:icp-media-source/';
+	    var objectUrlPrefix = 'blob:vjs-media-source/';
 	    var url = void 0;
 
 	    // use the native MediaSource to generate an object URL
@@ -11839,18 +11849,19 @@
 	    urlCount++;
 
 	    // setup the mapping back to object
-	    icplayer.mediaSources[url] = object;
+	    videojs.mediaSources[url] = object;
 
 	    return url;
 	  }
 	};
 
-	icplayer.MediaSource = MediaSource;
-	icplayer.URL = URL$1;
+	videojs.MediaSource = MediaSource;
+	videojs.URL = URL$1;
 
 	/**
 	 * mpd-parser
 	 * @version 0.6.1
+	 * @copyright 2018 Brightcove, Inc
 	 * @license Apache-2.0
 	 */
 
@@ -12114,6 +12125,8 @@
 	/**
 	 * Converts a URLType node (5.3.9.2.3 Table 13) to a segment object
 	 * that conforms to how m3u8-parser is structured
+	 *
+	 * @see https://github.com/videojs/m3u8-parser
 	 *
 	 * @param {string} baseUrl - baseUrl provided by <BaseUrl> nodes
 	 * @param {string} source - source url for segment
@@ -12631,7 +12644,7 @@
 
 	/**
 	 * Converts a <SegmentUrl> (of type URLType from the DASH spec 5.3.9.2 Table 14)
-	 * to an object that matches the output of a segment in icplayer/mpd-parser
+	 * to an object that matches the output of a segment in videojs/mpd-parser
 	 *
 	 * @param {Object} attributes
 	 *   Object containing all inherited attributes from parent elements with attribute
@@ -13501,8 +13514,8 @@
 	  return parseUTCTimingScheme(stringToMpdXml(manifestString));
 	};
 
-	var EventTarget$1 = icplayer.EventTarget,
-	    mergeOptions$2 = icplayer.mergeOptions;
+	var EventTarget$1 = videojs.EventTarget,
+	    mergeOptions$2 = videojs.mergeOptions;
 
 	/**
 	 * Returns a new master manifest that is the result of merging an updated master manifest
@@ -13975,8 +13988,8 @@
 	}(EventTarget$1);
 
 	var logger = function logger(source) {
-	  if (icplayer.log.debug) {
-	    return icplayer.log.debug.bind(icplayer, 'VHS:', source + ' >');
+	  if (videojs.log.debug) {
+	    return videojs.log.debug.bind(videojs, 'VHS:', source + ' >');
 	  }
 
 	  return function () {};
@@ -14125,7 +14138,7 @@
 	    key: 'buffered',
 	    value: function buffered() {
 	      if (!this.sourceBuffer_) {
-	        return icplayer.createTimeRanges();
+	        return videojs.createTimeRanges();
 	      }
 	      return this.sourceBuffer_.buffered;
 	    }
@@ -14811,7 +14824,7 @@
 	 */
 	var handleProgress = function handleProgress(segment, progressFn) {
 	  return function (event) {
-	    segment.stats = icplayer.mergeOptions(segment.stats, getProgressStats(event));
+	    segment.stats = videojs.mergeOptions(segment.stats, getProgressStats(event));
 
 	    // record the time that we receive the first byte of data
 	    if (!segment.stats.firstBytesReceivedAt && segment.stats.bytesReceived) {
@@ -14876,7 +14889,7 @@
 
 	  // optionally, request the decryption key
 	  if (segment.key) {
-	    var keyRequestOptions = icplayer.mergeOptions(xhrOptions, {
+	    var keyRequestOptions = videojs.mergeOptions(xhrOptions, {
 	      uri: segment.key.resolvedUri,
 	      responseType: 'arraybuffer'
 	    });
@@ -14888,7 +14901,7 @@
 
 	  // optionally, request the associated media init segment
 	  if (segment.map && !segment.map.bytes) {
-	    var initSegmentOptions = icplayer.mergeOptions(xhrOptions, {
+	    var initSegmentOptions = videojs.mergeOptions(xhrOptions, {
 	      uri: segment.map.resolvedUri,
 	      responseType: 'arraybuffer',
 	      headers: segmentXhrHeaders(segment.map)
@@ -14899,7 +14912,7 @@
 	    activeXhrs.push(initSegmentXhr);
 	  }
 
-	  var segmentRequestOptions = icplayer.mergeOptions(xhrOptions, {
+	  var segmentRequestOptions = videojs.mergeOptions(xhrOptions, {
 	    uri: segment.resolvedUri,
 	    responseType: 'arraybuffer',
 	    headers: segmentXhrHeaders(segment)
@@ -15291,10 +15304,10 @@
 	};
 
 	/**
-	 * Create captions text tracks on icp.js if they do not exist
+	 * Create captions text tracks on video.js if they do not exist
 	 *
 	 * @param {Object} inbandTextTracks a reference to current inbandTextTracks
-	 * @param {Object} tech the icp.js tech
+	 * @param {Object} tech the video.js tech
 	 * @param {Object} captionStreams the caption streams to create
 	 * @private
 	 */
@@ -15306,7 +15319,7 @@
 
 	      if (track) {
 	        // Resuse an existing track with a CC# id because this was
-	        // very likely created by icplayer-contrib-hls from information
+	        // very likely created by videojs-contrib-hls from information
 	        // in the m3u8 for us to use
 	        inbandTextTracks[trackId] = track;
 	      } else {
@@ -15351,6 +15364,9 @@
 
 	/**
 	 * mux.js
+	 *
+	 * Copyright (c) 2015 Brightcove
+	 * All rights reserved.
 	 *
 	 * Functions that generate fragmented MP4s suitable for use with Media
 	 * Source Extensions.
@@ -15931,6 +15947,9 @@
 	/**
 	 * mux.js
 	 *
+	 * Copyright (c) 2014 Brightcove
+	 * All rights reserved.
+	 *
 	 * A lightweight readable stream implemention that handles event dispatching.
 	 * Objects that inherit from streams should call init in their constructors.
 	 */
@@ -16402,6 +16421,9 @@
 
 	/**
 	 * mux.js
+	 *
+	 * Copyright (c) 2015 Brightcove
+	 * All rights reserved.
 	 *
 	 * Reads in-band caption information from a video elementary
 	 * stream. Captions must follow the CEA-708 standard for injection
@@ -21180,7 +21202,7 @@
 	};
 
 	/**
-	  * Converts SEI NALUs into captions that can be used by icp.js
+	  * Converts SEI NALUs into captions that can be used by video.js
 	 **/
 	var CaptionParser = function CaptionParser() {
 	  var isInitialized = false;
@@ -21492,11 +21514,11 @@
 	 *
 	 * @class SegmentLoader
 	 * @param {Object} options required and optional options
-	 * @extends icplayer.EventTarget
+	 * @extends videojs.EventTarget
 	 */
 
-	var SegmentLoader = function (_icplayer$EventTarget) {
-	  inherits$1(SegmentLoader, _icplayer$EventTarget);
+	var SegmentLoader = function (_videojs$EventTarget) {
+	  inherits$1(SegmentLoader, _videojs$EventTarget);
 
 	  function SegmentLoader(settings) {
 	    classCallCheck$1(this, SegmentLoader);
@@ -21708,7 +21730,7 @@
 	    key: 'buffered_',
 	    value: function buffered_() {
 	      if (!this.sourceUpdater_) {
-	        return icplayer.createTimeRanges();
+	        return videojs.createTimeRanges();
 	      }
 
 	      return this.sourceUpdater_.buffered();
@@ -22815,7 +22837,7 @@
 	    }
 	  }]);
 	  return SegmentLoader;
-	}(icplayer.EventTarget);
+	}(videojs.EventTarget);
 
 	var uint8ToUtf8 = function uint8ToUtf8(uintArray) {
 	  return decodeURIComponent(escape(String.fromCharCode.apply(null, uintArray)));
@@ -22834,7 +22856,7 @@
 	 *
 	 * @class VTTSegmentLoader
 	 * @param {Object} options required and optional options
-	 * @extends icplayer.EventTarget
+	 * @extends videojs.EventTarget
 	 */
 
 	var VTTSegmentLoader = function (_SegmentLoader) {
@@ -22866,14 +22888,14 @@
 	    key: 'buffered_',
 	    value: function buffered_() {
 	      if (!this.subtitlesTrack_ || !this.subtitlesTrack_.cues.length) {
-	        return icplayer.createTimeRanges();
+	        return videojs.createTimeRanges();
 	      }
 
 	      var cues = this.subtitlesTrack_.cues;
 	      var start = cues[0].startTime;
 	      var end = cues[cues.length - 1].startTime;
 
-	      return icplayer.createTimeRanges([[start, end]]);
+	      return videojs.createTimeRanges([[start, end]]);
 	    }
 
 	    /**
@@ -23167,7 +23189,7 @@
 	        return segmentInfo.timestampmap = map;
 	      };
 	      parser.onparsingerror = function (error) {
-	        icplayer.log.warn('Error encountered when parsing cues: ' + error.message);
+	        videojs.log.warn('Error encountered when parsing cues: ' + error.message);
 	      };
 
 	      if (segmentInfo.segment.map) {
@@ -23610,6 +23632,9 @@
 
 	/**
 	 * mux.js
+	 *
+	 * Copyright (c) 2016 Brightcove
+	 * All rights reserved.
 	 *
 	 * Utilities to detect basic properties and metadata about Aac data.
 	 */
@@ -24391,8 +24416,8 @@
 	  }
 	}];
 
-	var SyncController = function (_icplayer$EventTarget) {
-	  inherits$1(SyncController, _icplayer$EventTarget);
+	var SyncController = function (_videojs$EventTarget) {
+	  inherits$1(SyncController, _videojs$EventTarget);
 
 	  function SyncController() {
 	    classCallCheck$1(this, SyncController);
@@ -24833,7 +24858,7 @@
 	    }
 	  }]);
 	  return SyncController;
-	}(icplayer.EventTarget);
+	}(videojs.EventTarget);
 
 	var Decrypter$1 = new shimWorker("./decrypter-worker.worker.js", function (window, document) {
 	  var self = this;
@@ -24841,6 +24866,9 @@
 
 	    /*
 	     * pkcs7.pad
+	     * https://github.com/brightcove/pkcs7
+	     *
+	     * Copyright (c) 2014 Brightcove
 	     * Licensed under the apache2 license.
 	     */
 
@@ -25717,7 +25745,7 @@
 	        return;
 	      }
 
-	      icplayer.log.warn('Problem encountered loading the alternate audio track.' + 'Switching back to default.');
+	      videojs.log.warn('Problem encountered loading the alternate audio track.' + 'Switching back to default.');
 
 	      for (var trackId in mediaType.tracks) {
 	        mediaType.tracks[trackId].enabled = mediaType.tracks[trackId] === defaultTrack;
@@ -25744,7 +25772,7 @@
 	          mediaType = settings.mediaTypes[type];
 
 
-	      icplayer.log.warn('Problem encountered loading the subtitle track.' + 'Disabling subtitle track.');
+	      videojs.log.warn('Problem encountered loading the subtitle track.' + 'Disabling subtitle track.');
 
 	      stopLoaders(segmentLoader, mediaType);
 
@@ -25927,14 +25955,14 @@
 	          playlistLoader = null;
 	        }
 
-	        properties = icplayer.mergeOptions({ id: variantLabel, playlistLoader: playlistLoader }, properties);
+	        properties = videojs.mergeOptions({ id: variantLabel, playlistLoader: playlistLoader }, properties);
 
 	        setupListeners[type](type, properties.playlistLoader, settings);
 
 	        groups[groupId].push(properties);
 
 	        if (typeof tracks[variantLabel] === 'undefined') {
-	          var track = new icplayer.AudioTrack({
+	          var track = new videojs.AudioTrack({
 	            id: variantLabel,
 	            kind: audioTrackKind_(properties),
 	            enabled: false,
@@ -26001,7 +26029,7 @@
 	          playlistLoader = new DashPlaylistLoader(properties.playlists[0], hls, withCredentials, masterPlaylistLoader);
 	        }
 
-	        properties = icplayer.mergeOptions({
+	        properties = videojs.mergeOptions({
 	          id: variantLabel,
 	          playlistLoader: playlistLoader
 	        }, properties);
@@ -26060,7 +26088,7 @@
 
 	        // No PlaylistLoader is required for Closed-Captions because the captions are
 	        // embedded within the video stream
-	        groups[groupId].push(icplayer.mergeOptions({ id: variantLabel }, properties));
+	        groups[groupId].push(videojs.mergeOptions({ id: variantLabel }, properties));
 
 	        if (typeof tracks[variantLabel] === 'undefined') {
 	          var track = tech.addRemoteTextTrack({
@@ -26316,10 +26344,10 @@
 	 * if they are available
 	 *
 	 * @class MasterPlaylistController
-	 * @extends icplayer.EventTarget
+	 * @extends videojs.EventTarget
 	 */
-	var MasterPlaylistController = function (_icplayer$EventTarget) {
-	  inherits$1(MasterPlaylistController, _icplayer$EventTarget);
+	var MasterPlaylistController = function (_videojs$EventTarget) {
+	  inherits$1(MasterPlaylistController, _videojs$EventTarget);
 
 	  function MasterPlaylistController(options) {
 	    classCallCheck$1(this, MasterPlaylistController);
@@ -26364,12 +26392,12 @@
 
 	    _this.mediaTypes_ = createMediaTypes();
 
-	    _this.mediaSource = new icplayer.MediaSource();
+	    _this.mediaSource = new videojs.MediaSource();
 
 	    // load the media source into the player
 	    _this.mediaSource.addEventListener('sourceopen', _this.handleSourceOpen_.bind(_this));
 
-	    _this.seekable_ = icplayer.createTimeRanges();
+	    _this.seekable_ = videojs.createTimeRanges();
 	    _this.hasPlayed_ = function () {
 	      return false;
 	    };
@@ -26414,17 +26442,17 @@
 
 	    // setup segment loaders
 	    // combined audio/video or just video when alternate audio track is selected
-	    _this.mainSegmentLoader_ = new SegmentLoader(icplayer.mergeOptions(segmentLoaderSettings, {
+	    _this.mainSegmentLoader_ = new SegmentLoader(videojs.mergeOptions(segmentLoaderSettings, {
 	      segmentMetadataTrack: _this.segmentMetadataTrack_,
 	      loaderType: 'main'
 	    }), options);
 
 	    // alternate audio track
-	    _this.audioSegmentLoader_ = new SegmentLoader(icplayer.mergeOptions(segmentLoaderSettings, {
+	    _this.audioSegmentLoader_ = new SegmentLoader(videojs.mergeOptions(segmentLoaderSettings, {
 	      loaderType: 'audio'
 	    }), options);
 
-	    _this.subtitleSegmentLoader_ = new VTTSegmentLoader(icplayer.mergeOptions(segmentLoaderSettings, {
+	    _this.subtitleSegmentLoader_ = new VTTSegmentLoader(videojs.mergeOptions(segmentLoaderSettings, {
 	      loaderType: 'vtt'
 	    }), options);
 
@@ -26494,7 +26522,7 @@
 	        try {
 	          _this2.setupSourceBuffers_();
 	        } catch (e) {
-	          icplayer.log.warn('Failed to create SourceBuffers', e);
+	          videojs.log.warn('Failed to create SourceBuffers', e);
 	          return _this2.mediaSource.endOfStream('decode');
 	        }
 	        _this2.setupFirstPlay();
@@ -26746,13 +26774,13 @@
 	      });
 
 	      this.mainSegmentLoader_.on('reseteverything', function () {
-	        // If playing an MTS stream, a icplayer.MediaSource is listening for
+	        // If playing an MTS stream, a videojs.MediaSource is listening for
 	        // hls-reset to reset caption parsing state in the transmuxer
 	        _this3.tech_.trigger('hls-reset');
 	      });
 
 	      this.mainSegmentLoader_.on('segmenttimemapping', function (event) {
-	        // If playing an MTS stream in html, a icplayer.MediaSource is listening for
+	        // If playing an MTS stream in html, a videojs.MediaSource is listening for
 	        // hls-segment-time-mapping update its internal mapping of stream to display time
 	        _this3.tech_.trigger({
 	          type: 'hls-segment-time-mapping',
@@ -26903,7 +26931,7 @@
 	          return false;
 	        }
 
-	        if (icplayer.browser.IE_VERSION && this.tech_.readyState() === 0) {
+	        if (videojs.browser.IE_VERSION && this.tech_.readyState() === 0) {
 	          // IE11 throws an InvalidStateError if you try to set currentTime while the
 	          // readyState is 0, so it must be delayed until the tech fires loadedmetadata.
 	          this.tech_.one('loadedmetadata', function () {
@@ -26946,12 +26974,12 @@
 	      try {
 	        this.setupSourceBuffers_();
 	      } catch (e) {
-	        icplayer.log.warn('Failed to create Source Buffers', e);
+	        videojs.log.warn('Failed to create Source Buffers', e);
 	        return this.mediaSource.endOfStream('decode');
 	      }
 
 	      // if autoplay is enabled, begin playback. This is duplicative of
-	      // code in icp.js but is required because play() must be invoked
+	      // code in video.js but is required because play() must be invoked
 	      // *after* the media source has opened.
 	      if (this.tech_.autoplay()) {
 	        var playPromise = this.tech_.play();
@@ -27081,7 +27109,7 @@
 
 	      if (isFinalRendition) {
 	        // Never blacklisting this playlist because it's final rendition
-	        icplayer.log.warn('Problem encountered with the current ' + 'HLS playlist. Trying again since it is the final playlist.');
+	        videojs.log.warn('Problem encountered with the current ' + 'HLS playlist. Trying again since it is the final playlist.');
 
 	        this.tech_.trigger('retryplaylist');
 	        return this.masterPlaylistLoader_.load(isFinalRendition);
@@ -27093,7 +27121,7 @@
 
 	      // Select a new playlist
 	      nextPlaylist = this.selectPlaylist();
-	      icplayer.log.warn('Problem encountered with the current HLS playlist.' + (error.message ? ' ' + error.message : '') + ' Switching to another playlist.');
+	      videojs.log.warn('Problem encountered with the current HLS playlist.' + (error.message ? ' ' + error.message : '') + ' Switching to another playlist.');
 
 	      return this.masterPlaylistLoader_.media(nextPlaylist);
 	    }
@@ -27245,7 +27273,7 @@
 	        // seekables are pretty far off, rely on main
 	        this.seekable_ = mainSeekable;
 	      } else {
-	        this.seekable_ = icplayer.createTimeRanges([[audioSeekable.start(0) > mainSeekable.start(0) ? audioSeekable.start(0) : mainSeekable.start(0), audioSeekable.end(0) < mainSeekable.end(0) ? audioSeekable.end(0) : mainSeekable.end(0)]]);
+	        this.seekable_ = videojs.createTimeRanges([[audioSeekable.start(0) > mainSeekable.start(0) ? audioSeekable.start(0) : mainSeekable.start(0), audioSeekable.end(0) < mainSeekable.end(0) ? audioSeekable.end(0) : mainSeekable.end(0)]]);
 	      }
 
 	      this.logger_('seekable updated [' + printableRange(this.seekable_) + ']');
@@ -27387,7 +27415,7 @@
 	      // only with alternate audio)
 	      mimeTypes[0] !== mimeTypes[1] ?
 	      // then we want to wait on the second source buffer
-	      new icplayer.EventTarget() :
+	      new videojs.EventTarget() :
 	      // otherwise there is no need to wait as the content is either audio only,
 	      // video only, or muxed content.
 	      null;
@@ -27511,7 +27539,7 @@
 	    }
 	  }]);
 	  return MasterPlaylistController;
-	}(icplayer.EventTarget);
+	}(videojs.EventTarget);
 
 	/**
 	 * Returns a function that acts as the Enable/disable playlist function.
@@ -28037,14 +28065,14 @@
 	/**
 	 * Main entry point for the plugin
 	 *
-	 * @param {Player} player a reference to a icplayer Player instance
+	 * @param {Player} player a reference to a videojs Player instance
 	 * @param {Object} [options] an object with plugin options
 	 * @private
 	 */
 	var initPlugin = function initPlugin(player, options) {
 	  var lastCalled = 0;
 	  var seekTo = 0;
-	  var localOptions = icplayer.mergeOptions(defaultOptions, options);
+	  var localOptions = videojs.mergeOptions(defaultOptions, options);
 
 	  player.ready(function () {
 	    player.trigger({ type: 'usage', name: 'hls-error-reload-initialized' });
@@ -28096,7 +28124,7 @@
 	    }
 
 	    if (!localOptions.getSource || typeof localOptions.getSource !== 'function') {
-	      icplayer.log.error('ERROR: reloadSourceOnError - The option getSource must be a function!');
+	      videojs.log.error('ERROR: reloadSourceOnError - The option getSource must be a function!');
 	      return;
 	    }
 	    lastCalled = Date.now();
@@ -28147,7 +28175,7 @@
 	var version$2 = "1.2.5";
 
 	// since VHS handles HLS and DASH (and in the future, more types), use * to capture all
-	icplayer.use('*', function (player) {
+	videojs.use('*', function (player) {
 	  return {
 	    setSource: function setSource(srcObj, next) {
 	      // pass null as the first argument to indicate that the source is not rejected
@@ -28181,8 +28209,10 @@
 	});
 
 	/**
-	 * @file icplayer-http-streaming.js
+	 * @file videojs-http-streaming.js
 	 *
+	 * The main file for the HLS project.
+	 * License: https://github.com/videojs/videojs-http-streaming/blob/master/LICENSE
 	 */
 
 	var Hls$1 = {
@@ -28208,14 +28238,14 @@
 	['GOAL_BUFFER_LENGTH', 'MAX_GOAL_BUFFER_LENGTH', 'GOAL_BUFFER_LENGTH_RATE', 'BUFFER_LOW_WATER_LINE', 'MAX_BUFFER_LOW_WATER_LINE', 'BUFFER_LOW_WATER_LINE_RATE', 'BANDWIDTH_VARIANCE'].forEach(function (prop) {
 	  Object.defineProperty(Hls$1, prop, {
 	    get: function get$$1() {
-	      icplayer.log.warn('using Hls.' + prop + ' is UNSAFE be sure you know what you are doing');
+	      videojs.log.warn('using Hls.' + prop + ' is UNSAFE be sure you know what you are doing');
 	      return Config[prop];
 	    },
 	    set: function set$$1(value) {
-	      icplayer.log.warn('using Hls.' + prop + ' is UNSAFE be sure you know what you are doing');
+	      videojs.log.warn('using Hls.' + prop + ' is UNSAFE be sure you know what you are doing');
 
 	      if (typeof value !== 'number' || value < 0) {
-	        icplayer.log.warn('value of Hls.' + prop + ' must be greater than or equal to 0');
+	        videojs.log.warn('value of Hls.' + prop + ' must be greater than or equal to 0');
 	        return;
 	      }
 
@@ -28282,7 +28312,7 @@
 	// HLS is a source handler, not a tech. Make sure attempts to use it
 	// as one do not cause exceptions.
 	Hls$1.canPlaySource = function () {
-	  return icplayer.log.warn('HLS is no longer a tech. Please remove it from ' + 'your player\'s techOrder.');
+	  return videojs.log.warn('HLS is no longer a tech. Please remove it from ' + 'your player\'s techOrder.');
 	};
 
 	var emeKeySystems = function emeKeySystems(keySystemOptions, videoPlaylist, audioPlaylist) {
@@ -28303,21 +28333,21 @@
 	      keySystemContentTypes[keySystem].pssh = videoPlaylist.contentProtection[keySystem].pssh;
 	    }
 
-	    // icplayer-contrib-eme accepts the option of specifying: 'com.some.cdm': 'url'
+	    // videojs-contrib-eme accepts the option of specifying: 'com.some.cdm': 'url'
 	    // so we need to prevent overwriting the URL entirely
 	    if (typeof keySystemOptions[keySystem] === 'string') {
 	      keySystemContentTypes[keySystem].url = keySystemOptions[keySystem];
 	    }
 	  }
 
-	  return icplayer.mergeOptions(keySystemOptions, keySystemContentTypes);
+	  return videojs.mergeOptions(keySystemOptions, keySystemContentTypes);
 	};
 
 	var setupEmeOptions = function setupEmeOptions(hlsHandler) {
 	  if (hlsHandler.options_.sourceType !== 'dash') {
 	    return;
 	  }
-	  var player = icplayer.players[hlsHandler.tech_.options_.playerId];
+	  var player = videojs.players[hlsHandler.tech_.options_.playerId];
 
 	  if (player.eme) {
 	    var sourceOptions = emeKeySystems(hlsHandler.source_.keySystems, hlsHandler.playlists.media(), hlsHandler.masterPlaylistController_.mediaTypes_.AUDIO.activePlaylistLoader.media());
@@ -28335,7 +28365,7 @@
 	  var video = document_1.createElement('video');
 
 	  // native HLS is definitely not supported if HTML5 video isn't
-	  if (!icplayer.getTech('Html5').isSupported()) {
+	  if (!videojs.getTech('Html5').isSupported()) {
 	    return false;
 	  }
 
@@ -28359,7 +28389,7 @@
 	}();
 
 	Hls$1.supportsNativeDash = function () {
-	  if (!icplayer.getTech('Html5').isSupported()) {
+	  if (!videojs.getTech('Html5').isSupported()) {
 	    return false;
 	  }
 
@@ -28384,17 +28414,17 @@
 	 * as one do not cause exceptions.
 	 */
 	Hls$1.isSupported = function () {
-	  return icplayer.log.warn('HLS is no longer a tech. Please remove it from ' + 'your player\'s techOrder.');
+	  return videojs.log.warn('HLS is no longer a tech. Please remove it from ' + 'your player\'s techOrder.');
 	};
 
-	var Component = icplayer.getComponent('Component');
+	var Component = videojs.getComponent('Component');
 
 	/**
 	 * The Hls Handler object, where we orchestrate all of the parts
-	 * of HLS to interact with icp.js
+	 * of HLS to interact with video.js
 	 *
 	 * @class HlsHandler
-	 * @extends icplayer.Component
+	 * @extends videojs.Component
 	 * @param {Object} source the soruce object
 	 * @param {Tech} tech the parent tech object
 	 * @param {Object} options optional and required options
@@ -28411,12 +28441,12 @@
 	    var _this = possibleConstructorReturn$1(this, (HlsHandler.__proto__ || Object.getPrototypeOf(HlsHandler)).call(this, tech, options.hls));
 
 	    if (tech.options_ && tech.options_.playerId) {
-	      var _player = icplayer(tech.options_.playerId);
+	      var _player = videojs(tech.options_.playerId);
 
 	      if (!_player.hasOwnProperty('hls')) {
 	        Object.defineProperty(_player, 'hls', {
 	          get: function get$$1() {
-	            icplayer.log.warn('player.hls is deprecated. Use player.tech().hls instead.');
+	            videojs.log.warn('player.hls is deprecated. Use player.tech().hls instead.');
 	            tech.trigger({ type: 'usage', name: 'hls-player-access' });
 	            return _this;
 	          }
@@ -28425,8 +28455,8 @@
 
 	      // Set up a reference to the HlsHandler from player.vhs. This allows users to start
 	      // migrating from player.tech_.hls... to player.vhs... for API access. Although this
-	      // isn't the most appropriate form of reference for icp.js (since all APIs should
-	      // be provided through core icp.js), it is a common pattern for plugins, and vhs
+	      // isn't the most appropriate form of reference for video.js (since all APIs should
+	      // be provided through core video.js), it is a common pattern for plugins, and vhs
 	      // will act accordingly.
 	      _player.vhs = _this;
 	      // deprecated, for backwards compatibility
@@ -28527,14 +28557,14 @@
 	      };
 
 	      this.masterPlaylistController_ = new MasterPlaylistController(this.options_);
-	      this.playbackWatcher_ = new PlaybackWatcher(icplayer.mergeOptions(this.options_, {
+	      this.playbackWatcher_ = new PlaybackWatcher(videojs.mergeOptions(this.options_, {
 	        seekable: function seekable$$1() {
 	          return _this3.seekable();
 	        }
 	      }));
 
 	      this.masterPlaylistController_.on('error', function () {
-	        var player = icplayer.players[_this3.tech_.options_.playerId];
+	        var player = videojs.players[_this3.tech_.options_.playerId];
 
 	        player.error(_this3.masterPlaylistController_.error);
 	      });
@@ -28612,7 +28642,7 @@
 	            return systemBitrate;
 	          },
 	          set: function set$$1() {
-	            icplayer.log.error('The "systemBandwidth" property is read-only');
+	            videojs.log.error('The "systemBandwidth" property is read-only');
 	          }
 	        }
 	      });
@@ -28752,7 +28782,7 @@
 	        return;
 	      }
 
-	      this.tech_.src(icplayer.URL.createObjectURL(this.masterPlaylistController_.mediaSource));
+	      this.tech_.src(videojs.URL.createObjectURL(this.masterPlaylistController_.mediaSource));
 	    }
 
 	    /**
@@ -28767,7 +28797,7 @@
 	    value: function setupQualityLevels_() {
 	      var _this4 = this;
 
-	      var player = icplayer.players[this.tech_.options_.playerId];
+	      var player = videojs.players[this.tech_.options_.playerId];
 
 	      if (player && player.qualityLevels) {
 	        this.qualityLevels_ = player.qualityLevels();
@@ -28845,7 +28875,7 @@
 	}(Component);
 
 	/**
-	 * The Source Handler object, which informs icp.js what additional
+	 * The Source Handler object, which informs video.js what additional
 	 * MIME types are supported and sets up playback. It is registered
 	 * automatically to the appropriate tech based on the capabilities of
 	 * the browser it is running in. It is not necessary to use or modify
@@ -28854,19 +28884,19 @@
 
 
 	var HlsSourceHandler = {
-	  name: 'icplayer-http-streaming',
+	  name: 'videojs-http-streaming',
 	  VERSION: version$2,
 	  canHandleSource: function canHandleSource(srcObj) {
 	    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-	    var localOptions = icplayer.mergeOptions(icplayer.options, options);
+	    var localOptions = videojs.mergeOptions(videojs.options, options);
 
 	    return HlsSourceHandler.canPlayType(srcObj.type, localOptions);
 	  },
 	  handleSource: function handleSource(source, tech) {
 	    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-	    var localOptions = icplayer.mergeOptions(icplayer.options, options);
+	    var localOptions = videojs.mergeOptions(videojs.options, options);
 
 	    tech.hls = new HlsHandler(source, tech, localOptions);
 	    tech.hls.xhr = xhrFactory();
@@ -28877,8 +28907,8 @@
 	  canPlayType: function canPlayType(type) {
 	    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-	    var _icplayer$mergeOptions = icplayer.mergeOptions(icplayer.options, options),
-	        overrideNative = _icplayer$mergeOptions.hls.overrideNative;
+	    var _videojs$mergeOptions = videojs.mergeOptions(videojs.options, options),
+	        overrideNative = _videojs$mergeOptions.hls.overrideNative;
 
 	    var supportedType = simpleTypeFromSourceType(type);
 	    var canUseMsePlayback = supportedType && (!Hls$1.supportsTypeNatively(supportedType) || overrideNative);
@@ -28887,28 +28917,28 @@
 	  }
 	};
 
-	if (typeof icplayer.MediaSource === 'undefined' || typeof icplayer.URL === 'undefined') {
-	  icplayer.MediaSource = MediaSource;
-	  icplayer.URL = URL$1;
+	if (typeof videojs.MediaSource === 'undefined' || typeof videojs.URL === 'undefined') {
+	  videojs.MediaSource = MediaSource;
+	  videojs.URL = URL$1;
 	}
 
 	// register source handlers with the appropriate techs
 	if (MediaSource.supportsNativeMediaSources()) {
-	  icplayer.getTech('Html5').registerSourceHandler(HlsSourceHandler, 0);
+	  videojs.getTech('Html5').registerSourceHandler(HlsSourceHandler, 0);
 	}
 
-	icplayer.HlsHandler = HlsHandler;
-	icplayer.HlsSourceHandler = HlsSourceHandler;
-	icplayer.Hls = Hls$1;
-	if (!icplayer.use) {
-	  icplayer.registerComponent('Hls', Hls$1);
+	videojs.HlsHandler = HlsHandler;
+	videojs.HlsSourceHandler = HlsSourceHandler;
+	videojs.Hls = Hls$1;
+	if (!videojs.use) {
+	  videojs.registerComponent('Hls', Hls$1);
 	}
-	icplayer.options.hls = icplayer.options.hls || {};
+	videojs.options.hls = videojs.options.hls || {};
 
-	if (icplayer.registerPlugin) {
-	  icplayer.registerPlugin('reloadSourceOnError', reloadSourceOnError);
+	if (videojs.registerPlugin) {
+	  videojs.registerPlugin('reloadSourceOnError', reloadSourceOnError);
 	} else {
-	  icplayer.plugin('reloadSourceOnError', reloadSourceOnError);
+	  videojs.plugin('reloadSourceOnError', reloadSourceOnError);
 	}
 
 	exports.Hls = Hls$1;
