@@ -19,9 +19,11 @@ var _videojs2 = _interopRequireDefault(_videojs);
 
 // Default options for the plugin.
 var defaults = {
+  //image : 첫번째 버튼 이미지
   image: "logo image",
   title: "Logo Title",
   id: "nothing",
+  //image2 : 두번째 버튼 이미지
   image2: "logo image",
   title2: "Logo Title",
 };
@@ -38,6 +40,7 @@ var defaults = {
  * @param    {Object} [options={}]
  */
 var onPlayerReady = function onPlayerReady(player, options) {
+  //첫 번째 버튼 삽입
   var containerElement = document.createElement("div");
   containerElement.className = "vjs-icon-container";
 
@@ -50,7 +53,6 @@ var onPlayerReady = function onPlayerReady(player, options) {
   // linkElement.setAttribute("target", options.destinationTarget || defaults.destinationTarget);
   linkElement.addEventListener("click", function(){
       doDisplay();
-    // showSurvey();
 });
   var imageElement = document.createElement("img");
   imageElement.src = options.image || defaults.image;
@@ -58,6 +60,8 @@ var onPlayerReady = function onPlayerReady(player, options) {
   linkElement.appendChild(imageElement);
   containerElement.appendChild(linkElement);
 /*--------------------- end of chatbox Button -----------------------*/
+
+  //두번째 버튼
    var containerElement2 = document.createElement("div");
    containerElement2.className = "vjs-icon-container2";
 
@@ -75,7 +79,10 @@ var onPlayerReady = function onPlayerReady(player, options) {
    linkElement2.appendChild(imageElement2);
    containerElement2.appendChild(linkElement2);
 /*--------------------- end of survey Button -----------------------*/
+
+  //첫 번째 버튼을 풀 스크린 버튼 왼쪽에 삽입
   player.controlBar.el().insertBefore(containerElement, player.controlBar.fullscreenToggle.el());
+  //두 번째 버튼을 첫 번째 버튼 왼쪽에 삽입
   player.controlBar.el().insertBefore(containerElement2, containerElement);
   player.addClass('vjs-icon');
 };
