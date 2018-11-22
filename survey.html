@@ -14,26 +14,26 @@
       <th>Survey</th>
     </tr>
 
-    <tr>
+    <tr><!-- 첫 번째 항목 table -->
       <td>
-        <table width="100%" bgcolor="#0000000" cellpadding="5" cellspacing="1" border="0">
+        <table width="100%" bgcolor="#0000000" cellpadding="4" cellspacing="0" border="1">
         <tr>
-            <td bgcolor="#ffffff" style="filter:alpha(opacity=0)"><h5>select age</h5>
-            <h6><input type="radio" name="age" value="10's">teen
-            <input type="radio" name="age" value="20's">twenty
-            <input type="radio" name="age" value="30's">thirty
-            <input type="radio" name="age" value="40's">forty
-            <input type="radio" name="age" value="50's">fifty
-            <input type="radio" name="age" value="etc">etc</h6></td>
+          <td bgcolor="#ffffff" style="filter:alpha(opacity=0)"><h5>select age</h5>
+          <h6><input type="radio" name="age" value="10">teen
+          <input type="radio" name="age" value="20">twenty
+          <input type="radio" name="age" value="30">thirty
+          <input type="radio" name="age" value="40">forty
+          <input type="radio" name="age" value="50">fifty
+          <input type="radio" name="age" value="etc">etc</h6></td>
         </tr><!-- end of question1 -->
 
-        <tr>
+        <tr><!-- 두 번째 항목 table -->
           <td bgcolor="#ffffff" style="filter:alpha(opacity=0)"><h5>select gender</h5>
           <h6><input type="radio" name="gender" value="man"/>man
           <input type="radio" name="gender" value="woman"/>woman</h6></td>
         </tr><!-- end of question2 -->
 
-        <tr>
+        <tr><!-- 세 번째 항목 table -->
           <td bgcolor="#ffffff" style="filter:alpha(opacity=0)">
           <h5>assessment
           <h6><input type="radio" name="assess" value="good">good
@@ -42,25 +42,68 @@
         </tr><!-- end of question3 -->
         </table>
       <tr>
-      <td align="center">
+      <td align="center"><!-- 제출 형식 -->
         <br/><button type="submit">submit</button>
-        <input type="button" value="close" onclick="self.close();"/>
+        <input type="button" value="close" onclick="self.close();"/></input>
     </form>
-    <p id="output"></p>
+
     </td>
-  </tr>
+    </tr>
+
+    <!-- 결과 출력 table -->
+    <table>
+    <tr>
+      <td>
+        10 :<th id="teen">0</th>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        20 :<th id="twenty">0</th>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        30 :<th id="thirty">0</th>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        40 :<th id="forty">0</th>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        50 :<th id="fifty">0</th>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        etc :<th id="etc">0</th>
+      </td>
+    </tr>
 
   <script>
-          // Attach an event for when the user submits the form
-          $('form').on('submit', function(event){
-              // Prevent the page from reloading
-              event.preventDefault();
-              // Set the output span to the value of the first input
-              var _age = $(this).find("input:radio[name=age]:checked").val();
-              var _gender = $(this).find("input:radio[name=gender]:checked").val();
-              var _assess = $(this).find("input:radio[name=assess]:checked").val();
-              $('#output').text("age: "+ _age);
-          });
+    //10대를 선택하고 sumbit 시의 event
+    $('form').on('submit', function(event){
+      // Prevent the page from reloading
+      event.preventDefault();
+
+      // radio 버튼을 통해 선택된 값들을 받아와서 저장합니다
+      var _age = $(this).find("input:radio[name=age]:checked").val();
+      var ag1 = $('#teen').text();
+      var num1 = parseInt(ag1,10);
+      //10대에 체크한 후 submit 눌렀을 때 값 증가
+      if(_age === "10"){
+        num1++;
+      }
+      $('#teen').text(num1);
+    });
   </script>
 </body>
 </html>
